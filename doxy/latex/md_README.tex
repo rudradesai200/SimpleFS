@@ -1,0 +1,127 @@
+This is the documentation for \href{https://www3.nd.edu/~pbui/teaching/cse.30341.fa17/project06.html}{\texttt{ Project 06}} of \href{https://www3.nd.edu/~pbui/teaching/cse.30341.fa17/}{\texttt{ C\+S\+E.\+30341.\+F\+A17}}.\hypertarget{md_README_autotoc_md0}{}\doxysection{Members}\label{md_README_autotoc_md0}
+
+\begin{DoxyEnumerate}
+\item Domer Mc\+Domerson (\href{mailto:dmcdomer@nd.edu}{\texttt{ dmcdomer@nd.\+edu}})
+\item Belle Fleur (\href{mailto:bfleur@nd.edu}{\texttt{ bfleur@nd.\+edu}})
+\end{DoxyEnumerate}\hypertarget{md_README_autotoc_md1}{}\doxysection{Design}\label{md_README_autotoc_md1}
+\begin{quote}
+
+\begin{DoxyEnumerate}
+\item To implement {\ttfamily Filesystem\+::debug}, you will need to load the file system data structures and report the {\bfseries{superblock}} and {\bfseries{inodes}}.
+\begin{DoxyItemize}
+\item How will you read the superblock?
+\item How will you traverse all the inodes?
+\item How will you determine all the information related to an inode?
+\item How will you determine all the blocks related to an inode? 
+\end{DoxyItemize}
+\end{DoxyEnumerate}\end{quote}
+
+
+Response.
+
+\begin{quote}
+
+\begin{DoxyEnumerate}
+\item To implement {\ttfamily File\+System\+::format}, you will need to write the superblock and clear the remaining blocks in the file system.
+\begin{DoxyItemize}
+\item What pre-\/condition must be true before this operation can succeed?
+\item What information must be written into the superblock?
+\item How would you clear all the remaining blocks? 
+\end{DoxyItemize}
+\end{DoxyEnumerate}\end{quote}
+
+
+Response.
+
+\begin{quote}
+
+\begin{DoxyEnumerate}
+\item To implement {\ttfamily File\+System\+::mount}, you will need to prepare a filesystem for use by reading the superblock and allocating the free block bitmap.
+\begin{DoxyItemize}
+\item What pre-\/condition must be true before this operation can succeed?
+\item What sanity checks must you perform?
+\item How will you record that you mounted a disk?
+\item How will you determine which blocks are free? 
+\end{DoxyItemize}
+\end{DoxyEnumerate}\end{quote}
+
+
+Response.
+
+\begin{quote}
+
+\begin{DoxyEnumerate}
+\item To implement {\ttfamily File\+System\+::create}, you will need to locate a free inode and save a new inode into the inode table.
+\begin{DoxyItemize}
+\item How will you locate a free inode?
+\item What information would you see in a new inode?
+\item How will you record this new inode? 
+\end{DoxyItemize}
+\end{DoxyEnumerate}\end{quote}
+
+
+Response.
+
+\begin{quote}
+
+\begin{DoxyEnumerate}
+\item To implement {\ttfamily File\+System\+::remove}, you will need to locate the inode and then free its associated blocks.
+\begin{DoxyItemize}
+\item How will you determine if the specified inode is valid?
+\item How will you free the direct blocks?
+\item How will you free the indirect blocks?
+\item How will you update the inode table? 
+\end{DoxyItemize}
+\end{DoxyEnumerate}\end{quote}
+
+
+Response.
+
+\begin{quote}
+
+\begin{DoxyEnumerate}
+\item To implement {\ttfamily File\+System\+::stat}, you will need to locate the inode and return its size.
+\begin{DoxyItemize}
+\item How will you determine if the specified inode is valid?
+\item How will you determine the inode\textquotesingle{}s size? 
+\end{DoxyItemize}
+\end{DoxyEnumerate}\end{quote}
+
+
+Response.
+
+\begin{quote}
+
+\begin{DoxyEnumerate}
+\item To implement {\ttfamily File\+System\+::read}, you will need to locate the inode and copy data from appropriate blocks to the user-\/specified data buffer.
+\begin{DoxyItemize}
+\item How will you determine if the specified inode is valid?
+\item How will you determine which block to read from?
+\item How will you handle the offset?
+\item How will you copy from a block to the data buffer? 
+\end{DoxyItemize}
+\end{DoxyEnumerate}\end{quote}
+
+
+Response.
+
+\begin{quote}
+
+\begin{DoxyEnumerate}
+\item To implement {\ttfamily File\+System\+::write}, you will need to locate the inode and copy data the user-\/specified data buffer to data blocks in the file system.
+\begin{DoxyItemize}
+\item How will you determine if the specified inode is valid?
+\item How will you determine which block to write to?
+\item How will you handle the offset?
+\item How will you know if you need a new block?
+\item How will you manage allocating a new block if you need another one?
+\item How will you copy from a block to the data buffer?
+\item How will you update the inode? 
+\end{DoxyItemize}
+\end{DoxyEnumerate}\end{quote}
+\hypertarget{md_README_autotoc_md2}{}\doxysection{Errata}\label{md_README_autotoc_md2}
+\begin{quote}
+Describe any known errors, bugs, or deviations from the requirements. \end{quote}
+\hypertarget{md_README_autotoc_md3}{}\doxysection{Extra Credit}\label{md_README_autotoc_md3}
+\begin{quote}
+Describe what extra credit (if any) that you implemented. \end{quote}
