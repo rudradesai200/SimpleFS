@@ -14,36 +14,43 @@ public:
     const static uint32_t POINTERS_PER_BLOCK = 1024;
 
 private:
-    struct SuperBlock {		// Superblock structure
+    struct SuperBlock {		    // Superblock structure
     	uint32_t MagicNumber;	// File system magic number
-    	uint32_t Blocks;	// Number of blocks in file system
+    	uint32_t Blocks;	    // Number of blocks in file system
     	uint32_t InodeBlocks;	// Number of blocks reserved for inodes
-    	uint32_t Inodes;	// Number of inodes in file system
+    	uint32_t Inodes;	    // Number of inodes in file system
     };
 
     struct Inode {
-    	uint32_t Valid;		// Whether or not inode is valid
-    	uint32_t Size;		// Size of file
-    	uint32_t Direct[POINTERS_PER_INODE]; // Direct pointers
-    	uint32_t Indirect;	// Indirect pointer
+    	uint32_t Valid;		                    // Whether or not inode is valid
+    	uint32_t Size;		                    // Size of file
+    	uint32_t Direct[POINTERS_PER_INODE];    // Direct pointers
+    	uint32_t Indirect;	                    // Indirect pointer
     };
 
     union Block {
-    	SuperBlock  Super;			    // Superblock
-    	Inode	    Inodes[INODES_PER_BLOCK];	    // Inode block
-    	uint32_t    Pointers[POINTERS_PER_BLOCK];   // Pointer block
-    	char	    Data[Disk::BLOCK_SIZE];	    // Data block
+    	struct SuperBlock   Super;			                            // Superblock
+    	struct Inode	    Inodes[FileSystem::INODES_PER_BLOCK];	    // Inode block
+    	uint32_t            Pointers[FileSystem::POINTERS_PER_BLOCK];   // Contains indexes of Direct Blocks. 0 if null.ck
+    	char	            Data[Disk::BLOCK_SIZE];	                    // Data block
     };
 
     // TODO: Internal helper functions
+    bool    load_inode(size_t inumber, Inode *node);
+    bool    save_inode(size_t inumber, Inode *node);
 
-    // TODO: Internal member variables
+    void    initialize_free_blocks(Disk *disk);
+    ssize_t allocate_free_block();
+
+    // TODO: Internal member variabl
+    bool* free_blocks;
+    int num_free_blocks;
 
 public:
     static void debug(Disk *disk);
     static bool format(Disk *disk);
 
-    bool mount(Disk *disk);
+    bool    mount(Disk *disk);
 
     ssize_t create();
     bool    remove(size_t inumber);
