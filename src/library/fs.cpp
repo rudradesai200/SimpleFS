@@ -9,14 +9,14 @@
 #include <string.h>
 #include <iostream>
 
-#define d1 0
-#define d2 (d1 | 0)
+#define d1 (d2 | 0)
+#define d2 0
 
 
 /*******************************************************
  * Debug - Done / Tests Passing
  * Format - Done / Tests Passing
- * 
+ * Mount - Done / Tests Passing
  * 
  ********************************************************/
 
@@ -98,38 +98,31 @@ bool FileSystem::format(Disk *disk) {
 
     disk->write(0,block.Data);
     
-    if(d1){std::cout<<"Super Block Write Successful"<<std::endl;}
-
     // Clear all other blocks
     for(uint32_t i=1; i<=(block.Super.InodeBlocks); i++){
         Block inodeblock;
 
-        if(d2){std::cout<<"Clearing Inode Block "<<i<<std::endl;}
-
         // Clear individual Inodes
         for(uint32_t j=0; j<FileSystem::INODES_PER_BLOCK; j++){
-            if(d2){std::cout<<"Clearing Inode "<<j<<std::endl;}
+            
             inodeblock.Inodes[j].Valid = false;
             inodeblock.Inodes[j].Size = 0;
             // Clear all Direct Pointers
-            for(uint32_t k=0; k<FileSystem::POINTERS_PER_INODE; k++){
-                if(d2){std::cout<<"Clearing Direct Block "<<k<<std::endl;}
+            for(uint32_t k=0; k<FileSystem::POINTERS_PER_INODE; k++)   
                 inodeblock.Inodes[j].Direct[k] = 0;
-            }
-
+    
             // Clear Indirect Pointer
             inodeblock.Inodes[j].Indirect = 0;
         }
 
         // Write back to the disk
         disk->write(i,inodeblock.Data);
-        if(d1){std::cout<<"Block "<<i<<" Write Successful"<<std::endl;}
+        
     }
 
     for(uint32_t i=(block.Super.InodeBlocks)+1; i<(block.Super.Blocks); i++){
         Block DataBlock;
         memset(DataBlock.Data,0,Disk::BLOCK_SIZE);
-        if(d2){std::cout<<"DataBlock "<<i<<" cleared"<<std::endl;}
         disk->write(i,DataBlock.Data);
     }
 
@@ -139,13 +132,61 @@ bool FileSystem::format(Disk *disk) {
 // Mount file system -----------------------------------------------------------
 
 bool FileSystem::mount(Disk *disk) {
+    if(disk->mounted()){return false;}
+
     // Read superblock
+    Block block;
+    disk->read(0,block.Data);
+    if(block.Super.MagicNumber != MAGIC_NUMBER){return false;}
+    if(block.Super.InodeBlocks != std::ceil((block.Super.Blocks*1.00)/10)){return false;}
+    if(block.Super.Inodes != (block.Super.InodeBlocks * INODES_PER_BLOCK)){return false;}
 
     // Set device and mount
+    // Doubt :: What is device?
+    disk->mount();
 
     // Copy metadata
+    MetaData = block.Super;
 
     // Allocate free block bitmap
+    num_free_blocks = MetaData.Blocks;
+    free_blocks = (bool*)malloc(num_free_blocks * sizeof(bool));
+    memset(free_blocks,0,num_free_blocks);
+
+    // Setting true for Super Block
+    free_blocks[0] = true;
+
+    // Read all the Inode Blocks
+    for(uint32_t i = 1; i <= MetaData.InodeBlocks; i++) {
+        disk->read(i, block.Data);
+
+        // Read all the Inodes
+        for(uint32_t j = 0; j < INODES_PER_BLOCK; j++) {
+            
+            if(block.Inodes[j].Valid) {
+                // Set the free_blocks for Inodes Block
+                free_blocks[i] |= block.Inodes[j].Valid;
+
+                // Set the free blocks for Direct Pointer
+                for(uint32_t k = 0; k < POINTERS_PER_INODE; k++) {
+                    if(block.Inodes[j].Direct[k]){
+                        if(block.Inodes[j].Direct[k] < MetaData.Blocks)
+                            free_blocks[block.Inodes[j].Direct[k]] = true;
+                        else
+                            return false;
+                    }
+                }
+
+                // Set the free blocks for InDirect Pointer
+                if(block.Inodes[j].Indirect){
+                    if(block.Inodes[j].Indirect < MetaData.Blocks)
+                        free_blocks[block.Inodes[j].Indirect] = true;
+                    else
+                        return false;
+                }
+            }
+        }    
+    }
 
     return true;
 }

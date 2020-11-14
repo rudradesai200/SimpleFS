@@ -45,6 +45,8 @@ private:
     // TODO: Internal member variabl
     bool* free_blocks;
     int num_free_blocks;
+    struct SuperBlock MetaData;
+    
 
 public:
     static void debug(Disk *disk);
