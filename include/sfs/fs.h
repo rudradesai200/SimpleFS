@@ -24,7 +24,7 @@ private:
     struct Inode {
     	uint32_t Valid;		                    // Whether or not inode is valid
     	uint32_t Size;		                    // Size of file
-    	uint32_t Direct[POINTERS_PER_INODE];    // Direct pointers
+    	uint32_t Direct[FileSystem::POINTERS_PER_INODE];    // Direct pointers
     	uint32_t Indirect;	                    // Indirect pointer
     };
 

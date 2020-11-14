@@ -3,10 +3,23 @@
 #include "sfs/fs.h"
 
 #include <algorithm>
-
+#include <math.h>
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
+#include <iostream>
+
+#define d1 0
+#define d2 (d1 | 0)
+
+
+/*******************************************************
+ * Debug - Done / Tests Passing
+ * Format - Done / Tests Passing
+ * 
+ * 
+ ********************************************************/
+
 
 // Debug file system -----------------------------------------------------------
 
@@ -40,17 +53,26 @@ void FileSystem::debug(Disk *disk) {
         disk->read(i, block.Data); // array of 128 inodes
 
         for(uint32_t j = 0; j < INODES_PER_BLOCK; j++) {
-            Inode curr = block.Inodes[j];
             
-            if(curr.Valid) {
+            if(block.Inodes[j].Valid) {
                 printf("Inode %u:\n", ii);
-                printf("    size: %u bytes\n", curr.Size);
-                printf("    direct blocks: ");
+                printf("    size: %u bytes\n", block.Inodes[j].Size);
+                printf("    direct blocks:");
 
-                for(uint32_t k = 0; k < POINTERS_PER_BLOCK; k++) {
-                    if(curr.Direct[k]) printf("%u ", curr.Direct[k]);
+                for(uint32_t k = 0; k < POINTERS_PER_INODE; k++) {
+                    if(block.Inodes[j].Direct[k]) printf(" %u", block.Inodes[j].Direct[k]);
                 }
                 printf("\n");
+
+                if(block.Inodes[j].Indirect){
+                    printf("    indirect block: %u\n    indirect data blocks:",block.Inodes[j].Indirect);
+                    Block IndirectBlock;
+                    disk->read(block.Inodes[j].Indirect,IndirectBlock.Data);
+                    for(uint32_t k = 0; k < POINTERS_PER_BLOCK; k++) {
+                        if(IndirectBlock.Pointers[k]) printf(" %u", IndirectBlock.Pointers[k]);
+                    }
+                    printf("\n");
+                }
             }
 
             ii++;
@@ -64,18 +86,53 @@ void FileSystem::debug(Disk *disk) {
 
 bool FileSystem::format(Disk *disk) {
 
-    // if(disk->mounted()){return false;}
+    if(disk->mounted()){return false;}
 
-    // // Write superblock
-    // Block block;
-    // disk->read(0,block.Data);
+    // Write superblock
+    Block block;
 
-    // block.Super.MagicNumber = FileSystem::MAGIC_NUMBER;
-    // // block.Super.Blocks = disk->
-    // block.Super.InodeBlocks = (uint32_t)(0.1 * block.Super.Blocks);
-    // block.Super.Inodes = block.Super.InodeBlocks * (FileSystem::INODES_PER_BLOCK)
+    block.Super.MagicNumber = FileSystem::MAGIC_NUMBER;
+    block.Super.Blocks = (uint32_t)(disk->size());
+    block.Super.InodeBlocks = (uint32_t)std::ceil((int(block.Super.Blocks) * 1.00)/10);
+    block.Super.Inodes = block.Super.InodeBlocks * (FileSystem::INODES_PER_BLOCK);
+
+    disk->write(0,block.Data);
+    
+    if(d1){std::cout<<"Super Block Write Successful"<<std::endl;}
 
     // Clear all other blocks
+    for(uint32_t i=1; i<=(block.Super.InodeBlocks); i++){
+        Block inodeblock;
+
+        if(d2){std::cout<<"Clearing Inode Block "<<i<<std::endl;}
+
+        // Clear individual Inodes
+        for(uint32_t j=0; j<FileSystem::INODES_PER_BLOCK; j++){
+            if(d2){std::cout<<"Clearing Inode "<<j<<std::endl;}
+            inodeblock.Inodes[j].Valid = false;
+            inodeblock.Inodes[j].Size = 0;
+            // Clear all Direct Pointers
+            for(uint32_t k=0; k<FileSystem::POINTERS_PER_INODE; k++){
+                if(d2){std::cout<<"Clearing Direct Block "<<k<<std::endl;}
+                inodeblock.Inodes[j].Direct[k] = 0;
+            }
+
+            // Clear Indirect Pointer
+            inodeblock.Inodes[j].Indirect = 0;
+        }
+
+        // Write back to the disk
+        disk->write(i,inodeblock.Data);
+        if(d1){std::cout<<"Block "<<i<<" Write Successful"<<std::endl;}
+    }
+
+    for(uint32_t i=(block.Super.InodeBlocks)+1; i<(block.Super.Blocks); i++){
+        Block DataBlock;
+        memset(DataBlock.Data,0,Disk::BLOCK_SIZE);
+        if(d2){std::cout<<"DataBlock "<<i<<" cleared"<<std::endl;}
+        disk->write(i,DataBlock.Data);
+    }
+
     return true;
 }
 
@@ -144,13 +201,25 @@ ssize_t FileSystem::write(size_t inumber, char *data, size_t length, size_t offs
 
 // Initialise free block bitmap ------------------------------------------------
 
-// void FileSystem::initialize_free_blocks(Disk *disk) {
-//     // reding the superblock
-//     Block block;
-//     disk->read(0, block.Data);
+void FileSystem::initialize_free_blocks(Disk *disk) {
+    // reding the superblock
+    Block block;
+    disk->read(0, block.Data);
 
-//     this->num_free_blocks = block.Super.Blocks;
-//     this->free_blocks = (bool*)malloc(this->num_free_blocks * sizeof(bool));
+    this->num_free_blocks = block.Super.Blocks;
+    this->free_blocks = (bool*)malloc(this->num_free_blocks * sizeof(bool));
 
-//     for(int i = 0; i < this->num_free_blocks; i++) {
-//         this->free_blocks[i] = false;
+    // Starting Index of datablocks 
+    int datablocks_start = block.Super.InodeBlocks + 1;
+    
+    // Setting up free_blocks bitmap
+    for(int i = datablocks_start; i < this->num_free_blocks; i++) 
+        this->free_blocks[i] = false;
+    
+    // Superblock
+    this->free_blocks[0] = true;
+
+    // Inode blocks
+    for(int i = 1; i<datablocks_start; i++)
+        this->free_blocks[i] = true;
+}
