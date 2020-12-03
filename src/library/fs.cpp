@@ -219,8 +219,13 @@ ssize_t FileSystem::create() {
             if(!block.Inodes[j].Valid) {
                 block.Inodes[j].Valid = true;
                 block.Inodes[j].Size = 0;
+                block.Inodes[j].Indirect = 0;
+                for(int ii = 0; ii < 5; ii++) {
+                    block.Inodes[j].Direct[ii] = 0;
+                }
                 free_blocks[i] = true;
                 inode_counter[i-1]++;
+
                 fs_disk->write(i, block.Data);
 
                 return (((i-1) * INODES_PER_BLOCK) + j);
@@ -271,13 +276,13 @@ bool FileSystem::save_inode(size_t inumber, Inode *node) {
 
 bool FileSystem::remove(size_t inumber) {
     // Load inode information
-    Inode* node = new Inode;
+    Inode *node = new Inode;
 
     if(load_inode(inumber, node)) {
         node->Valid = false;
 
-        if(!(--inode_counter[inumber / MetaData.InodeBlocks])) {
-            free_blocks[inumber / MetaData.InodeBlocks + 1] = false;
+        if(!(--inode_counter[inumber / INODES_PER_BLOCK])) {
+            free_blocks[inumber / INODES_PER_BLOCK + 1] = false;
         }
 
         // Free direct blocks
@@ -287,7 +292,7 @@ bool FileSystem::remove(size_t inumber) {
         }
 
         // Free indirect blocks
-        for(uint32_t i = 0; i < POINTERS_PER_BLOCK; i++) {
+        if(node->Indirect) {
             Block indirect;
             fs_disk->read(node->Indirect, indirect.Data);
 
@@ -298,6 +303,11 @@ bool FileSystem::remove(size_t inumber) {
                 }
             }
         }
+
+        Block block;
+        fs_disk->read(inumber / INODES_PER_BLOCK + 1, block.Data);
+        block.Inodes[inumber % INODES_PER_BLOCK] = *node;
+        fs_disk->write(inumber / INODES_PER_BLOCK + 1, block.Data);
 
         return true;
     }
