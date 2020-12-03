@@ -19,7 +19,11 @@ using namespace std;
  * Debug - Done / Tests Passing
  * Format - Done / Tests Passing
  * Mount - Done / Tests Passing
- * 
+ * Create - 
+ * Remove -
+ * Stat - 
+ * Read - 
+ * Write - 
  ********************************************************/
 
 
@@ -280,6 +284,7 @@ bool FileSystem::remove(size_t inumber) {
 
     if(load_inode(inumber, node)) {
         node->Valid = false;
+        node->Size = 0;
 
         if(!(--inode_counter[inumber / INODES_PER_BLOCK])) {
             free_blocks[inumber / INODES_PER_BLOCK + 1] = false;
@@ -295,12 +300,11 @@ bool FileSystem::remove(size_t inumber) {
         if(node->Indirect) {
             Block indirect;
             fs_disk->read(node->Indirect, indirect.Data);
+            free_blocks[node->Indirect] = false;
+            node->Indirect = 0;
 
             for(uint32_t i = 0; i < POINTERS_PER_BLOCK; i++) {
-                if(indirect.Pointers[i]) {
-                    free_blocks[indirect.Pointers[i]] = false;
-                    indirect.Pointers[i] = 0;
-                }
+                if(indirect.Pointers[i]) free_blocks[indirect.Pointers[i]] = false;
             }
         }
 
@@ -318,7 +322,7 @@ bool FileSystem::remove(size_t inumber) {
 // Inode stat ------------------------------------------------------------------
 
 ssize_t FileSystem::stat(size_t inumber) {
-    Inode* node = nullptr;
+    Inode* node = new Inode;
 
     if(load_inode(inumber, node)) {
         return node->Size;
@@ -330,21 +334,108 @@ ssize_t FileSystem::stat(size_t inumber) {
 // Read from inode -------------------------------------------------------------
 
 ssize_t FileSystem::read(size_t inumber, char *data, size_t length, size_t offset) {
-    // Load inode information
+    Inode *node = new Inode;
+    int to_read = length;
 
-    // Adjust length
+    if(load_inode(inumber, node)) {
+        if(offset < POINTERS_PER_INODE * Disk::BLOCK_SIZE) {
+            uint32_t direct_node = offset / Disk::BLOCK_SIZE;
+            offset %= Disk::BLOCK_SIZE;
 
-    // Read block and copy to data
-    return 0;
+            if(node->Direct[direct_node]) {
+                fs_disk->read(node->Direct[direct_node++], data);
+                data += offset;
+                length -= (Disk::BLOCK_SIZE - offset);
+            
+                while(length > 0 && direct_node < POINTERS_PER_INODE && node->Direct[direct_node]) {
+                    fs_disk->read(node->Direct[direct_node++], data);
+                    length -= Disk::BLOCK_SIZE;
+                }
+
+                if(length < 0) {
+                    data[to_read] = 0;
+                    return to_read;
+                }
+                else if(length == 0) {
+                    return to_read;
+                }
+                else {
+                    if(direct_node == POINTERS_PER_INODE && node->Indirect) {
+                        Block indirect;
+                        fs_disk->read(node->Indirect, indirect.Data);
+
+                        for(uint32_t i = 0; i < POINTERS_PER_BLOCK; i++) {
+                            if(indirect.Pointers[i] && length > 0) {
+                                fs_disk->read(indirect.Pointers[i], data);
+                                length -= Disk::BLOCK_SIZE;
+                            }
+                            else {
+                                break;
+                            }
+                        }
+
+                        if(length < 0) {
+                            data[to_read] = 0;
+                            return to_read;
+                        }
+                        else {
+                            return (to_read - length);
+                        }
+                    }
+                    else {
+                        return (to_read - length);
+                    }
+                }
+            }
+            else {
+                return 0;
+            }
+        }
+        else if(node->Indirect) {
+            // offset begins in the indirect block
+            Block indirect;
+            fs_disk->read(node->Indirect, indirect.Data);
+
+            for(uint32_t i = 0; i < POINTERS_PER_BLOCK; i++) {
+                if(indirect.Pointers[i] && length > 0) {
+                    fs_disk->read(indirect.Pointers[i], data);
+                    if(offset >= Disk::BLOCK_SIZE) {
+                        data += Disk::BLOCK_SIZE;
+                        offset -= Disk::BLOCK_SIZE;
+                    }
+                    else if(offset > 0) {
+                        data += offset;
+                        offset = 0;
+                    }
+                    else {
+                        length -= Disk::BLOCK_SIZE;
+                    }
+                }
+                else {
+                    break;
+                }
+            }
+
+            if(length < 0) {
+                data[to_read] = 0;
+                return to_read;
+            }
+            else {
+                return (to_read - length);
+            }
+        }
+        else {
+            return 0;
+        }
+    }   
+    
+    return -1;
 }
 
 // Write to inode --------------------------------------------------------------
 
 ssize_t FileSystem::write(size_t inumber, char *data, size_t length, size_t offset) {
-    // Load inode
     
-    // Write block and copy to data
-    return 0;
 }
 
 // Initialise free block bitmap ------------------------------------------------
