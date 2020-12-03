@@ -28,7 +28,7 @@ using namespace std;
 void FileSystem::debug(Disk *disk) {
     Block block;
 
-    // Read Superblock
+    // read superblock
     disk->read(0, block.Data);
 
     printf("SuperBlock:\n");
@@ -42,17 +42,17 @@ void FileSystem::debug(Disk *disk) {
         return;
     }
 
-    // Reading the Superblock
+    // printing the superblock
     printf("    %u blocks\n"         , block.Super.Blocks);
     printf("    %u inode blocks\n"   , block.Super.InodeBlocks);
     printf("    %u inodes\n"         , block.Super.Inodes);
 
-    // Reading the Inode blocks
+    // reading the inode blocks
     uint32_t num_inode_blocks = block.Super.InodeBlocks;
     int ii = 0;
 
     for(uint32_t i = 1; i <= num_inode_blocks; i++) {
-        disk->read(i, block.Data); // array of 128 inodes
+        disk->read(i, block.Data); // array of inodes
 
         for(uint32_t j = 0; j < INODES_PER_BLOCK; j++) {
             
@@ -158,6 +158,11 @@ bool FileSystem::mount(Disk *disk) {
     free_blocks = (bool*)malloc(num_free_blocks * sizeof(bool));
     memset(free_blocks,0,num_free_blocks);
 
+    // Allocate inode_counter
+    num_inode_blocks = MetaData.InodeBlocks;
+    inode_counter = (int *)malloc(num_inode_blocks * sizeof(int));
+    memset(inode_counter, 0, num_inode_blocks);   
+
     // Setting true for Super Block
     free_blocks[0] = true;
 
@@ -169,6 +174,8 @@ bool FileSystem::mount(Disk *disk) {
         for(uint32_t j = 0; j < INODES_PER_BLOCK; j++) {
             
             if(block.Inodes[j].Valid) {
+                inode_counter[i-1]++;
+
                 // Set the free_blocks for Inodes Block
                 free_blocks[i] |= block.Inodes[j].Valid;
 
@@ -182,7 +189,7 @@ bool FileSystem::mount(Disk *disk) {
                     }
                 }
 
-                // Set the free blocks for InDirect Pointer
+                // Set the free blocks for Indirect Pointer
                 if(block.Inodes[j].Indirect){
                     if(block.Inodes[j].Indirect < MetaData.Blocks)
                         free_blocks[block.Inodes[j].Indirect] = true;
@@ -190,14 +197,7 @@ bool FileSystem::mount(Disk *disk) {
                         return false;
                 }
             }
-        } 
-
-        // Allocate inode_counter
-        num_inode_blocks = MetaData.InodeBlocks;
-        inode_counter = (int *)malloc(num_inode_blocks * sizeof(int));
-        memset(inode_counter, 0, num_inode_blocks);   
-    
-        // Set up inode_counter
+        }
     }
 
     return true;
@@ -308,7 +308,7 @@ ssize_t FileSystem::stat(size_t inumber) {
     Inode* node = nullptr;
 
     if(load_inode(inumber, node)) {
-        return node.Size;
+        return node->Size;
     }
 
     return -1;
