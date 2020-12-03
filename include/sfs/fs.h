@@ -42,9 +42,11 @@ private:
     void    initialize_free_blocks(Disk *disk);
     ssize_t allocate_free_block();
 
-    // TODO: Internal member variabl
+    // TODO: Internal member variable
+    Disk* fs_disk; 
     bool* free_blocks;
-    int num_free_blocks;
+    int* inode_counter;
+    int num_free_blocks, num_inode_blocks;
     struct SuperBlock MetaData;
     
 
