@@ -207,6 +207,7 @@ bool FileSystem::mount(Disk *disk) {
 
 ssize_t FileSystem::create() {
     Block block;
+    fs_disk->read(0, block.Data);
 
     // Locate free inode in inode table    
     for(uint32_t i = 1; i <= MetaData.InodeBlocks; i++) {
@@ -241,9 +242,7 @@ bool FileSystem::load_inode(size_t inumber, Inode *node) {
     if(inode_counter[i]) {
         fs_disk->read(i+1, block.Data);
         if(block.Inodes[j].Valid) {
-            cout << "setting node" << endl;
             *node = block.Inodes[j];
-            cout << "node: " << node << endl;
             return true;
         }
     }
@@ -255,6 +254,8 @@ bool FileSystem::load_inode(size_t inumber, Inode *node) {
 
 bool FileSystem::save_inode(size_t inumber, Inode *node) {
     Block block;
+
+    // to do: add a safety clause to check if inumber exceeds limit
 
     int i = inumber / INODES_PER_BLOCK;
     int j = inumber % INODES_PER_BLOCK;
@@ -270,9 +271,9 @@ bool FileSystem::save_inode(size_t inumber, Inode *node) {
 
 bool FileSystem::remove(size_t inumber) {
     // Load inode information
-    Inode* node = nullptr;
+    Inode* node = new Inode;
 
-    if(load_inode(inumber, node)) {    
+    if(load_inode(inumber, node)) {
         node->Valid = false;
 
         if(!(--inode_counter[inumber / MetaData.InodeBlocks])) {
@@ -291,8 +292,10 @@ bool FileSystem::remove(size_t inumber) {
             fs_disk->read(node->Indirect, indirect.Data);
 
             for(uint32_t i = 0; i < POINTERS_PER_BLOCK; i++) {
-                free_blocks[indirect.Pointers[i]] = false;
-                indirect.Pointers[i] = 0;
+                if(indirect.Pointers[i]) {
+                    free_blocks[indirect.Pointers[i]] = false;
+                    indirect.Pointers[i] = 0;
+                }
             }
         }
 
