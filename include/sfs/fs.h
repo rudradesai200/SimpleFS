@@ -19,6 +19,8 @@ private:
     	uint32_t Blocks;	    // Number of blocks in file system
     	uint32_t InodeBlocks;	// Number of blocks reserved for inodes
     	uint32_t Inodes;	    // Number of inodes in file system
+        uint32_t Protected;
+        char PasswordHash[257];
     };
 
     struct Inode {
@@ -62,4 +64,8 @@ public:
 
     ssize_t read(size_t inumber, char *data, size_t length, size_t offset);
     ssize_t write(size_t inumber, char *data, size_t length, size_t offset);
+
+    bool    set_password();
+    bool    change_password();
+    bool    remove_password();
 };

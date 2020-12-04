@@ -1,8 +1,10 @@
 // fs.cpp: File System
 
 #include "sfs/fs.h"
+#include "sfs/sha256.h"
 
 #include <algorithm>
+#include <string>
 #include <math.h>
 #include <assert.h>
 #include <stdio.h>
@@ -46,6 +48,26 @@ void FileSystem::debug(Disk *disk) {
         return;
     }
 
+    if(block.Super.Protected){
+        printf("    disk is password protected\n");
+        char pass[1000], line[1000];
+        printf("Enter password: ");
+        if (fgets(line, BUFSIZ, stdin) == NULL) {
+    	    return;
+    	}
+        sscanf(line, "%s", pass);
+        
+        SHA256 hasher;
+        if(hasher(pass) == string(block.Super.PasswordHash)){
+            printf("    Disk Unlocked\n");
+        }
+        else{
+            printf("    Wrong password. Exiting...\n");
+            return;
+        }
+    }
+
+
     // printing the superblock
     printf("    %u blocks\n"         , block.Super.Blocks);
     printf("    %u inode blocks\n"   , block.Super.InodeBlocks);
@@ -68,7 +90,7 @@ void FileSystem::debug(Disk *disk) {
                 for(uint32_t k = 0; k < POINTERS_PER_INODE; k++) {
                     if(block.Inodes[j].Direct[k]) printf(" %u", block.Inodes[j].Direct[k]);
                 }
-                printf("\n");
+                
 
                 if(block.Inodes[j].Indirect){
                     printf("    indirect block: %u\n    indirect data blocks:",block.Inodes[j].Indirect);
@@ -77,7 +99,7 @@ void FileSystem::debug(Disk *disk) {
                     for(uint32_t k = 0; k < POINTERS_PER_BLOCK; k++) {
                         if(IndirectBlock.Pointers[k]) printf(" %u", IndirectBlock.Pointers[k]);
                     }
-                    printf("\n");
+                    
                 }
             }
 
@@ -102,6 +124,10 @@ bool FileSystem::format(Disk *disk) {
     block.Super.Blocks = (uint32_t)(disk->size());
     block.Super.InodeBlocks = (uint32_t)std::ceil((int(block.Super.Blocks) * 1.00)/10);
     block.Super.Inodes = block.Super.InodeBlocks * (FileSystem::INODES_PER_BLOCK);
+
+    // Reinitialising password protection
+    block.Super.Protected = 0;
+    memset(block.Super.PasswordHash,0,257);
 
     disk->write(0,block.Data);
     
@@ -148,6 +174,23 @@ bool FileSystem::mount(Disk *disk) {
     if(block.Super.MagicNumber != MAGIC_NUMBER) return false;
     if(block.Super.InodeBlocks != std::ceil((block.Super.Blocks*1.00)/10)) return false;
     if(block.Super.Inodes != (block.Super.InodeBlocks * INODES_PER_BLOCK)) return false;
+    if(block.Super.Protected){
+        char pass[1000], line[1000];
+    	printf("Enter password: ");
+        if (fgets(line, BUFSIZ, stdin) == NULL) {
+    	    return false;
+    	}
+        sscanf(line, "%s", pass);
+        SHA256 hasher;
+        if(hasher(pass) == string(block.Super.PasswordHash)){
+            printf("Disk Unlocked\n");
+            return true;
+        }
+        else{
+            printf("Password Failed. Exiting...\n");
+            return false;
+        }
+    }
 
     // Set device and mount
     // Doubt : What is device?
@@ -242,7 +285,7 @@ ssize_t FileSystem::create() {
 
 // Load inode ------------------------------------------------------------------
 
-bool FileSystem::load_inode(size_t inumber, Inode *node) {
+bool FileSystem::load_inode(size_t inumber,struct Inode *node) {
     Block block;
 
     int i = inumber / INODES_PER_BLOCK;
@@ -261,7 +304,7 @@ bool FileSystem::load_inode(size_t inumber, Inode *node) {
 
 // Save inode ------------------------------------------------------------------
 
-bool FileSystem::save_inode(size_t inumber, Inode *node) {
+bool FileSystem::save_inode(size_t inumber,struct Inode *node) {
     Block block;
 
     // to do: add a safety clause to check if inumber exceeds limit
@@ -461,4 +504,69 @@ void FileSystem::initialize_free_blocks(Disk *disk) {
     // Inode blocks
     for(int i = 1; i<datablocks_start; i++)
         this->free_blocks[i] = true;
+}
+
+bool FileSystem::set_password(){
+    if(MetaData.Protected){
+        return FileSystem::change_password();
+    }
+    char pass[1000], line[1000];
+    printf("Enter new password: ");
+    if (fgets(line, BUFSIZ, stdin) == NULL) {
+    	    return false;
+    	}
+    sscanf(line, "%s", pass);
+    MetaData.Protected = 1;
+    SHA256 hasher;
+    strcpy(MetaData.PasswordHash,hasher(pass).c_str());
+    Block block;
+    block.Super = MetaData;
+    fs_disk->write(0,block.Data);
+    printf("New password set.\n");
+    return true;
+}
+
+bool FileSystem::change_password(){
+    if(MetaData.Protected){
+        char pass[1000], line[1000];
+        printf("Enter old password: ");
+        if (fgets(line, BUFSIZ, stdin) == NULL) {
+    	    return false;
+    	}
+        sscanf(line, "%s", pass);
+        
+        SHA256 hasher;
+        if(hasher(pass) != string(MetaData.PasswordHash)){
+            printf("Old password incorrect.\n");
+            return false;
+        }
+        MetaData.Protected = 0;
+    }
+    return FileSystem::set_password();   
+}
+
+bool FileSystem::remove_password(){
+    if(MetaData.Protected){
+        char pass[1000], line[1000];
+        printf("Enter old password: ");
+        if (fgets(line, BUFSIZ, stdin) == NULL) {
+    	    return false;
+    	}
+        sscanf(line, "%s", pass);
+        
+        SHA256 hasher;
+        if(hasher(pass) != string(MetaData.PasswordHash)){
+            printf("Old password incorrect.\n");
+            return false;
+        }
+        MetaData.Protected = 0;
+        Block block;
+        block.Super = MetaData;
+        fs_disk->write(0,block.Data);   
+        printf("Password removed successfully.\n");
+        return true;
+    }
+    else{
+        return false;
+    }
 }
