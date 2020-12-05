@@ -58,16 +58,13 @@ private:
         struct Directory    Directories[FileSystem::DIR_PER_BLOCK];      // Directory blocks
     };
 
-    // TODO: Internal helper functions
+    // Internal helper functions
     bool    load_inode(size_t inumber, Inode *node);
-    bool    save_inode(size_t inumber, Inode *node);
 
-    void    initialize_free_blocks(Disk *disk);
     ssize_t allocate_free_block();
+    uint32_t allocate_block();
 
-    int namecmp(const char *s, const char *t){return strncmp(s, t, FileSystem::NAMESIZE);}
-
-    // TODO: Internal member variable
+    // Internal member variables
     Disk* fs_disk; 
     bool* free_blocks;
     int* inode_counter;
