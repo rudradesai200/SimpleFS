@@ -237,9 +237,9 @@ bool copyout(FileSystem &fs, size_t inumber, const char *path) {
     	ssize_t result = fs.read(inumber, buffer, sizeof(buffer), offset);
     	if (result <= 0) {
     	    break;
-	}
-	fwrite(buffer, 1, result, stream);
-	offset += result;
+		}
+		fwrite(buffer, 1, result, stream);
+		offset += result;
     }
 
     printf("%lu bytes copied\n", offset);
