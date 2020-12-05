@@ -28,6 +28,11 @@ void do_stat(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2);
 void do_copyin(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2);
 void do_help(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2);
 void do_password(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2);
+void do_mkdir(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2);
+void do_rmdir(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2);
+void do_touch(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2);
+void do_cd(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2);
+void do_ls(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2);
 
 bool copyout(FileSystem &fs, size_t inumber, const char *path);
 bool copyin(FileSystem &fs, const char *path, size_t inumber);
@@ -87,6 +92,16 @@ int main(int argc, char *argv[]) {
 	    do_help(disk, fs, args, arg1, arg2);
 	} else if (streq(cmd, "password")) {
 	    do_password(disk, fs, args, arg1, arg2);
+	} else if (streq(cmd, "mkdir")) {
+	    do_mkdir(disk, fs, args, arg1, arg2);
+	} else if (streq(cmd, "rmdir")) {
+	    do_rmdir(disk, fs, args, arg1, arg2);
+	} else if (streq(cmd, "touch")) {
+	    do_touch(disk, fs, args, arg1, arg2);
+	} else if (streq(cmd, "cd")) {
+	    do_cd(disk, fs, args, arg1, arg2);
+	} else if (streq(cmd, "ls")) {
+	    do_ls(disk, fs, args, arg1, arg2);
 	} else if (streq(cmd, "exit") || streq(cmd, "quit")) {
 	    break;
 	} else {
@@ -234,6 +249,58 @@ void do_password(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2){
 	}
 }
 
+void do_mkdir(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
+    if (args != 2) {
+    	printf("Usage: mkdir <dirname>\n");
+    	return;
+    }
+
+	if(!fs.mkdir(arg1)){
+		printf("mkdir failed\n");
+	}
+}
+
+void do_rmdir(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
+    if (args != 2) {
+    	printf("Usage: rmdir <dirname>\n");
+    	return;
+    }
+
+	if(!fs.rmdir(arg1)){
+		printf("rmdir failed\n");
+	}
+}
+
+void do_touch(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
+    if (args != 2) {
+    	printf("Usage: touch <name>\n");
+    	return;
+    }
+
+	if(!fs.touch(arg1)){
+		printf("touch failed\n");
+	}
+}
+
+void do_cd(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
+    if (args != 2) {
+    	printf("Usage: cd <dirname>\n");
+    	return;
+    }
+
+	if(!fs.cd(arg1)){
+		printf("cd failed\n");
+	}
+}
+
+void do_ls(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
+    if (args != 1) {
+    	printf("Usage: ls\n");
+    	return;
+    }
+	fs.ls();
+}
+
 void do_help(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
     printf("Commands are:\n");
     printf("    format\n");
@@ -246,6 +313,10 @@ void do_help(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
     printf("    copyin  <file> <inode>\n");
     printf("    copyout <inode> <file>\n");
 	printf("    password <change|set|remove>\n");
+	printf("    mkdir <dirname>\n");
+	printf("    rmdir <dirname>\n");
+	printf("    touch <filename>\n");
+	printf("    cd <dirname>\n");
     printf("    help\n");
     printf("    quit\n");
     printf("    exit\n");
