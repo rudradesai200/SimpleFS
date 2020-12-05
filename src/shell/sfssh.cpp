@@ -27,6 +27,7 @@ void do_remove(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2);
 void do_stat(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2);
 void do_copyin(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2);
 void do_help(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2);
+void do_password(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2);
 
 bool copyout(FileSystem &fs, size_t inumber, const char *path);
 bool copyin(FileSystem &fs, const char *path, size_t inumber);
@@ -84,6 +85,8 @@ int main(int argc, char *argv[]) {
 	    do_copyin(disk, fs, args, arg1, arg2);
 	} else if (streq(cmd, "help")) {
 	    do_help(disk, fs, args, arg1, arg2);
+	} else if (streq(cmd, "password")) {
+	    do_password(disk, fs, args, arg1, arg2);
 	} else if (streq(cmd, "exit") || streq(cmd, "quit")) {
 	    break;
 	} else {
@@ -208,6 +211,29 @@ void do_copyin(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
     }
 }
 
+void do_password(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2){
+	if(args != 2){
+		printf("Usage: password <change|set|remove>\n");
+		return;
+	}
+	
+	bool ret;
+	if(streq(arg1,"change")){
+		ret = fs.change_password();
+	} else if (streq(arg1, "set")){
+		ret = fs.set_password();
+	} else if (streq(arg1, "remove")){
+		ret = fs.remove_password();
+	} else {
+		printf("Usage: password <change|set|remove>\n");
+		return;
+	}
+
+	if(!ret){
+		printf("password %s failed!\n",arg1);
+	}
+}
+
 void do_help(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
     printf("Commands are:\n");
     printf("    format\n");
@@ -219,6 +245,7 @@ void do_help(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
     printf("    stat    <inode>\n");
     printf("    copyin  <file> <inode>\n");
     printf("    copyout <inode> <file>\n");
+	printf("    password <change|set|remove>\n");
     printf("    help\n");
     printf("    quit\n");
     printf("    exit\n");
