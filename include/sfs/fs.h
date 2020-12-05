@@ -63,6 +63,7 @@ public:
 
     ssize_t read(size_t inumber, char *data, int length, size_t offset);
     ssize_t write(size_t inumber, char *data, int length, size_t offset);
+    ssize_t write_ret(size_t inumber, Inode* node, int ret);
 
     bool    set_password();
     bool    change_password();
