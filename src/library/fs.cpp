@@ -136,9 +136,21 @@ bool FileSystem::format(Disk *disk) {
     }
 
     // Free Data Blocks and Directory Blocks
-    for(uint32_t i = (block.Super.InodeBlocks) + 1; i < block.Super.Blocks; i++){
+    for(uint32_t i = (block.Super.InodeBlocks) + 1; i < block.Super.Blocks - block.Super.DirBlocks; i++){
         Block DataBlock;
         memset(DataBlock.Data, 0, Disk::BLOCK_SIZE);
+        disk->write(i, DataBlock.Data);
+    }
+
+    for(uint32_t i = block.Super.Blocks - block.Super.DirBlocks; i < block.Super.Blocks; i++){
+        Block DataBlock;
+        Directory dir;
+        dir.inum = -1;
+        dir.Valid = 0;
+        memset(dir.Table,0,sizeof(Dirent)*ENTRIES_PER_DIR);
+        for(uint32_t j=0; j<FileSystem::DIR_PER_BLOCK; j++){
+            DataBlock.Directories[j] = dir;
+        }
         disk->write(i, DataBlock.Data);
     }
 
@@ -821,21 +833,31 @@ FileSystem::Directory FileSystem::add_dir_entry(Directory dir, uint32_t inum, ui
 }
 
 FileSystem::Directory FileSystem::read_dir_from_offset(uint32_t offset){
+    // Sanity Check
+    if((curr_dir.Table[offset].valid == 0) || (curr_dir.Table[offset].type != 0)){Directory temp; temp.Valid=0; return temp;}
+
+    // Get offsets and indexes
     uint32_t inum = curr_dir.Table[offset].inum;
     uint32_t block_idx = (inum / FileSystem::DIR_PER_BLOCK);
     uint32_t block_offset = (inum % FileSystem::DIR_PER_BLOCK);
     
+    // Read Block
     Block blk;
-    fs_disk->read(MetaData.Blocks - 1 - block_idx,blk.Data);
+    fs_disk->read(MetaData.Blocks - 1 - block_idx, blk.Data);
     return blk.Directories[block_offset];
 }
 
 void FileSystem::write_dir_back(Directory dir){
+    // Get block offset and index
     uint32_t block_idx = (dir.inum / FileSystem::DIR_PER_BLOCK) ;
     uint32_t block_offset = (dir.inum % FileSystem::DIR_PER_BLOCK);
+
+    // Read Block
     Block block;
     fs_disk->read(MetaData.Blocks - 1 - block_idx, block.Data);
     block.Directories[block_offset] = dir;
+
+    // Write the Dirblock
     fs_disk->write(MetaData.Blocks - 1 - block_idx, block.Data);
 }
 
@@ -845,7 +867,6 @@ int FileSystem::curr_dir_lookup(char name[]){
     for(;offset < FileSystem::ENTRIES_PER_DIR; offset++){
         if(
             (curr_dir.Table[offset].valid) &&
-            (curr_dir.Table[offset].type == 0) &&
             (streq(curr_dir.Table[offset].Name,name))
         ){break;}
     }
@@ -857,13 +878,17 @@ int FileSystem::curr_dir_lookup(char name[]){
 }
 
 bool FileSystem::ls_dir(char name[]){
+    // Get the directory entry offset 
     int offset = curr_dir_lookup(name);
     if(offset == -1){return false;}
 
+    // Read directory from block
     FileSystem::Directory dir = read_dir_from_offset(offset);
 
+    // Sanity checks
     if(!(dir.Valid)){return false;}
 
+    // Print Directory Data
     printf("   inum    |       name       | type\n");
     for(uint32_t idx=0;idx<FileSystem::ENTRIES_PER_DIR;idx++){
         struct Dirent temp = dir.Table[idx];
@@ -952,7 +977,6 @@ bool FileSystem::touch(char name[FileSystem::NAMESIZE]){
     for(uint32_t offset=0; offset<FileSystem::ENTRIES_PER_DIR; offset++){
         if(curr_dir.Table[offset].valid){
             if(streq(curr_dir.Table[offset].Name,name)){
-                printf("File already exists\n");
                 return false;
             }
         }
@@ -978,7 +1002,112 @@ bool FileSystem::cd(char name[FileSystem::NAMESIZE]){
 
     // Read the dirblock from the disk
     curr_dir = read_dir_from_offset(offset);
+    if(curr_dir.Valid == 0){return false;}
     return true;
 }
 
-bool FileSystem::ls(){char name[] = ".";return ls_dir(name);}
+bool FileSystem::ls(){
+    char name[] = ".";
+    return ls_dir(name);
+}
+
+bool FileSystem::rm(char name[]){
+    // Get the offset for removal
+    int offset = curr_dir_lookup(name);
+    if(offset == -1){return false;}
+
+    // Check if directory
+    if(curr_dir.Table[offset].type == 0){
+        return rmdir(name);
+    }
+
+    // Get number
+    uint32_t inum = curr_dir.Table[offset].inum;
+
+    // Remove the inode
+    if(!remove(inum)){return false;}
+
+    // Remove the entry
+    curr_dir.Table[offset].valid = 0;
+
+    // Write back the changes
+    write_dir_back(curr_dir);
+
+    return true;
+}
+
+void FileSystem::exit(){
+    free(free_blocks);
+    free(dir_counter);
+    free(inode_counter);
+}
+
+bool FileSystem::copyout(char name[],const char *path) {
+    int offset = curr_dir_lookup(name);
+    if(offset == -1){return false;}
+
+    if(curr_dir.Table[offset].type == 0){return false;}
+
+    uint32_t inum = curr_dir.Table[offset].inum;
+
+    FILE *stream = fopen(path, "w");
+    if (stream == nullptr) {
+    	fprintf(stderr, "Unable to open %s: %s\n", path, strerror(errno));
+    	return false;
+    }
+
+    char buffer[4*BUFSIZ] = {0};
+    offset = 0;
+    while (true) {
+    	ssize_t result = read(inum, buffer, sizeof(buffer), offset);
+    	if (result <= 0) {
+    	    break;
+		}
+		fwrite(buffer, 1, result, stream);
+		offset += result;
+    }
+    
+    printf("%d bytes copied\n", offset);
+    fclose(stream);
+    return true;
+}
+
+bool FileSystem::copyin(const char *path, char name[]) {
+    touch(name);
+    int offset = curr_dir_lookup(name);
+    if(offset == -1){return false;}
+
+    if(curr_dir.Table[offset].type == 0){return false;}
+
+    uint32_t inum = curr_dir.Table[offset].inum;
+
+	FILE *stream = fopen(path, "r");
+    if (stream == nullptr) {
+    	fprintf(stderr, "Unable to open %s: %s\n", path, strerror(errno));
+    	return false;
+    }
+
+    char buffer[4*BUFSIZ] = {0};
+    offset = 0;
+    while (true) {
+    	ssize_t result = fread(buffer, 1, sizeof(buffer), stream);
+    	if (result <= 0) {
+    	    break;
+	}
+
+	ssize_t actual = write(inum, buffer, result, offset);
+	if (actual < 0) {
+	    fprintf(stderr, "fs.write returned invalid result %ld\n", actual);
+	    break;
+	}
+	offset += actual;
+	if (actual != result) {
+	    fprintf(stderr, "fs.write only wrote %ld bytes, not %ld bytes\n", actual, result);
+	    break;
+	}
+    }
+    
+    printf("%d bytes copied\n", offset);
+    fclose(stream);
+    return true;
+}

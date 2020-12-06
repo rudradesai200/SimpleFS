@@ -106,7 +106,11 @@ public:
     bool    rmdir(char name[]);
     bool    cd(char name[]);
     bool    ls();
+    bool    rm(char name[]);
+    bool    copyout(char name[],const char *path);
+    bool    copyin(const char *path, char name[]);
     bool    ls_dir(char name[]);
+    void    exit();
 };
 
 // NOTE: For now, Path's are not valid for creating files or directories 
