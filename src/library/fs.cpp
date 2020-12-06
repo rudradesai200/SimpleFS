@@ -164,15 +164,9 @@ bool FileSystem::format(Disk *disk) {
 
     // Empty the directories
     Block Dirblock;
-    for(uint32_t offset = 0; offset < FileSystem::DIR_PER_BLOCK; offset++){
-        Dirblock.Directories[offset].inum = -1;
-        Dirblock.Directories[offset].Valid = 0;
-        Dirblock.Directories[offset].Size = 0;
-    }
-
-    // Set root directoy to the first node
     memcpy(&(Dirblock.Directories[0]),&root,sizeof(root));
     disk->write(block.Super.Blocks -1, Dirblock.Data);
+
     return true;
 }
 
@@ -290,10 +284,7 @@ bool FileSystem::mount(Disk *disk) {
         if(dirs == 0){
             curr_dir = dirblock.Directories[0];
         }
-        printf("%u ",dir_counter[dirs]);
     }
-    printf("\n");
-
     return true;
 }
 
@@ -805,37 +796,84 @@ bool FileSystem::remove_password(){
     }
 }
 
-// bool FileSystem::add_dir_entry(uint32_t inum, uint32_t type, char name[]){
-//     // This will add directory entry to current directory
-//     // But it won't write back to the disk.
-//     // dir write back should be done by the caller
+FileSystem::Directory FileSystem::add_dir_entry(Directory dir, uint32_t inum, uint32_t type, char name[]){
+    // This will add directory entry to current directory
+    // But it won't write back to the disk.
+    // dir write back should be done by the caller
 
+    struct Dirent temp;
+    temp.inum = inum;
+    temp.type = type;
+    temp.valid = 1;
+    strcpy(temp.Name,name);
+
+    uint32_t idx = 0;
+    for(; idx < FileSystem::ENTRIES_PER_DIR; idx++){
+        if(dir.Table[idx].valid == 0){break;}
+    }
+    if(idx == FileSystem::ENTRIES_PER_DIR){
+        printf("Directory entry limit reached..exiting\n");
+        dir.Valid = 0;
+        return dir;
+    }
+    dir.Table[idx] = temp;
+    return dir;
+}
+
+FileSystem::Directory FileSystem::read_dir_from_offset(uint32_t offset){
+    uint32_t inum = curr_dir.Table[offset].inum;
+    uint32_t block_idx = (inum / FileSystem::DIR_PER_BLOCK);
+    uint32_t block_offset = (inum % FileSystem::DIR_PER_BLOCK);
     
-//     struct Dirent temp;
-//     temp.inum = inum;
-//     temp.type = type;
-//     temp.valid = 1;
-//     strcpy(temp.Name,name);
+    Block blk;
+    fs_disk->read(MetaData.Blocks - 1 - block_idx,blk.Data);
+    return blk.Directories[block_offset];
+}
 
-//     uint32_t idx = 0;
-//     for(; idx < FileSystem::ENTRIES_PER_DIR; idx++){
-//         if(curr_dir.Table[idx].valid == 0){break;}
-//     }
-//     if(idx == FileSystem::ENTRIES_PER_DIR){
-//         printf("Directory entry limit reached..exiting\n");
-//         return false;
-//     }
-//     curr_dir.Table[idx] = temp;
-//     return true;
-// }
+void FileSystem::write_dir_back(Directory dir){
+    uint32_t block_idx = (dir.inum / FileSystem::DIR_PER_BLOCK) ;
+    uint32_t block_offset = (dir.inum % FileSystem::DIR_PER_BLOCK);
+    Block block;
+    fs_disk->read(MetaData.Blocks - 1 - block_idx, block.Data);
+    block.Directories[block_offset] = dir;
+    fs_disk->write(MetaData.Blocks - 1 - block_idx, block.Data);
+}
 
-// void FileSystem::write_dir_back(Directory dir){
-//     uint32_t block_idx = MetaData.Blocks - 1 - int(dir.inum / FileSystem::DIR_PER_BLOCK) ;
-//     Block block;
-//     fs_disk->read(block_idx, block.Data);
-//     block.Directories[dir.inum % FileSystem::DIR_PER_BLOCK] = dir;
-//     fs_disk->write(block_idx, block.Data);
-// }
+int FileSystem::curr_dir_lookup(char name[]){
+    // Search the current dir table for name
+    uint32_t offset = 0;
+    for(;offset < FileSystem::ENTRIES_PER_DIR; offset++){
+        if(
+            (curr_dir.Table[offset].valid) &&
+            (curr_dir.Table[offset].type == 0) &&
+            (streq(curr_dir.Table[offset].Name,name))
+        ){break;}
+    }
+
+    // No such dir found
+    if(offset == FileSystem::ENTRIES_PER_DIR){return -1;}
+
+    return offset;
+}
+
+bool FileSystem::ls_dir(char name[]){
+    int offset = curr_dir_lookup(name);
+    if(offset == -1){return false;}
+
+    FileSystem::Directory dir = read_dir_from_offset(offset);
+
+    if(!(dir.Valid)){return false;}
+
+    printf("   inum    |       name       | type\n");
+    for(uint32_t idx=0;idx<FileSystem::ENTRIES_PER_DIR;idx++){
+        struct Dirent temp = dir.Table[idx];
+        if(temp.valid == 1){
+            if(temp.type == 1) printf("%-10u | %-16s | %-5s\n",temp.inum,temp.Name, "file");
+            else printf("%-10u | %-16s | %-5s\n",temp.inum,temp.Name, "dir");
+        }
+    }
+    return true;
+}
 
 bool FileSystem::mkdir(char name[FileSystem::NAMESIZE]){
     // Find empty dirblock
@@ -850,6 +888,7 @@ bool FileSystem::mkdir(char name[FileSystem::NAMESIZE]){
     Block block;
     fs_disk->read(MetaData.Blocks - 1 - block_idx, block.Data);
 
+
     // Find empty directory in dirblock
     uint32_t offset=0;
     for(;offset < FileSystem::DIR_PER_BLOCK; offset++)
@@ -861,38 +900,24 @@ bool FileSystem::mkdir(char name[FileSystem::NAMESIZE]){
     new_dir.inum = block_idx*FileSystem::DIR_PER_BLOCK + offset;
     new_dir.Size = 0;
     new_dir.Valid = 1;
+    strcpy(new_dir.Name,name);
     
     // Create 2 new entries for "." and ".."
-    struct Dirent temp;
-    temp.inum = new_dir.inum;
-    temp.valid = 1;
-    temp.type = 0;
     char tstr1[] = ".", tstr2[] = "..";
-    strcpy(temp.Name,tstr1);
-    memcpy(&(new_dir.Table[0]),&(temp),sizeof(Dirent));
-    temp.inum = curr_dir.inum;
-    strcpy(temp.Name,tstr2);
-    memcpy(&(new_dir.Table[1]),&(temp),sizeof(Dirent));
+    new_dir = add_dir_entry(new_dir,new_dir.inum,0,tstr1);
+    new_dir = add_dir_entry(new_dir,curr_dir.inum,0,tstr2);
+    if(new_dir.Valid == 0){return false;}
 
     // Write the new directory back to the disk
-    memcpy(&(block.Directories[offset]),&(new_dir),sizeof(Directory));
-    fs_disk->write(MetaData.Blocks - 1-block_idx, block.Data);
-
-    // Add new entry to the curr_dir
-    temp.inum = new_dir.inum;
-    strcpy(temp.Name, name);
-    offset = 0;
-    for(; offset < FileSystem::ENTRIES_PER_DIR; offset++)
-        if(curr_dir.Table[offset].valid == 0)
-            break;
+    write_dir_back(new_dir);
     
-
+    // Add new entry to the curr_dir
+    Directory temp = add_dir_entry(curr_dir,new_dir.inum,0,name);
+    if(temp.Valid == 0){return false;}
+    curr_dir = temp;
+    
     // Write the curr_dir back to the disk
-    memcpy(&(curr_dir.Table[offset]),&temp,sizeof(Dirent));
-    block_idx = (curr_dir.inum / DIR_PER_BLOCK);
-    fs_disk->read(MetaData.Blocks - 1 - block_idx, block.Data);
-    block.Directories[curr_dir.inum % DIR_PER_BLOCK] = curr_dir;
-    fs_disk->write(MetaData.Blocks - 1 - block_idx, block.Data);
+    write_dir_back(curr_dir);
 
     // Increment the counter
     dir_counter[block_idx]++;
@@ -903,18 +928,8 @@ bool FileSystem::mkdir(char name[FileSystem::NAMESIZE]){
 
 bool FileSystem::rmdir(char name[FileSystem::NAMESIZE]){
     // Find the directory
-    uint32_t offset = 0;
-    for(;offset < FileSystem::DIR_PER_BLOCK; offset++)
-        if(
-            (curr_dir.Table[offset].valid) && 
-            (curr_dir.Table[offset].type == 0) &&
-            (streq(curr_dir.Table[offset].Name,name))
-        )
-            break;
-    
-
-    // Directory not found
-    if(offset == FileSystem::DIR_PER_BLOCK){return false;}
+    int offset = curr_dir_lookup(name);
+    if(offset == -1){return false;}
 
     // Update the dirblock
     Block block;
@@ -923,92 +938,47 @@ bool FileSystem::rmdir(char name[FileSystem::NAMESIZE]){
     block.Directories[curr_dir.Table[offset].inum % FileSystem::DIR_PER_BLOCK].Valid = 0;
     fs_disk->write(MetaData.Blocks - 1 - block_idx, block.Data);
 
+    // Decrement dir counter
+    dir_counter[curr_dir.Table[offset].inum / FileSystem::DIR_PER_BLOCK]--;
+
     // Update curr_dir
     curr_dir.Table[offset].valid = 0;
-    dir_counter[curr_dir.inum / FileSystem::DIR_PER_BLOCK]--;
-    block_idx = (curr_dir.inum / DIR_PER_BLOCK);
-    fs_disk->read(MetaData.Blocks - 1 - block_idx, block.Data);
-    block.Directories[curr_dir.inum % DIR_PER_BLOCK] = curr_dir;
-    fs_disk->write(MetaData.Blocks - 1 - block_idx, block.Data);
+    write_dir_back(curr_dir);
     return true;
 }
 
 bool FileSystem::touch(char name[FileSystem::NAMESIZE]){
+    // Check if such file exists
+    for(uint32_t offset=0; offset<FileSystem::ENTRIES_PER_DIR; offset++){
+        if(curr_dir.Table[offset].valid){
+            if(streq(curr_dir.Table[offset].Name,name)){
+                printf("File already exists\n");
+                return false;
+            }
+        }
+    }
     // Allocate new inode for the file
     ssize_t new_node_idx = FileSystem::create();
     if(new_node_idx == -1){return false;}
 
     // Add the directory entry in curr_directory
-    struct Dirent temp;
-    temp.inum = new_node_idx;
-    strcpy(temp.Name,name);
-    temp.type = 1;
-    temp.valid = 1;
-
-    // Find the offset for placing the entry
-    uint32_t offset = 0;
-    for(;offset < ENTRIES_PER_DIR; offset++)
-        if(
-            (curr_dir.Table[offset].valid == 0) &&
-            !(streq(curr_dir.Table[offset].Name,name))
-        )
-            break;
-    
-    // No valid entries in the directory
-    if(offset == DIR_PER_BLOCK) return false;
+    Directory temp = add_dir_entry(curr_dir,new_node_idx,1,name);
+    if(temp.Valid == 0){return false;}
+    curr_dir = temp;
     
     // Write back the changes
-    Block block;
-    memcpy(&(curr_dir.Table[offset]),&temp,sizeof(temp));
-    uint32_t block_idx = MetaData.Blocks - 1 - (curr_dir.inum / DIR_PER_BLOCK);
-    fs_disk->read(block_idx, block.Data);
-    block.Directories[curr_dir.inum % DIR_PER_BLOCK] = curr_dir;
-    fs_disk->write(block_idx, block.Data);
+    write_dir_back(curr_dir);
 
     return true;
 }
 
 bool FileSystem::cd(char name[FileSystem::NAMESIZE]){
-
-    // Search the current dir table for name
-    uint32_t offset = 0;
-    for(;offset < FileSystem::ENTRIES_PER_DIR; offset++){
-        if(
-            (curr_dir.Table[offset].valid) &&
-            (curr_dir.Table[offset].type == 0) &&
-            (streq(curr_dir.Table[offset].Name,name))
-        ){break;}
-    }
-
-    // No such dir found
-    if(offset == FileSystem::ENTRIES_PER_DIR){return false;}
-
-    // Get the direntry
-    struct Dirent entry;
-    memcpy(&entry, &(curr_dir.Table[offset]),sizeof(Dirent));
-    uint32_t block_idx = entry.inum / FileSystem::DIR_PER_BLOCK;
-    uint32_t block_offset = entry.inum % FileSystem::DIR_PER_BLOCK;
+    int offset = curr_dir_lookup(name);
+    if(offset == -1){return false;}
 
     // Read the dirblock from the disk
-    Block block;
-    fs_disk->read(block_idx, block.Data);
-
-    // Read the directory from the block;
-    Directory dir;
-    memcpy(&dir,&(block.Directories[block_offset]),sizeof(Directory));
-    memcpy(&curr_dir,&dir,sizeof(dir));
-
+    curr_dir = read_dir_from_offset(offset);
     return true;
 }
 
-void FileSystem::ls(){
-    printf("   inum    |       name       | type\n");
-    for(uint32_t offset=0;offset<FileSystem::ENTRIES_PER_DIR;offset++){
-        struct Dirent temp;
-        memcpy(&temp,&(curr_dir.Table[offset]),sizeof(Dirent));
-        if(temp.valid){
-            if(temp.type == 1) printf("%-10u | %-16s | %-5s\n",temp.inum,temp.Name, "file");
-            else printf("%-10u | %-16s | %-5s\n",temp.inum,temp.Name, "dir");
-        }
-    }
-}
+bool FileSystem::ls(){char name[] = ".";return ls_dir(name);}

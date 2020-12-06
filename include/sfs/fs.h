@@ -74,8 +74,11 @@ private:
 
     // Directories
     struct Directory curr_dir;
-    // bool    add_dir_entry(uint32_t inum, uint32_t type, char name[]);
-    // void    write_dir_back(struct Directory dir);
+    Directory add_dir_entry(Directory dir, uint32_t inum, uint32_t type, char name[]);
+    void    write_dir_back(struct Directory dir);
+    
+    int curr_dir_lookup(char name[]);
+    Directory read_dir_from_offset(uint32_t offset);
 
 public:
     // Initializations
@@ -102,7 +105,8 @@ public:
     bool    mkdir(char name[]);
     bool    rmdir(char name[]);
     bool    cd(char name[]);
-    void    ls();
+    bool    ls();
+    bool    ls_dir(char name[]);
 };
 
 // NOTE: For now, Path's are not valid for creating files or directories 

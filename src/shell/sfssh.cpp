@@ -76,18 +76,18 @@ int main(int argc, char *argv[]) {
 	    do_format(disk, fs, args, arg1, arg2);
 	} else if (streq(cmd, "mount")) {
 	    do_mount(disk, fs, args, arg1, arg2);
-	} else if (streq(cmd, "cat")) {
-	    do_cat(disk, fs, args, arg1, arg2);
-	} else if (streq(cmd, "copyout")) {
-	    do_copyout(disk, fs, args, arg1, arg2);
-	} else if (streq(cmd, "create")) {
-	    do_create(disk, fs, args, arg1, arg2);
-	} else if (streq(cmd, "remove")) {
-	    do_remove(disk, fs, args, arg1, arg2);
-	} else if (streq(cmd, "stat")) {
-	    do_stat(disk, fs, args, arg1, arg2);
-	} else if (streq(cmd, "copyin")) {
-	    do_copyin(disk, fs, args, arg1, arg2);
+	// } else if (streq(cmd, "cat")) {
+	//     do_cat(disk, fs, args, arg1, arg2);
+	// } else if (streq(cmd, "copyout")) {
+	//     do_copyout(disk, fs, args, arg1, arg2);
+	// } else if (streq(cmd, "create")) {
+	//     do_create(disk, fs, args, arg1, arg2);
+	// } else if (streq(cmd, "remove")) {
+	//     do_remove(disk, fs, args, arg1, arg2);
+	// } else if (streq(cmd, "stat")) {
+	//     do_stat(disk, fs, args, arg1, arg2);
+	// } else if (streq(cmd, "copyin")) {
+	//     do_copyin(disk, fs, args, arg1, arg2);
 	} else if (streq(cmd, "help")) {
 	    do_help(disk, fs, args, arg1, arg2);
 	} else if (streq(cmd, "password")) {
@@ -294,11 +294,20 @@ void do_cd(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
 }
 
 void do_ls(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
-    if (args != 1) {
-    	printf("Usage: ls\n");
+    if (!((args == 1) || (args == 2))) {
+    	printf("Usage: ls <dirname>\n");
     	return;
     }
-	fs.ls();
+	if(args == 1){
+		if(!fs.ls()){
+			printf("ls failed\n");
+		}
+	}
+	else{
+		if(!fs.ls_dir(arg1)){
+			printf("ls failed\n");
+		}
+	}
 }
 
 void do_help(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
@@ -306,17 +315,18 @@ void do_help(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
     printf("    format\n");
     printf("    mount\n");
     printf("    debug\n");
-    printf("    create\n");
-    printf("    remove  <inode>\n");
-    printf("    cat     <inode>\n");
-    printf("    stat    <inode>\n");
-    printf("    copyin  <file> <inode>\n");
-    printf("    copyout <inode> <file>\n");
+    // printf("    create\n");
+    // printf("    remove  <inode>\n");
+    // printf("    cat     <inode>\n");
+    // printf("    stat    <inode>\n");
+    // printf("    copyin  <file> <inode>\n");
+    // printf("    copyout <inode> <file>\n");
 	printf("    password <change|set|remove>\n");
 	printf("    mkdir <dirname>\n");
 	printf("    rmdir <dirname>\n");
 	printf("    touch <filename>\n");
 	printf("    cd <dirname>\n");
+	printf("    ls <dirname>\n");
     printf("    help\n");
     printf("    quit\n");
     printf("    exit\n");
