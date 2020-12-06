@@ -11,7 +11,7 @@ image-5-output() {
 
 
 0 disk block writes
-5 disk block reads
+6 disk block reads
 965 bytes copied
 All mimsy were the borogoves,
 All mimsy were the borogoves,
@@ -25,8 +25,8 @@ And, as in uffish thought he stood,
 Beware the Jubjub bird, and shun
 Came whiffling through the tulgey wood,
   Come to my arms, my beamish boy!
-  Did gyre and gimble in the wabe;
   Did gyre and gimble in the wabe:
+  Did gyre and gimble in the wabe;
 disk mounted.
   He chortled in his joy.
 He left it dead, and with its head
@@ -219,7 +219,7 @@ image-20-output() {
 
 0 bytes copied
 0 disk block writes
-21 disk block reads
+22 disk block reads
 27160 bytes copied
 9546 bytes copied
    Abraham Clark

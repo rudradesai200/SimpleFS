@@ -5,6 +5,9 @@
 #include "sfs/disk.h"
 
 #include <stdint.h>
+#include <vector>
+
+using namespace std;
 
 class FileSystem {
 public:
@@ -35,21 +38,18 @@ private:
     	char	            Data[Disk::BLOCK_SIZE];	                    // Data block
     };
 
-    // TODO: Internal helper functions
+    // Internal helper functions
     bool    load_inode(size_t inumber, Inode *node);
-    bool    save_inode(size_t inumber, Inode *node);
-
-    void    initialize_free_blocks(Disk *disk);
     ssize_t allocate_free_block();
+    uint32_t allocate_block();
 
-    // TODO: Internal member variable
+    // Internal member variables
     Disk* fs_disk; 
-    bool* free_blocks;
-    int* inode_counter;
+    vector<bool> free_blocks;
+    vector<int> inode_counter;
     int num_free_blocks, num_inode_blocks;
     struct SuperBlock MetaData;
     
-
 public:
     static void debug(Disk *disk);
     static bool format(Disk *disk);
@@ -60,6 +60,7 @@ public:
     bool    remove(size_t inumber);
     ssize_t stat(size_t inumber);
 
-    ssize_t read(size_t inumber, char *data, size_t length, size_t offset);
-    ssize_t write(size_t inumber, char *data, size_t length, size_t offset);
+    ssize_t read(size_t inumber, char *data, int length, size_t offset);
+    ssize_t write(size_t inumber, char *data, int length, size_t offset);
+    ssize_t write_ret(size_t inumber, Inode* node, int ret);
 };

@@ -156,7 +156,7 @@ Inode 1:
 Inode 2:
     size: 965 bytes
     direct blocks: 4
-27 disk block reads
+28 disk block reads
 10 disk block writes
 EOF
 }
@@ -230,8 +230,8 @@ Inode 2:
     direct blocks: 4 5 6 7 8
     indirect block: 9
     indirect data blocks: 13 14
-41 disk block reads
-18 disk block writes
+35 disk block reads
+11 disk block writes
 EOF
 }
 

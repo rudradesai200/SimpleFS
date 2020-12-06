@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
 	} else if (streq(cmd, "help")) {
 	    do_help(disk, fs, args, arg1, arg2);
 	} else if (streq(cmd, "exit") || streq(cmd, "quit")) {
-	    break;
+		break;
 	} else {
 	    printf("Unknown command: %s", line);
 	    printf("Type 'help' for a list of commands.\n");
@@ -199,7 +199,7 @@ void do_stat(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
 
 void do_copyin(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
     if (args != 3) {
-    	printf("Usage: copyin <inode> <file>\n");
+    	printf("Usage: copyin <file> <inode>\n");
     	return;
     }
 
@@ -237,9 +237,9 @@ bool copyout(FileSystem &fs, size_t inumber, const char *path) {
     	ssize_t result = fs.read(inumber, buffer, sizeof(buffer), offset);
     	if (result <= 0) {
     	    break;
-	}
-	fwrite(buffer, 1, result, stream);
-	offset += result;
+		}
+		fwrite(buffer, 1, result, stream);
+		offset += result;
     }
 
     printf("%lu bytes copied\n", offset);
