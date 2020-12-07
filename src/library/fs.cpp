@@ -9,9 +9,6 @@
 #include <string.h>
 #include <iostream>
 
-#define d1 (d2 | 0)
-#define d2 0
-
 using namespace std;
 
 
@@ -20,7 +17,7 @@ using namespace std;
  * Format - Done / Tests Passing
  * Mount - Done / Tests Passing
  * Create - Done / Tests Passing
- * Remove - Done / Tests PENDING
+ * Remove - Done / Tests Passing
  * Stat - Done / Tests Passing
  * Read - Done / Tests Passing
  * Write - Done / Tests Passing
@@ -210,12 +207,17 @@ bool FileSystem::mount(Disk *disk) {
         }
     }
 
+    mounted = true;
+
     return true;
 }
 
 // Create inode ----------------------------------------------------------------
 
 ssize_t FileSystem::create() {
+    //Sanity Checks
+    if(!mounted){return false;}
+
     Block block;
     fs_disk->read(0, block.Data);
 
@@ -249,6 +251,9 @@ ssize_t FileSystem::create() {
 // Load inode ------------------------------------------------------------------
 
 bool FileSystem::load_inode(size_t inumber, Inode *node) {
+    //Sanity Checks
+    if(!mounted){return false;}
+
     Block block;
 
     int i = inumber / INODES_PER_BLOCK;
@@ -268,6 +273,9 @@ bool FileSystem::load_inode(size_t inumber, Inode *node) {
 // Remove inode ----------------------------------------------------------------
 
 bool FileSystem::remove(size_t inumber) {
+    //Sanity Checks
+    if(!mounted){return false;}
+
     // Load inode information
     Inode node;
 
@@ -311,6 +319,9 @@ bool FileSystem::remove(size_t inumber) {
 // Inode stat ------------------------------------------------------------------
 
 ssize_t FileSystem::stat(size_t inumber) {
+    //Sanity Checks
+    if(!mounted){return -1;}
+
     Inode node;
 
     if(load_inode(inumber, &node)) {
@@ -323,6 +334,9 @@ ssize_t FileSystem::stat(size_t inumber) {
 // Read from inode -------------------------------------------------------------
 
 ssize_t FileSystem::read(size_t inumber, char *data, int length, size_t offset) {
+    //Sanity Checks
+    if(!mounted){return -1;}
+
     // IMPORTANT: start reading from index = offset
     int size_inode = stat(inumber);
     
@@ -450,6 +464,9 @@ ssize_t FileSystem::read(size_t inumber, char *data, int length, size_t offset) 
 // Allocates a block in the file system ----------------------------------------
 
 uint32_t FileSystem::allocate_block() {
+    //Sanity Checks
+    if(!mounted){return 0;}
+
     for(int i = num_inode_blocks + 1; i < num_free_blocks; i++) {
         if(free_blocks[i] == 0) {
             free_blocks[i] = true;
@@ -464,6 +481,9 @@ uint32_t FileSystem::allocate_block() {
 // Return helper for write() function ------------------------------------------
 
 ssize_t FileSystem::write_ret(size_t inumber, Inode* node, int ret) {
+    //Sanity Checks
+    if(!mounted){return -1;}
+
     int i = inumber / INODES_PER_BLOCK;
     int j = inumber % INODES_PER_BLOCK;
 
@@ -479,6 +499,9 @@ ssize_t FileSystem::write_ret(size_t inumber, Inode* node, int ret) {
 // Write to inode --------------------------------------------------------------
 
 ssize_t FileSystem::write(size_t inumber, char *data, int length, size_t offset) { 
+
+    //Sanity Checks
+    if(!mounted){return -1;}
 
     Inode node;
     int read = 0;
