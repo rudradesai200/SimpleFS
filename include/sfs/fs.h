@@ -61,6 +61,9 @@ public:
     ssize_t stat(size_t inumber);
 
     ssize_t read(size_t inumber, char *data, int length, size_t offset);
+
     ssize_t write(size_t inumber, char *data, int length, size_t offset);
     ssize_t write_ret(size_t inumber, Inode* node, int ret);
+    void read_buffer(int offset, int *read, int length, char *data, uint32_t blocknum);
+    bool check_allocation(Inode *node, int read, int orig_offset, uint32_t &blocknum, bool write_indirect, Block indirect);
 };

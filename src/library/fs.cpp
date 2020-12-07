@@ -14,18 +14,6 @@
 
 using namespace std;
 
-
-/*******************************************************
- * Debug - Done / Tests Passing
- * Format - Done / Tests Passing
- * Mount - Done / Tests Passing
- * Create - Done / Tests Passing
- * Remove - Done / Tests PENDING
- * Stat - Done / Tests Passing
- * Read - Done / Tests Passing
- * Write - Done / Tests Passing
- ********************************************************/
-
 // Debug file system -----------------------------------------------------------
 
 void FileSystem::debug(Disk *disk) {
@@ -56,9 +44,8 @@ void FileSystem::debug(Disk *disk) {
 
     for(uint32_t i = 1; i <= num_inode_blocks; i++) {
         disk->read(i, block.Data); // array of inodes
-
         for(uint32_t j = 0; j < INODES_PER_BLOCK; j++) {
-            
+            // iterating through INODES_PER_BLOCK inodes
             if(block.Inodes[j].Valid) {
                 printf("Inode %u:\n", ii);
                 printf("    size: %u bytes\n", block.Inodes[j].Size);
@@ -476,11 +463,39 @@ ssize_t FileSystem::write_ret(size_t inumber, Inode* node, int ret) {
     return (ssize_t)ret;
 }
 
+// Read buffer -----------------------------------------------------------------
+
+void FileSystem::read_buffer(int offset, int *read, int length, char *data, uint32_t blocknum) {
+    char* ptr = (char *)calloc(Disk::BLOCK_SIZE, sizeof(char));
+    for(int i = offset; i < (int)Disk::BLOCK_SIZE && *read < length; i++) {
+        ptr[i] = data[*read];
+        *read = *read + 1;
+    }
+    fs_disk->write(blocknum, ptr);
+    free(ptr);
+    return;
+}
+
+// Allocate and check ----------------------------------------------------------
+
+bool FileSystem::check_allocation(Inode* node, int read, int orig_offset, uint32_t &blocknum, bool write_indirect, Block indirect) {
+    if(!blocknum) {
+        blocknum = allocate_block();
+        if(!blocknum) {
+            node->Size = read + orig_offset;
+            if(write_indirect) fs_disk->write(node->Indirect, indirect.Data);
+            return false;
+        }
+    }
+
+    return true;
+}
+
 // Write to inode --------------------------------------------------------------
 
 ssize_t FileSystem::write(size_t inumber, char *data, int length, size_t offset) { 
-
     Inode node;
+    Block indirect;
     int read = 0;
     int orig_offset = offset;
 
@@ -510,19 +525,10 @@ ssize_t FileSystem::write(size_t inumber, char *data, int length, size_t offset)
         int direct_node = offset / Disk::BLOCK_SIZE;
         offset %= Disk::BLOCK_SIZE;
 
-        if(!node.Direct[direct_node]) {
-            node.Direct[direct_node] = allocate_block();
-            if(node.Direct[direct_node] == 0) {
-                node.Size = read + orig_offset;
-                return write_ret(inumber, &node, read);
-            }
-        }
-        char* ptr = (char *)calloc(Disk::BLOCK_SIZE, sizeof(char));
-        for(int i = offset; i < (int)Disk::BLOCK_SIZE && read < length; i++) {
-            ptr[i] = data[read++];
-        }
-        fs_disk->write(node.Direct[direct_node++], ptr);
-        free(ptr);
+        if(!check_allocation(&node, read, orig_offset, node.Direct[direct_node], false, indirect)) { 
+            return write_ret(inumber, &node, read);
+        }       
+        read_buffer(offset, &read, length, data, node.Direct[direct_node++]);
 
         if(read == length) return write_ret(inumber, &node, length);
         else {
@@ -531,28 +537,16 @@ ssize_t FileSystem::write(size_t inumber, char *data, int length, size_t offset)
             // 2. the data is stored in indirect pointers
             
             for(int i = direct_node; i < (int)POINTERS_PER_INODE; i++) {
-                if(!node.Direct[direct_node]) {
-                    node.Direct[direct_node] = allocate_block();
-                    if(node.Direct[direct_node] == 0) {
-                        node.Size = read + orig_offset;
-                        return write_ret(inumber, &node, read);
-                    }
+                if(!check_allocation(&node, read, orig_offset, node.Direct[direct_node], false, indirect)) { 
+                    return write_ret(inumber, &node, read);
                 }
-                char* ptr = (char *)calloc(Disk::BLOCK_SIZE, sizeof(char));
-                for(int i = 0; i < (int)Disk::BLOCK_SIZE && read < length; i++) {
-                    ptr[i] = data[read++];
-                }
-                fs_disk->write(node.Direct[direct_node++], ptr);
-                free(ptr);
-
+                read_buffer(0, &read, length, data, node.Direct[direct_node++]);
                 if(read == length) return write_ret(inumber, &node, length);
             }
 
-            Block indirect;
-            if(!node.Indirect) {
-                node.Indirect = allocate_block();
-                if(node.Indirect == 0) {
-                    node.Size = read + orig_offset;
+            if(node.Indirect) fs_disk->read(node.Indirect, indirect.Data);
+            else {
+                if(!check_allocation(&node, read, orig_offset, node.Indirect, false, indirect)) { 
                     return write_ret(inumber, &node, read);
                 }
                 fs_disk->read(node.Indirect, indirect.Data);
@@ -560,26 +554,12 @@ ssize_t FileSystem::write(size_t inumber, char *data, int length, size_t offset)
                     indirect.Pointers[i] = 0;
                 }
             }
-            else {
-                fs_disk->read(node.Indirect, indirect.Data);
-            }
             
             for(int j = 0; j < (int)POINTERS_PER_BLOCK; j++) {
-                if(!indirect.Pointers[j]) {
-                    indirect.Pointers[j] = allocate_block();
-                    if(indirect.Pointers[j] == 0) {
-                        node.Size = read + orig_offset;
-                        fs_disk->write(node.Indirect, indirect.Data);
-                        return write_ret(inumber, &node, read);
-                    }
+                if(!check_allocation(&node, read, orig_offset, indirect.Pointers[j], true, indirect)) { 
+                    return write_ret(inumber, &node, read);
                 }
-                char* ptr = (char *)calloc(Disk::BLOCK_SIZE, sizeof(char));
-                for(int i = 0; i < (int)Disk::BLOCK_SIZE && read < length; i++) {
-                    ptr[i] = data[read++];
-                }
-                fs_disk->write(indirect.Pointers[j], ptr);
-                free(ptr);
-
+                read_buffer(0, &read, length, data, indirect.Pointers[j]);
                 if(read == length) {
                     fs_disk->write(node.Indirect, indirect.Data);
                     return write_ret(inumber, &node, length);
@@ -597,11 +577,9 @@ ssize_t FileSystem::write(size_t inumber, char *data, int length, size_t offset)
         int indirect_node = offset / Disk::BLOCK_SIZE;
         offset %= Disk::BLOCK_SIZE;
 
-        Block indirect;
-        if(!node.Indirect) {
-            node.Indirect = allocate_block();
-            if(node.Indirect == 0) {
-                node.Size = read + orig_offset;
+        if(node.Indirect) fs_disk->read(node.Indirect, indirect.Data);
+        else {
+            if(!check_allocation(&node, read, orig_offset, node.Indirect, false, indirect)) { 
                 return write_ret(inumber, &node, read);
             }
             fs_disk->read(node.Indirect, indirect.Data);
@@ -609,25 +587,11 @@ ssize_t FileSystem::write(size_t inumber, char *data, int length, size_t offset)
                 indirect.Pointers[i] = 0;
             }
         }
-        else {
-            fs_disk->read(node.Indirect, indirect.Data);
-        }
 
-        if(!indirect.Pointers[indirect_node]) {
-            indirect.Pointers[indirect_node] = allocate_block();
-            if(indirect.Pointers[indirect_node] == 0) {
-                node.Size = read + orig_offset;
-                fs_disk->write(node.Indirect, indirect.Data);
-                return write_ret(inumber, &node, read);
-            }
+        if(!check_allocation(&node, read, orig_offset, indirect.Pointers[indirect_node], true, indirect)) { 
+            return write_ret(inumber, &node, read);
         }
-
-        char* ptr = (char *)calloc(Disk::BLOCK_SIZE, sizeof(char));
-        for(int i = offset; i < (int)Disk::BLOCK_SIZE && read < length; i++) {
-            ptr[i] = data[read++];
-        }
-        fs_disk->write(indirect.Pointers[indirect_node++], ptr);
-        free(ptr);
+        read_buffer(offset, &read, length, data, indirect.Pointers[indirect_node++]);
 
         if(read == length) {
             fs_disk->write(node.Indirect, indirect.Data);
@@ -635,21 +599,10 @@ ssize_t FileSystem::write(size_t inumber, char *data, int length, size_t offset)
         }
         else {
             for(int j = indirect_node; j < (int)POINTERS_PER_BLOCK; j++) {
-                if(!indirect.Pointers[j]) {
-                    indirect.Pointers[j] = allocate_block();
-                    if(indirect.Pointers[j] == 0) {
-                        node.Size = read + orig_offset;
-                        fs_disk->write(node.Indirect, indirect.Data);
-                        return write_ret(inumber, &node, read);
-                    }
+                if(!check_allocation(&node, read, orig_offset, indirect.Pointers[j], true, indirect)) { 
+                    return write_ret(inumber, &node, read);
                 }
-                char* ptr = (char *)calloc(Disk::BLOCK_SIZE, sizeof(char));
-                for(int i = 0; i < (int)Disk::BLOCK_SIZE && read < length; i++) {
-                    ptr[i] = data[read++];
-                }
-                fs_disk->write(indirect.Pointers[j], ptr);
-                free(ptr);
-
+                read_buffer(0, &read, length, data, indirect.Pointers[j]);
                 if(read == length) {
                     fs_disk->write(node.Indirect, indirect.Data);
                     return write_ret(inumber, &node, length);
