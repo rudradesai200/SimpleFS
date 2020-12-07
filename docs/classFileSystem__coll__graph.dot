@@ -1,0 +1,13 @@
+digraph "FileSystem"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="FileSystem",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="FileSytem Class. Contains fs layer to access and store disk blocks. Used by sfssh (shell) to provide ..."];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" MetaData" ,fontname="Helvetica"];
+  Node2 [label="FileSystem::SuperBlock",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structFileSystem_1_1SuperBlock.html",tooltip="Superblock structure. It is the first block in any disk. It's main function is to help validating the..."];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" curr_dir" ,fontname="Helvetica"];
+  Node3 [label="FileSystem::Directory",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structFileSystem_1_1Directory.html",tooltip="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field..."];
+  Node4 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" Table" ,fontname="Helvetica"];
+  Node4 [label="FileSystem::Dirent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structFileSystem_1_1Dirent.html",tooltip="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object..."];
+}
