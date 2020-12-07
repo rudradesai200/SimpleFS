@@ -273,9 +273,7 @@ bool FileSystem::mount(Disk *disk) {
         if(dirs == 0){
             curr_dir = dirblock.Directories[0];
         }
-        printf("%d ",dir_counter[dirs]);
     }
-    printf("\n");
 
     mounted = true;
     return true;

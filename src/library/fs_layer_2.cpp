@@ -260,49 +260,54 @@ bool FileSystem::mkdir(char name[FileSystem::NAMESIZE]){
     
 }
 
-FileSystem::Directory FileSystem::rmdir_helper(Directory parent, char name[FileSystem::NAMESIZE]){
-    Directory dir, temp;
+FileSystem::Directory FileSystem::rmdir_helper(Directory parent, char name[]){
     
+    /** initializations */
+    Directory dir, temp;
+    uint32_t inum, blk_idx, blk_off;
+    Block blk;
+
+    /** Sanity Checks */
     if(!mounted){dir.Valid = 0; return dir;}
 
-    /**  Find the directory */
-    int offset = dir_lookup(parent,name);
-    if(offset == -1){printf("No such directory\n"); parent.Valid = 0; return parent;}
+    /** Get offset of the directory to be removed */
+    int offset = dir_lookup(parent, name);
+    if(offset == -1){dir.Valid = 0; return dir;}
 
-    memset(&dir,0,sizeof(Directory));
+    /** Get block */
+    inum = parent.Table[offset].inum;
+    blk_idx = inum / DIR_PER_BLOCK;
+    blk_off = inum % DIR_PER_BLOCK;
+    fs_disk->read(MetaData.Blocks - 1 -blk_idx, blk.Data);
 
-    /**  Read the directory */
-    Block block;
-    uint32_t block_idx = (parent.Table[offset].inum / FileSystem::DIR_PER_BLOCK);
-    fs_disk->read(MetaData.Blocks - 1 - block_idx, block.Data); 
-    dir = block.Directories[parent.Table[offset].inum % FileSystem::DIR_PER_BLOCK];
+    /** Check Directory */
+    dir = blk.Directories[blk_off];
+    if(dir.Valid == 0){return dir;}
 
-    /** Remove all Dirent individually */
-    // Note: Start from idx 2 because 0 and 1 are "." and ".."
+    /** Remove all Dirent in the directory to be removed */
     for(uint32_t ii=0; ii<ENTRIES_PER_DIR; ii++){
-        if(dir.Table[ii].valid == 1){
-            if(ii > 1){
-                dir = rm_helper(dir,dir.Table[ii].Name);
-                if(dir.Valid == 0){return dir;}
-            }
+        if((ii>1)&&(dir.Table[ii].valid == 1)){
+            temp = rm_helper(dir, dir.Table[ii].Name);
+            if(temp.Valid == 0) return temp;
+            dir = temp;
         }
-    } 
+        dir.Table[ii].valid = 0;
+    }
 
-    memset(dir.Table,0,sizeof(Dirent)*ENTRIES_PER_DIR);
+    /** Read the block again, because the block may have changed by Dirent */
+    fs_disk->read(MetaData.Blocks - 1 -blk_idx, blk.Data);
+
+    /** Write it back */
     dir.Valid = 0;
+    blk.Directories[blk_off] = dir;
+    fs_disk->write(MetaData.Blocks - 1-blk_idx, blk.Data);
 
-    block.Directories[parent.Table[offset].inum % FileSystem::DIR_PER_BLOCK] = dir;
-
-    /** Write back the changes */
-    fs_disk->write(MetaData.Blocks - 1 - block_idx, block.Data);
-
-    /**  Decrement dir counter */
-    dir_counter[block_idx]--;
-
+    /** Remove it from the parent */
     parent.Table[offset].valid = 0;
-
-    /**  Update parent */
     write_dir_back(parent);
+
+    /** Update the counter */
+    dir_counter[blk_idx]--;
 
     return parent;
 }
