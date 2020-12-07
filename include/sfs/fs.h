@@ -1,4 +1,15 @@
-/** fs.h: File System */
+/*! \mainpage CS3500 Course Project
+ * \section INTRODUCTION
+ * The file system is a layer of abstraction between the Storage Media and the Operating System. Without a File System, the data stored in any storage media will be just a large chunk of bytes.
+ * File Systems provide the interface to access and control the data. They do so by separating the data into pieces and labeling them for better management and operability.
+ * There are many different kinds of File Systems available like Disk-Based, Network-Based, and Virtual based on the types of their usage.
+ * Here, we provide a simple implementation of a Disk-Based file system that is persistent across the boot. 
+ * The shell to access the File System and the Disk emulator was pre-implemented by the University of Notre Dame. Our task was to build upon that and implement the File System layer and fill the gap between Shell and the Disk emulator.
+ * \section REFERENCES
+ *- https://www3.nd.edu/~pbui/teaching/cse.30341.fa17/project06.html
+ *- https://drive.google.com/file/d/1oL5cUGzU7IchOZO_Jx7R9j8HqGxJ-wDX/view
+ *- https://en.wikipedia.org/wiki/File_system
+*/
 
 #pragma once
 
@@ -15,15 +26,16 @@ using namespace std;
  * Used by sfssh (shell) to provide access to the end-user.
  */
 class FileSystem {
-private:
-    const static uint32_t MAGIC_NUMBER	     = 0xf0f03410;      /**   Magic number helps in checking Validity of the FileSystem on disk   @hideinitializer*/
-    const static uint32_t INODES_PER_BLOCK   = 128;             /**   Number of Inodes which can be contained in a block of (4kb)   @hideinitializer*/
-    const static uint32_t POINTERS_PER_INODE = 5;               /**   Number of Direct block pointers in an Inode Block   @hideinitializer*/
-    const static uint32_t POINTERS_PER_BLOCK = 1024;            /**   Number of block pointers in one Indirect pointer  @hideinitializer*/
-    const static uint32_t NAMESIZE           = 16;              /**   Max Name size for files/directories   @hideinitializer*/
-    const static uint32_t ENTRIES_PER_DIR    = 14;              /**   Number of Files/Directory entries within a Directory   @hideinitializer*/
-    const static uint32_t DIR_PER_BLOCK      = 4;               /**   Number of Directories per 4KB block   @hideinitializer*/
+public:
+    const static uint32_t MAGIC_NUMBER	     = 0xf0f03410;      //    Magic number helps in checking Validity of the FileSystem on disk   @hideinitializer
+    const static uint32_t INODES_PER_BLOCK   = 128;             //    Number of Inodes which can be contained in a block of (4kb)   @hideinitializer
+    const static uint32_t POINTERS_PER_INODE = 5;               //    Number of Direct block pointers in an Inode Block   @hideinitializer
+    const static uint32_t POINTERS_PER_BLOCK = 1024;            //    Number of block pointers in one Indirect pointer  @hideinitializer
+    const static uint32_t NAMESIZE           = 16;              //    Max Name size for files/directories   @hideinitializer
+    const static uint32_t ENTRIES_PER_DIR    = 14;              //    Number of Files/Directory entries within a Directory   @hideinitializer
+    const static uint32_t DIR_PER_BLOCK      = 4;               //    Number of Directories per 4KB block   @hideinitializer
 
+private:
     /** 
      * @brief Superblock structure.
      * It is the first block in any disk.
@@ -84,12 +96,12 @@ private:
     };
 
     // Internal member variables
-    Disk* fs_disk;                      /** Stores disk pointer after successful mounting @hideinitializer*/
-    vector<bool> free_blocks;           /** Stores whether a block is free or not @hideinitializer*/
-    vector<int> inode_counter;          /** Stores the number of Inode contained in an Inode Block @hideinitializer*/ 
-    vector<uint32_t> dir_counter;       /** Stores the number of Directory contianed in a Directory Block @hideinitializer*/
-    struct SuperBlock MetaData;         /** Caches the Superblock to save a disk-read @hideinitializer*/
-    bool mounted;                       /** Boolean to check if the disk is mounted and saved @hideinitializer*/
+    Disk* fs_disk;                      //  Stores disk pointer after successful mounting @hideinitializer
+    vector<bool> free_blocks;           //  Stores whether a block is free or not @hideinitializer
+    vector<int> inode_counter;          //  Stores the number of Inode contained in an Inode Block @hideinitializer 
+    vector<uint32_t> dir_counter;       //  Stores the number of Directory contianed in a Directory Block @hideinitializer
+    struct SuperBlock MetaData;         //  Caches the Superblock to save a disk-read @hideinitializer
+    bool mounted;                       //  Boolean to check if the disk is mounted and saved @hideinitializer
 
     // Layer 1 Core Functions
     ssize_t create();                   
@@ -106,17 +118,19 @@ private:
 
     // Helper functions for Layer 2
     
-    Directory curr_dir; /** Caches curr dir to save a disk-read @hideinitializer*/
-
+    //  Caches curr dir to save a disk-read @hideinitializer
+    Directory curr_dir;
+    
     /**
-     * @brief Adds directory entry to cache curr_dir.
-     * dir_write_back should be done by the caller.
-     * 
+     * @brief 
+     * - Adds directory entry to cache curr_dir.
+     * - dir_write_back should be done by the caller.
      * @param dir   Directory in which entry is to be added
      * @param inum  inum of the File/Directory
      * @param type  type = 1 for file , type = 0 for Directory
      * @param name  Name of the file/Directory
      * @return Directory with added entry or with valid bit set to 0 incase of error 
+     * 
      */
     Directory add_dir_entry(Directory dir, uint32_t inum, uint32_t type, char name[]);
 
@@ -163,7 +177,6 @@ private:
     Directory      rm_helper(Directory parent, char name[]);
 
 public:
-    /**  Initializations */
     static void debug(Disk *disk);
     static bool format(Disk *disk);
     bool    mount(Disk *disk);
