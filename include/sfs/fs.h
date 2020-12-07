@@ -4,7 +4,10 @@
 
 #include "sfs/disk.h"
 #include <cstring>
+#include <vector>
 #include <stdint.h>
+
+using namespace std;
 
 class FileSystem {
 public:
@@ -58,25 +61,32 @@ private:
         struct Directory    Directories[FileSystem::DIR_PER_BLOCK];      // Directory blocks
     };
 
+    // Internal member variables
+    Disk* fs_disk; 
+    vector<bool> free_blocks;
+    vector<int> inode_counter;
+    vector<uint32_t> dir_counter;
+    int num_free_blocks, num_inode_blocks;
+    struct SuperBlock MetaData;
+    bool mounted;
+
+    // Private Functions
+    ssize_t create();
+    bool    remove(size_t inumber);
+    ssize_t stat(size_t inumber);
+    ssize_t read(size_t inumber, char *data, int length, size_t offset);
+    ssize_t write(size_t inumber, char *data, int length, size_t offset);
+    ssize_t write_ret(size_t inumber, Inode* node, int ret);
+
     // Internal helper functions
     bool    load_inode(size_t inumber, Inode *node);
-
     ssize_t allocate_free_block();
     uint32_t allocate_block();
 
-    // Internal member variables
-    Disk* fs_disk; 
-    bool* free_blocks;
-    int* inode_counter;
-    uint32_t* dir_counter;
-    int num_free_blocks, num_inode_blocks;
-    struct SuperBlock MetaData;
-
-    // Directories
+    // Helper functions for Directories and Files
     struct Directory curr_dir;
     Directory add_dir_entry(Directory dir, uint32_t inum, uint32_t type, char name[]);
     void    write_dir_back(struct Directory dir);
-    
     int curr_dir_lookup(char name[]);
     Directory read_dir_from_offset(uint32_t offset);
 
@@ -85,15 +95,6 @@ public:
     static void debug(Disk *disk);
     static bool format(Disk *disk);
     bool    mount(Disk *disk);
-
-    // Inodes
-    ssize_t create();
-    bool    remove(size_t inumber);
-    ssize_t stat(size_t inumber);
-
-    ssize_t read(size_t inumber, char *data, int length, size_t offset);
-    ssize_t write(size_t inumber, char *data, int length, size_t offset);
-    ssize_t write_ret(size_t inumber, Inode* node, int ret);
 
     // Security Functions
     bool    set_password();
