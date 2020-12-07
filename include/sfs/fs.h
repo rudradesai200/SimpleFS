@@ -49,6 +49,7 @@ private:
     vector<int> inode_counter;
     int num_free_blocks, num_inode_blocks;
     struct SuperBlock MetaData;
+    bool mounted;
     
 public:
     static void debug(Disk *disk);
