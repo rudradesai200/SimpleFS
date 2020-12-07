@@ -36,10 +36,9 @@ void FileSystem::debug(Disk *disk) {
     printf("    %u inodes\n"         , block.Super.Inodes);
 
     // reading the inode blocks
-    uint32_t num_inode_blocks = block.Super.InodeBlocks;
     int ii = 0;
 
-    for(uint32_t i = 1; i <= num_inode_blocks; i++) {
+    for(uint32_t i = 1; i <= block.Super.InodeBlocks; i++) {
         disk->read(i, block.Data); // array of inodes
 
         for(uint32_t j = 0; j < INODES_PER_BLOCK; j++) {
@@ -209,12 +208,10 @@ bool FileSystem::mount(Disk *disk) {
     MetaData = block.Super;
 
     // Allocate free block bitmap 
-    num_free_blocks = MetaData.Blocks;
-    free_blocks.resize(num_free_blocks, false);
+    free_blocks.resize(MetaData.Blocks, false);
 
     // Allocate inode_counter
-    num_inode_blocks = MetaData.InodeBlocks;
-    inode_counter.resize(num_inode_blocks, 0);
+    inode_counter.resize(MetaData.InodeBlocks, 0);
 
     // Setting true for Super Block
     free_blocks[0] = true;
@@ -249,7 +246,7 @@ bool FileSystem::mount(Disk *disk) {
                         Block indirect;
                         fs_disk->read(block.Inodes[j].Indirect, indirect.Data);
                         for(uint32_t k = 0; k < POINTERS_PER_BLOCK; k++) {
-                            if((int)indirect.Pointers[k] < num_free_blocks) {
+                            if(indirect.Pointers[k] < MetaData.Blocks) {
                                 free_blocks[indirect.Pointers[k]] = true;
                             }
                             else return false;
@@ -276,7 +273,9 @@ bool FileSystem::mount(Disk *disk) {
         if(dirs == 0){
             curr_dir = dirblock.Directories[0];
         }
+        printf("%d ",dir_counter[dirs]);
     }
+    printf("\n");
 
     mounted = true;
     return true;
@@ -386,7 +385,7 @@ bool FileSystem::remove(size_t inumber) {
 // Inode stat ------------------------------------------------------------------
 
 ssize_t FileSystem::stat(size_t inumber) {
-    if(!mounted){return false;}
+    if(!mounted){return -1;}
     Inode node;
 
     if(load_inode(inumber, &node)) {
@@ -399,7 +398,7 @@ ssize_t FileSystem::stat(size_t inumber) {
 // Read from inode -------------------------------------------------------------
 
 ssize_t FileSystem::read(size_t inumber, char *data, int length, size_t offset) {
-    if(!mounted){return false;}
+    if(!mounted){return -1;}
     // IMPORTANT: start reading from index = offset
     int size_inode = stat(inumber);
     
@@ -527,8 +526,8 @@ ssize_t FileSystem::read(size_t inumber, char *data, int length, size_t offset) 
 // Allocates a block in the file system ----------------------------------------
 
 uint32_t FileSystem::allocate_block() {
-    if(!mounted){return false;}
-    for(int i = num_inode_blocks + 1; i < num_free_blocks; i++) {
+    if(!mounted){return 0;}
+    for(uint32_t i = MetaData.InodeBlocks + 1; i < MetaData.Blocks; i++) {
         if(free_blocks[i] == 0) {
             free_blocks[i] = true;
             return (uint32_t)i;
@@ -542,7 +541,7 @@ uint32_t FileSystem::allocate_block() {
 // Return helper for write() function ------------------------------------------
 
 ssize_t FileSystem::write_ret(size_t inumber, Inode* node, int ret) {
-    if(!mounted){return false;}
+    if(!mounted){return -1;}
     int i = inumber / INODES_PER_BLOCK;
     int j = inumber % INODES_PER_BLOCK;
 
@@ -558,7 +557,7 @@ ssize_t FileSystem::write_ret(size_t inumber, Inode* node, int ret) {
 // Write to inode --------------------------------------------------------------
 
 ssize_t FileSystem::write(size_t inumber, char *data, int length, size_t offset) { 
-    if(!mounted){return false;}
+    if(!mounted){return -1;}
     Inode node;
     int read = 0;
     int orig_offset = offset;
