@@ -29,5 +29,6 @@ test:	$(SHELL_PROGRAM)
 
 clean:
 	rm -f $(LIB_OBJECTS) $(LIB_STATIC) $(SHELL_OBJECTS) $(SHELL_PROGRAM)
+	rm -f image*
 
 .PHONY: all clean
