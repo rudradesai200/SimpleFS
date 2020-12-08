@@ -32,8 +32,8 @@ public:
     const static uint32_t POINTERS_PER_INODE = 5;               //    Number of Direct block pointers in an Inode Block   @hideinitializer
     const static uint32_t POINTERS_PER_BLOCK = 1024;            //    Number of block pointers in one Indirect pointer  @hideinitializer
     const static uint32_t NAMESIZE           = 16;              //    Max Name size for files/directories   @hideinitializer
-    const static uint32_t ENTRIES_PER_DIR    = 14;              //    Number of Files/Directory entries within a Directory   @hideinitializer
-    const static uint32_t DIR_PER_BLOCK      = 4;               //    Number of Directories per 4KB block   @hideinitializer
+    const static uint32_t ENTRIES_PER_DIR    = 7;              //    Number of Files/Directory entries within a Directory   @hideinitializer
+    const static uint32_t DIR_PER_BLOCK      = 8;               //    Number of Directories per 4KB block   @hideinitializer
 
 private:
     /** 
@@ -72,8 +72,7 @@ private:
      * Also, it is allocated from end for effectively using disk space.
      */
     struct Directory {
-        uint64_t Valid;                 /** Valid bit for validation @hideinitializer*/
-        uint32_t Size;                  /** size of the directory @hideinitializer*/
+        uint16_t Valid;                 /** Valid bit for validation @hideinitializer*/
         uint32_t inum;                  /** inum = block_num * DIR_PER_BLOCK + offset @hideinitializer*/
         char Name[NAMESIZE];            /** Directory Name @hideinitializer*/
         Dirent Table[ENTRIES_PER_DIR];  /** Each Table by default contains 2 entries, "." and ".." @hideinitializer*/
@@ -106,7 +105,6 @@ private:
     // Layer 1 Core Functions
     ssize_t create();                   
     bool    remove(size_t inumber);
-    ssize_t stat(size_t inumber);
     ssize_t read(size_t inumber, char *data, int length, size_t offset);
     ssize_t write(size_t inumber, char *data, int length, size_t offset);
 
@@ -115,6 +113,7 @@ private:
     bool     load_inode(size_t inumber, Inode *node);
     ssize_t  allocate_free_block();
     uint32_t allocate_block();
+    ssize_t stat(size_t inumber);
 
     // Helper functions for Layer 2
     
@@ -309,6 +308,16 @@ public:
      * 
      */
     void    exit();
+
+    /**
+     * @brief Returns the stat of the disk.
+     * The stat contains information like number of directories,
+     * number of files, block number etc.
+     * 
+     * @return true if successful
+     * @return false incase of error
+     */
+    void stat();
 };
 
 /**  NOTE: For now, Path's are not valid for creating files or directories  */

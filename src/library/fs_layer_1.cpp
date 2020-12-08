@@ -139,7 +139,6 @@ bool FileSystem::format(Disk *disk) {
     // Create Root directory
     struct Directory root;
     strcpy(root.Name,"/");
-    root.Size = 0;
     root.inum = 0;
     root.Valid = 1;
 
@@ -380,10 +379,11 @@ bool FileSystem::remove(size_t inumber) {
     return false;
 }
 
-// Inode stat ------------------------------------------------------------------
-
+// Inode stat ----------------------------------------------------------------------
 ssize_t FileSystem::stat(size_t inumber) {
+    //Sanity Checks
     if(!mounted){return -1;}
+
     Inode node;
 
     if(load_inode(inumber, &node)) {

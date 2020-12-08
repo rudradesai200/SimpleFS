@@ -264,7 +264,6 @@ bool FileSystem::mkdir(char name[FileSystem::NAMESIZE]){
     Directory new_dir, temp;
     memset(&new_dir,0,sizeof(Directory));
     new_dir.inum = block_idx*DIR_PER_BLOCK + offset;
-    new_dir.Size = 0;
     new_dir.Valid = 1;
     strcpy(new_dir.Name,name);
     
@@ -275,15 +274,15 @@ bool FileSystem::mkdir(char name[FileSystem::NAMESIZE]){
     temp = add_dir_entry(temp,curr_dir.inum,0,tstr2);
     if(temp.Valid == 0){printf("Error creating new directory\n"); return false;}
     new_dir = temp;
-
-    /**-   Write the new directory back to the disk  */
-    write_dir_back(new_dir);
     
     /**-   Add new entry to the curr_dir  */
     temp = add_dir_entry(curr_dir,new_dir.inum,0,new_dir.Name);
     if(temp.Valid == 0){printf("Error adding new directory\n"); return false;}
     curr_dir = temp;
     
+    /**-   Write the new directory back to the disk  */
+    write_dir_back(new_dir);
+
     /**-   Write the curr_dir back to the disk  */
     write_dir_back(curr_dir);
 
@@ -320,6 +319,9 @@ FileSystem::Directory FileSystem::rmdir_helper(Directory parent, char name[]){
     /**-  Check Directory  */
     dir = blk.Directories[blk_off];
     if(dir.Valid == 0){return dir;}
+
+    /**- Check if it is root directory */
+    if(streq(dir.Name,curr_dir.Name)){printf("Current Directory cannot be removed.\n"); dir.Valid=0; return dir;}
 
     /**-  Remove all Dirent in the directory to be removed  */
     for(uint32_t ii=0; ii<ENTRIES_PER_DIR; ii++){
@@ -564,4 +566,51 @@ bool FileSystem::copyin(const char *path, char name[]) {
     printf("%d bytes copied\n", offset);
     fclose(stream);
     return true;
+}
+
+// Directory stat ------------------------------------------------------------------
+
+void FileSystem::stat() {
+    /** <dl class="section implementation"> */
+    /** <dt> Implementation details </dt>*/
+    /** </dl> */
+
+    /**- Sanity checks */
+    if(!mounted){return;}
+
+    /**- Read Super Block and print MetaData*/
+    Block blk;
+    fs_disk->read(0,blk.Data);
+    printf("Total Blocks : %u\n",blk.Super.Blocks);
+    printf("Total Directory Blocks : %u\n",blk.Super.DirBlocks);
+    printf("Total Inode Blocks : %u\n",blk.Super.InodeBlocks);
+    printf("Total Inode : %u\n",blk.Super.Inodes);
+    printf("Password protected : %u\n\n",blk.Super.Protected);
+
+    printf("Max Directories per block : %u\n",DIR_PER_BLOCK);
+    printf("Max Namsize : %u\n",NAMESIZE);
+    printf("Max Inodes per block : %u\n",INODES_PER_BLOCK);
+    printf("Max Entries per directory : %u\n\n",ENTRIES_PER_DIR);
+
+    /**- Read directory blocks */
+    for(uint32_t blk_idx=0; blk_idx<MetaData.DirBlocks; blk_idx++){
+        fs_disk->read(MetaData.Blocks - 1- blk_idx,blk.Data);
+        printf("Block %u\n",blk_idx);
+
+        /**- Read Directoreis in each directory block */
+        for(uint32_t offset=0; offset<DIR_PER_BLOCK; offset++){
+            Directory dir = blk.Directories[offset]; 
+            if(dir.Valid){
+                printf("    Offset %u: Directory Name - \"%s\"\n",offset,dir.Name);
+
+                /**- Read Table Entries for each directory */
+                for(uint32_t tbl_idx=0; tbl_idx < ENTRIES_PER_DIR; tbl_idx++){
+                    Dirent ent = dir.Table[tbl_idx];
+                    if(ent.valid){
+                        printf("        tbl_idx %u: Entry Name - \"%s\", type - %u, inum - %u\n",tbl_idx,ent.Name,ent.type,ent.inum);
+                    }
+                }
+            }
+        }
+    }
 }

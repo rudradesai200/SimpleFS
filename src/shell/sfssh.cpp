@@ -30,6 +30,7 @@ void do_file_copyout(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg
 void do_file_copyin(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2);
 void do_cd(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2);
 void do_ls(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2);
+void do_stat(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2);
 
 
 int main(int argc, char *argv[]) {
@@ -85,6 +86,8 @@ int main(int argc, char *argv[]) {
 	    do_cd(disk, fs, args, arg1, arg2);
 	} else if (streq(cmd, "ls")) {
 	    do_ls(disk, fs, args, arg1, arg2);
+	} else if (streq(cmd, "stat")) {
+	    do_stat(disk, fs, args, arg1, arg2);
 	} else if (streq(cmd, "copyout")) {
 	    do_file_copyout(disk, fs, args, arg1, arg2);
 	} else if (streq(cmd, "copyin")) {
@@ -253,6 +256,14 @@ void do_ls(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
 	}
 }
 
+void do_stat(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
+    if ((args != 1)) {
+    	printf("Usage: stat\n");
+    	return;
+    }
+	fs.stat();
+}
+
 void do_help(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
     printf("Commands are:\n");
     printf("    format\n");
@@ -263,6 +274,7 @@ void do_help(Disk &disk, FileSystem &fs, int args, char *arg1, char *arg2) {
 	printf("    rmdir <dirname>\n");
 	printf("    cd <dirname>\n");
 	printf("    ls <dirname>\n");
+	printf("    stat\n");
 	printf("    touch <filename>\n");
 	printf("    rm <name>\n");
 	printf("    copyout <filename> <path>\n");
