@@ -139,6 +139,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0a52b3544e11bf6e40ed6c52b4f146a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a0a52b3544e11bf6e40ed6c52b4f146a8">exit</a> ()</td></tr>
 <tr class="memdesc:a0a52b3544e11bf6e40ed6c52b4f146a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unmounts the disk and resets pointer.  <a href="classFileSystem.html#a0a52b3544e11bf6e40ed6c52b4f146a8">More...</a><br /></td></tr>
 <tr class="separator:a0a52b3544e11bf6e40ed6c52b4f146a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a007a2b47dc540ed42669a78706ff87b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a007a2b47dc540ed42669a78706ff87b5">stat</a> ()</td></tr>
+<tr class="memdesc:a007a2b47dc540ed42669a78706ff87b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the stat of the disk. The stat contains information like number of directories, number of files, block number etc.  <a href="classFileSystem.html#a007a2b47dc540ed42669a78706ff87b5">More...</a><br /></td></tr>
+<tr class="separator:a007a2b47dc540ed42669a78706ff87b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -596,9 +599,9 @@ false incase of errors </dd></dl>
 </li>
 <li>Create 2 new entries for "." and ".." <br  />
 </li>
-<li>Write the new directory back to the disk <br  />
-</li>
 <li>Add new entry to the curr_dir <br  />
+</li>
+<li>Write the new directory back to the disk <br  />
 </li>
 <li>Write the curr_dir back to the disk <br  />
 </li>
@@ -877,6 +880,7 @@ false incase of errors. </dd></dl>
 </li>
 <li>Check <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> <br  />
 </li>
+<li>Check if it is root directory</li>
 <li>Remove all <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> in the directory to be removed <br  />
 </li>
 <li>Read the block again, because the block may have changed by <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> <br  />
@@ -923,6 +927,39 @@ false incase of error </dd></dl>
 </li>
 <li>Set cached MetaData to Protected <br  />
 </li>
+</ul>
+
+</div>
+</div>
+<a id="a007a2b47dc540ed42669a78706ff87b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a007a2b47dc540ed42669a78706ff87b5">&#9670;&nbsp;</a></span>stat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FileSystem::stat </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the stat of the disk. The stat contains information like number of directories, number of files, block number etc. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if successful </dd>
+<dd>
+false incase of error </dd></dl>
+<dl class="section implementation">
+<dt>Implementation details  </dt>
+<dd></dd>
+</dl>
+<ul>
+<li>Sanity checks</li>
+<li>Read Super <a class="el" href="unionFileSystem_1_1Block.html">Block</a> and print MetaData</li>
+<li>Read directory blocks</li>
+<li>Read Directoreis in each directory block</li>
+<li>Read Table Entries for each directory</li>
 </ul>
 
 </div>
