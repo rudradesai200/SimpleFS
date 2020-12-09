@@ -3,7 +3,7 @@ digraph "FileSystem::Block"
  // LATEX_PDF_SIZE
   edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
   node [fontname="Helvetica",fontsize="10",shape=record];
-  Node1 [label="FileSystem::Block",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 [label="FileSystem::Block",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a Superblock,..."];
   Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" Super" ,fontname="Helvetica"];
   Node2 [label="FileSystem::SuperBlock",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structFileSystem_1_1SuperBlock.html",tooltip="Superblock structure. It is the first block in any disk. It's main function is to help validating the..."];
   Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" Directories" ,fontname="Helvetica"];
@@ -11,5 +11,5 @@ digraph "FileSystem::Block"
   Node4 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" Table" ,fontname="Helvetica"];
   Node4 [label="FileSystem::Dirent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structFileSystem_1_1Dirent.html",tooltip="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object..."];
   Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" Inodes" ,fontname="Helvetica"];
-  Node5 [label="FileSystem::Inode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structFileSystem_1_1Inode.html",tooltip=" "];
+  Node5 [label="FileSystem::Inode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structFileSystem_1_1Inode.html",tooltip="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t..."];
 }

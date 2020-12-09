@@ -1,7 +1,7 @@
 /**
  * @file fs_layer_2.cpp
  * @author Rudra Desai (rudrad200@gmail.com)
- * @brief Implementation of fs_layer_2 functions
+ * @brief Implementation of fs.h layer_2 functions
  * @date 2020-12-09
  * 
  * @details Mainly includes all the functions at Directory & Files level

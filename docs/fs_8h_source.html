@@ -77,153 +77,171 @@ $(function() {
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#include &lt;cstring&gt;</span></div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">using namespace </span>std;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="classFileSystem.html">   76</a></span>&#160;<span class="keyword">class </span><a class="code" href="classFileSystem.html">FileSystem</a> {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> uint32_t MAGIC_NUMBER       = 0xf0f03410;      <span class="comment">//    Magic number helps in checking Validity of the FileSystem on disk   @hideinitializer</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> uint32_t INODES_PER_BLOCK   = 128;             <span class="comment">//    Number of Inodes which can be contained in a block of (4kb)   @hideinitializer</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> uint32_t POINTERS_PER_INODE = 5;               <span class="comment">//    Number of Direct block pointers in an Inode Block   @hideinitializer</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> uint32_t POINTERS_PER_BLOCK = 1024;            <span class="comment">//    Number of block pointers in one Indirect pointer  @hideinitializer</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> uint32_t NAMESIZE           = 16;              <span class="comment">//    Max Name size for files/directories   @hideinitializer</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> uint32_t ENTRIES_PER_DIR    = 7;              <span class="comment">//    Number of Files/Directory entries within a Directory   @hideinitializer</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> uint32_t DIR_PER_BLOCK      = 8;               <span class="comment">//    Number of Directories per 4KB block   @hideinitializer</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="structFileSystem_1_1SuperBlock.html">   93</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structFileSystem_1_1SuperBlock.html">SuperBlock</a> {         </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        uint32_t MagicNumber;   </div>
-<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="structFileSystem_1_1SuperBlock.html#af047d01641c8949cf7e82a8f19a60fef">   95</a></span>&#160;        uint32_t <a class="code" href="structFileSystem_1_1SuperBlock.html#af047d01641c8949cf7e82a8f19a60fef">Blocks</a>;        </div>
-<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="structFileSystem_1_1SuperBlock.html#aaaf1592f838d001f4e149af339d097f3">   96</a></span>&#160;        uint32_t <a class="code" href="structFileSystem_1_1SuperBlock.html#aaaf1592f838d001f4e149af339d097f3">InodeBlocks</a>;   </div>
-<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="structFileSystem_1_1SuperBlock.html#a01b7d2cc935b1f6535b9f5af4228e24b">   97</a></span>&#160;        uint32_t <a class="code" href="structFileSystem_1_1SuperBlock.html#a01b7d2cc935b1f6535b9f5af4228e24b">DirBlocks</a>;     </div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="structFileSystem_1_1SuperBlock.html#add4207f0a643f0beb4a3911bb7e33e51">   98</a></span>&#160;        uint32_t <a class="code" href="structFileSystem_1_1SuperBlock.html#add4207f0a643f0beb4a3911bb7e33e51">Inodes</a>;        </div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="structFileSystem_1_1SuperBlock.html#a687323a691f5bd2752002fb3c7466994">   99</a></span>&#160;        uint32_t <a class="code" href="structFileSystem_1_1SuperBlock.html#a687323a691f5bd2752002fb3c7466994">Protected</a>;     </div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="structFileSystem_1_1SuperBlock.html#a2a44062901ea2ec22ca0c6e36be9822e">  100</a></span>&#160;        <span class="keywordtype">char</span> PasswordHash[257]; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    };</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Dirent.html">  108</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structFileSystem_1_1Dirent.html">Dirent</a> {</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        uint8_t type;           </div>
-<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Dirent.html#ad846df2e01ee3bcb147e1606091750f0">  110</a></span>&#160;        uint8_t <a class="code" href="structFileSystem_1_1Dirent.html#ad846df2e01ee3bcb147e1606091750f0">valid</a>;          </div>
-<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Dirent.html#a6b3ffd1d8a7d2f1297cec51a14cbc7b1">  111</a></span>&#160;        uint32_t <a class="code" href="structFileSystem_1_1Dirent.html#a6b3ffd1d8a7d2f1297cec51a14cbc7b1">inum</a>;          </div>
-<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Dirent.html#a6325940ab4019a537a4a40e7708c5922">  112</a></span>&#160;        <span class="keywordtype">char</span> Name[NAMESIZE];    </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    };</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Directory.html">  122</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structFileSystem_1_1Directory.html">Directory</a> {</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        uint16_t Valid;                 </div>
-<div class="line"><a name="l00124"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Directory.html#a6e4d2ea1c78bc1836f98076844895218">  124</a></span>&#160;        uint32_t <a class="code" href="structFileSystem_1_1Directory.html#a6e4d2ea1c78bc1836f98076844895218">inum</a>;                  </div>
-<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Directory.html#a9dbbee28f750128df5eeb52581cbfe29">  125</a></span>&#160;        <span class="keywordtype">char</span> Name[NAMESIZE];            </div>
-<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Directory.html#afc7a04a53b2fb8420269e5240080a3fe">  126</a></span>&#160;        <a class="code" href="structFileSystem_1_1Dirent.html">Dirent</a> Table[ENTRIES_PER_DIR];  </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    };</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">using namespace </span>std;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classFileSystem.html">   77</a></span>&#160;<span class="keyword">class </span><a class="code" href="classFileSystem.html">FileSystem</a> {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> uint32_t MAGIC_NUMBER       = 0xf0f03410;      <span class="comment">//    Magic number helps in checking Validity of the FileSystem on disk   @hideinitializer</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> uint32_t INODES_PER_BLOCK   = 128;             <span class="comment">//    Number of Inodes which can be contained in a block of (4kb)   @hideinitializer</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> uint32_t POINTERS_PER_INODE = 5;               <span class="comment">//    Number of Direct block pointers in an Inode Block   @hideinitializer</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> uint32_t POINTERS_PER_BLOCK = 1024;            <span class="comment">//    Number of block pointers in one Indirect pointer  @hideinitializer</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> uint32_t NAMESIZE           = 16;              <span class="comment">//    Max Name size for files/directories   @hideinitializer</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> uint32_t ENTRIES_PER_DIR    = 7;              <span class="comment">//    Number of Files/Directory entries within a Directory   @hideinitializer</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> uint32_t DIR_PER_BLOCK      = 8;               <span class="comment">//    Number of Directories per 4KB block   @hideinitializer</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="structFileSystem_1_1SuperBlock.html">   94</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structFileSystem_1_1SuperBlock.html">SuperBlock</a> {         </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        uint32_t MagicNumber;   </div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="structFileSystem_1_1SuperBlock.html#af047d01641c8949cf7e82a8f19a60fef">   96</a></span>&#160;        uint32_t <a class="code" href="structFileSystem_1_1SuperBlock.html#af047d01641c8949cf7e82a8f19a60fef">Blocks</a>;        </div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="structFileSystem_1_1SuperBlock.html#aaaf1592f838d001f4e149af339d097f3">   97</a></span>&#160;        uint32_t <a class="code" href="structFileSystem_1_1SuperBlock.html#aaaf1592f838d001f4e149af339d097f3">InodeBlocks</a>;   </div>
+<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="structFileSystem_1_1SuperBlock.html#a01b7d2cc935b1f6535b9f5af4228e24b">   98</a></span>&#160;        uint32_t <a class="code" href="structFileSystem_1_1SuperBlock.html#a01b7d2cc935b1f6535b9f5af4228e24b">DirBlocks</a>;     </div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="structFileSystem_1_1SuperBlock.html#add4207f0a643f0beb4a3911bb7e33e51">   99</a></span>&#160;        uint32_t <a class="code" href="structFileSystem_1_1SuperBlock.html#add4207f0a643f0beb4a3911bb7e33e51">Inodes</a>;        </div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="structFileSystem_1_1SuperBlock.html#a687323a691f5bd2752002fb3c7466994">  100</a></span>&#160;        uint32_t <a class="code" href="structFileSystem_1_1SuperBlock.html#a687323a691f5bd2752002fb3c7466994">Protected</a>;     </div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="structFileSystem_1_1SuperBlock.html#a2a44062901ea2ec22ca0c6e36be9822e">  101</a></span>&#160;        <span class="keywordtype">char</span> PasswordHash[257]; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    };</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Dirent.html">  109</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structFileSystem_1_1Dirent.html">Dirent</a> {</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        uint8_t type;           </div>
+<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Dirent.html#ad846df2e01ee3bcb147e1606091750f0">  111</a></span>&#160;        uint8_t <a class="code" href="structFileSystem_1_1Dirent.html#ad846df2e01ee3bcb147e1606091750f0">valid</a>;          </div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Dirent.html#a6b3ffd1d8a7d2f1297cec51a14cbc7b1">  112</a></span>&#160;        uint32_t <a class="code" href="structFileSystem_1_1Dirent.html#a6b3ffd1d8a7d2f1297cec51a14cbc7b1">inum</a>;          </div>
+<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Dirent.html#a6325940ab4019a537a4a40e7708c5922">  113</a></span>&#160;        <span class="keywordtype">char</span> Name[NAMESIZE];    </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    };</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Directory.html">  123</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structFileSystem_1_1Directory.html">Directory</a> {</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        uint16_t Valid;                 </div>
+<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Directory.html#a6e4d2ea1c78bc1836f98076844895218">  125</a></span>&#160;        uint32_t <a class="code" href="structFileSystem_1_1Directory.html#a6e4d2ea1c78bc1836f98076844895218">inum</a>;                  </div>
+<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Directory.html#a9dbbee28f750128df5eeb52581cbfe29">  126</a></span>&#160;        <span class="keywordtype">char</span> Name[NAMESIZE];            </div>
+<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Directory.html#afc7a04a53b2fb8420269e5240080a3fe">  127</a></span>&#160;        <a class="code" href="structFileSystem_1_1Dirent.html">Dirent</a> Table[ENTRIES_PER_DIR];  </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    };</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Inode.html">  130</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structFileSystem_1_1Inode.html">Inode</a> {</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        uint32_t Valid;                         </div>
-<div class="line"><a name="l00132"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Inode.html#aa2bc377cb492d6d98e60a89185dab52f">  132</a></span>&#160;        uint32_t <a class="code" href="structFileSystem_1_1Inode.html#aa2bc377cb492d6d98e60a89185dab52f">Size</a>;                          </div>
-<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Inode.html#a85472455dda0444d34a419701517e127">  133</a></span>&#160;        uint32_t Direct[FileSystem::POINTERS_PER_INODE];    </div>
-<div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Inode.html#a0cb81cdd8313db3b50fd5c3052d7cd0c">  134</a></span>&#160;        uint32_t <a class="code" href="structFileSystem_1_1Inode.html#a0cb81cdd8313db3b50fd5c3052d7cd0c">Indirect</a>;                      </div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    };</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
-<div class="line"><a name="l00137"></a><span class="lineno"><a class="line" href="unionFileSystem_1_1Block.html">  137</a></span>&#160;    <span class="keyword">union </span><a class="code" href="unionFileSystem_1_1Block.html">Block</a> {</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <span class="keyword">struct </span><a class="code" href="structFileSystem_1_1SuperBlock.html">SuperBlock</a>   Super;                                      </div>
-<div class="line"><a name="l00139"></a><span class="lineno"><a class="line" href="unionFileSystem_1_1Block.html#ae1362465ee7c9daaafacaaf624468cc3">  139</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structFileSystem_1_1Inode.html">Inode</a>        Inodes[<a class="code" href="classFileSystem.html">FileSystem</a>::INODES_PER_BLOCK];       </div>
-<div class="line"><a name="l00140"></a><span class="lineno"><a class="line" href="unionFileSystem_1_1Block.html#aceb2d3440fd334336397a354a36096f6">  140</a></span>&#160;        uint32_t            Pointers[FileSystem::POINTERS_PER_BLOCK];   </div>
-<div class="line"><a name="l00141"></a><span class="lineno"><a class="line" href="unionFileSystem_1_1Block.html#ab1e8e0cc9c593e17ab34d25da9ec0f18">  141</a></span>&#160;        char                Data[Disk::BLOCK_SIZE];                     </div>
-<div class="line"><a name="l00142"></a><span class="lineno"><a class="line" href="unionFileSystem_1_1Block.html#a5644659690ab0b9e59d69ec87fa083d0">  142</a></span>&#160;        struct <a class="code" href="structFileSystem_1_1Directory.html">Directory</a>    Directories[FileSystem::DIR_PER_BLOCK];      </div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    };</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="comment">// Internal member variables</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    Disk* fs_disk;                      <span class="comment">//  Stores disk pointer after successful mounting @hideinitializer</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    vector&lt;bool&gt; free_blocks;           <span class="comment">//  Stores whether a block is free or not @hideinitializer</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    vector&lt;int&gt; inode_counter;          <span class="comment">//  Stores the number of Inode contained in an Inode Block @hideinitializer </span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    vector&lt;uint32_t&gt; dir_counter;       <span class="comment">//  Stores the number of Directory contianed in a Directory Block @hideinitializer</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    struct <a class="code" href="structFileSystem_1_1SuperBlock.html">SuperBlock</a> MetaData;         <span class="comment">//  Caches the Superblock to save a disk-read @hideinitializer</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    bool mounted;                       <span class="comment">//  Boolean to check if the disk is mounted and saved @hideinitializer</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="comment">// Layer 1 Core Functions</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    ssize_t create();                   </div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    bool    remove(size_t inumber);</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    ssize_t read(size_t inumber, char *data, int length, size_t offset);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    ssize_t write(size_t inumber, char *data, int length, size_t offset);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="comment">//  Helper functions for Layer 1</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    ssize_t  write_ret(size_t inumber, Inode* node, int ret);</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    bool     load_inode(size_t inumber, Inode *node);</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    ssize_t  allocate_free_block();</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    uint32_t allocate_block();</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    ssize_t stat(size_t inumber);</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="comment">// Helper functions for Layer 2</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    </div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="comment">//  Caches curr dir to save a disk-read @hideinitializer</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <a class="code" href="structFileSystem_1_1Directory.html">Directory</a> curr_dir;</div>
+<div class="line"><a name="l00136"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Inode.html">  136</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structFileSystem_1_1Inode.html">Inode</a> {</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        uint32_t Valid;                                                 </div>
+<div class="line"><a name="l00138"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Inode.html#aa2bc377cb492d6d98e60a89185dab52f">  138</a></span>&#160;        uint32_t <a class="code" href="structFileSystem_1_1Inode.html#aa2bc377cb492d6d98e60a89185dab52f">Size</a>;                                                  </div>
+<div class="line"><a name="l00139"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Inode.html#a85472455dda0444d34a419701517e127">  139</a></span>&#160;        uint32_t Direct[FileSystem::POINTERS_PER_INODE];                </div>
+<div class="line"><a name="l00140"></a><span class="lineno"><a class="line" href="structFileSystem_1_1Inode.html#a0cb81cdd8313db3b50fd5c3052d7cd0c">  140</a></span>&#160;        uint32_t <a class="code" href="structFileSystem_1_1Inode.html#a0cb81cdd8313db3b50fd5c3052d7cd0c">Indirect</a>;                                              </div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    };</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
+<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="unionFileSystem_1_1Block.html">  148</a></span>&#160;    <span class="keyword">union </span><a class="code" href="unionFileSystem_1_1Block.html">Block</a> {</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="keyword">struct </span><a class="code" href="structFileSystem_1_1SuperBlock.html">SuperBlock</a>   Super;                                      </div>
+<div class="line"><a name="l00150"></a><span class="lineno"><a class="line" href="unionFileSystem_1_1Block.html#ae1362465ee7c9daaafacaaf624468cc3">  150</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structFileSystem_1_1Inode.html">Inode</a>        Inodes[<a class="code" href="classFileSystem.html">FileSystem</a>::INODES_PER_BLOCK];       </div>
+<div class="line"><a name="l00151"></a><span class="lineno"><a class="line" href="unionFileSystem_1_1Block.html#aceb2d3440fd334336397a354a36096f6">  151</a></span>&#160;        uint32_t            Pointers[FileSystem::POINTERS_PER_BLOCK];   </div>
+<div class="line"><a name="l00152"></a><span class="lineno"><a class="line" href="unionFileSystem_1_1Block.html#ab1e8e0cc9c593e17ab34d25da9ec0f18">  152</a></span>&#160;        char                Data[Disk::BLOCK_SIZE];                     </div>
+<div class="line"><a name="l00153"></a><span class="lineno"><a class="line" href="unionFileSystem_1_1Block.html#a5644659690ab0b9e59d69ec87fa083d0">  153</a></span>&#160;        struct <a class="code" href="structFileSystem_1_1Directory.html">Directory</a>    Directories[FileSystem::DIR_PER_BLOCK];      </div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    };</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="comment">// Internal member variables</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    Disk* fs_disk;                      <span class="comment">//  Stores disk pointer after successful mounting @hideinitializer</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    vector&lt;bool&gt; free_blocks;           <span class="comment">//  Stores whether a block is free or not @hideinitializer</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    vector&lt;int&gt; inode_counter;          <span class="comment">//  Stores the number of Inode contained in an Inode Block @hideinitializer </span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    vector&lt;uint32_t&gt; dir_counter;       <span class="comment">//  Stores the number of Directory contianed in a Directory Block @hideinitializer</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    struct <a class="code" href="structFileSystem_1_1SuperBlock.html">SuperBlock</a> MetaData;         <span class="comment">//  Caches the Superblock to save a disk-read @hideinitializer</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    bool mounted;                       <span class="comment">//  Boolean to check if the disk is mounted and saved @hideinitializer</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="comment">// Layer 1 Core Functions</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment"></span>    ssize_t     create();</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    </div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <a class="code" href="structFileSystem_1_1Directory.html">Directory</a> add_dir_entry(Directory dir, uint32_t inum, uint32_t type, char name[]);</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    void      write_dir_back(struct Directory dir);</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    int       dir_lookup(Directory dir, char name[]);</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <a class="code" href="structFileSystem_1_1Directory.html">Directory</a> read_dir_from_offset(uint32_t offset);</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <a class="code" href="structFileSystem_1_1Directory.html">Directory</a>      rmdir_helper(Directory parent, char name[]);</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160; </div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <a class="code" href="structFileSystem_1_1Directory.html">Directory</a>      rm_helper(Directory parent, char name[]);</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    static void debug(Disk *disk);</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    static bool format(Disk *disk);</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    bool    mount(Disk *disk);</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <span class="comment">//  Security Functions</span></div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    bool    set_password();</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    bool    change_password();</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    bool    remove_password();</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160; </div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="comment">//  Directories and Files</span></div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    bool    touch(char name[]);</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    bool    mkdir(char name[]);</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160; </div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    bool    rmdir(char name[]);</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160; </div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    bool    cd(char name[]);</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160; </div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    bool    ls();</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; </div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    bool    rm(char name[]);</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160; </div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    bool    copyout(char name[],const char *path);</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    bool    copyin(const char *path, char name[]);</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160; </div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    bool    ls_dir(char name[]);</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160; </div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    void    exit();</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160; </div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;    void stat();</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;};</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    bool        remove(size_t inumber);</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    </div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    ssize_t     stat(size_t inumber);</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    </div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    ssize_t     read(size_t inumber, char *data, int length, size_t offset);</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    </div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    ssize_t     write(size_t inumber, char *data, int length, size_t offset);</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="comment">//  Helper functions for Layer 1</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="comment"></span>    bool        load_inode(size_t inumber, Inode *node);</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    ssize_t     allocate_free_block();</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    void        read_helper(uint32_t blocknum, int offset, int *length, char **data, char **ptr);</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    </div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    ssize_t     write_ret(size_t inumber, Inode* node, int ret);</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    </div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    void        read_buffer(int offset, int *read, int length, char *data, uint32_t blocknum);</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    </div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    bool        check_allocation(Inode *node, int read, int orig_offset, uint32_t &amp;blocknum, bool write_indirect, Block indirect);</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    </div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    uint32_t    allocate_block();</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; </div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <span class="comment">// Helper functions for Layer 2</span></div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    </div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="comment">//  Caches curr dir to save a disk-read @hideinitializer</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <a class="code" href="structFileSystem_1_1Directory.html">Directory</a> curr_dir;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    </div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <a class="code" href="structFileSystem_1_1Directory.html">Directory</a> add_dir_entry(Directory dir, uint32_t inum, uint32_t type, char name[]);</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160; </div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    void      write_dir_back(struct Directory dir);</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160; </div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    int       dir_lookup(Directory dir, char name[]);</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160; </div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <a class="code" href="structFileSystem_1_1Directory.html">Directory</a> read_dir_from_offset(uint32_t offset);</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160; </div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <a class="code" href="structFileSystem_1_1Directory.html">Directory</a>      rmdir_helper(Directory parent, char name[]);</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160; </div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <a class="code" href="structFileSystem_1_1Directory.html">Directory</a>      rm_helper(Directory parent, char name[]);</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160; </div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160; </div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    static void debug(Disk *disk);</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    </div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    static bool format(Disk *disk);</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160; </div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160; </div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    bool        mount(Disk *disk);</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160; </div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    </div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    <span class="comment">//  Security Functions</span></div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160; </div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    bool    set_password();</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160; </div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    bool    change_password();</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160; </div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    bool    remove_password();</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160; </div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    <span class="comment">//  Directories and Files</span></div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160; </div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    bool    touch(char name[]);</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160; </div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    bool    mkdir(char name[]);</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160; </div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    bool    rmdir(char name[]);</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160; </div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    bool    cd(char name[]);</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160; </div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;    bool    ls();</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160; </div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;    bool    rm(char name[]);</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160; </div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;    bool    copyout(char name[],const char *path);</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160; </div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;    bool    copyin(const char *path, char name[]);</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160; </div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;    bool    ls_dir(char name[]);</div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160; </div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;    void    exit();</div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160; </div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;    void stat();</div>
+<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;};</div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="astructFileSystem_1_1SuperBlock_html_aaaf1592f838d001f4e149af339d097f3"><div class="ttname"><a href="structFileSystem_1_1SuperBlock.html#aaaf1592f838d001f4e149af339d097f3">FileSystem::SuperBlock::InodeBlocks</a></div><div class="ttdeci">uint32_t InodeBlocks</div><div class="ttdef"><b>Definition:</b> fs.h:96</div></div>
-<div class="ttc" id="astructFileSystem_1_1Directory_html"><div class="ttname"><a href="structFileSystem_1_1Directory.html">FileSystem::Directory</a></div><div class="ttdoc">Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...</div><div class="ttdef"><b>Definition:</b> fs.h:122</div></div>
-<div class="ttc" id="astructFileSystem_1_1Dirent_html_ad846df2e01ee3bcb147e1606091750f0"><div class="ttname"><a href="structFileSystem_1_1Dirent.html#ad846df2e01ee3bcb147e1606091750f0">FileSystem::Dirent::valid</a></div><div class="ttdeci">uint8_t valid</div><div class="ttdef"><b>Definition:</b> fs.h:110</div></div>
-<div class="ttc" id="astructFileSystem_1_1SuperBlock_html_a01b7d2cc935b1f6535b9f5af4228e24b"><div class="ttname"><a href="structFileSystem_1_1SuperBlock.html#a01b7d2cc935b1f6535b9f5af4228e24b">FileSystem::SuperBlock::DirBlocks</a></div><div class="ttdeci">uint32_t DirBlocks</div><div class="ttdef"><b>Definition:</b> fs.h:97</div></div>
-<div class="ttc" id="astructFileSystem_1_1Directory_html_a6e4d2ea1c78bc1836f98076844895218"><div class="ttname"><a href="structFileSystem_1_1Directory.html#a6e4d2ea1c78bc1836f98076844895218">FileSystem::Directory::inum</a></div><div class="ttdeci">uint32_t inum</div><div class="ttdef"><b>Definition:</b> fs.h:124</div></div>
-<div class="ttc" id="astructFileSystem_1_1Dirent_html_a6b3ffd1d8a7d2f1297cec51a14cbc7b1"><div class="ttname"><a href="structFileSystem_1_1Dirent.html#a6b3ffd1d8a7d2f1297cec51a14cbc7b1">FileSystem::Dirent::inum</a></div><div class="ttdeci">uint32_t inum</div><div class="ttdef"><b>Definition:</b> fs.h:111</div></div>
-<div class="ttc" id="astructFileSystem_1_1SuperBlock_html_add4207f0a643f0beb4a3911bb7e33e51"><div class="ttname"><a href="structFileSystem_1_1SuperBlock.html#add4207f0a643f0beb4a3911bb7e33e51">FileSystem::SuperBlock::Inodes</a></div><div class="ttdeci">uint32_t Inodes</div><div class="ttdef"><b>Definition:</b> fs.h:98</div></div>
-<div class="ttc" id="astructFileSystem_1_1SuperBlock_html_af047d01641c8949cf7e82a8f19a60fef"><div class="ttname"><a href="structFileSystem_1_1SuperBlock.html#af047d01641c8949cf7e82a8f19a60fef">FileSystem::SuperBlock::Blocks</a></div><div class="ttdeci">uint32_t Blocks</div><div class="ttdef"><b>Definition:</b> fs.h:95</div></div>
-<div class="ttc" id="astructFileSystem_1_1Inode_html"><div class="ttname"><a href="structFileSystem_1_1Inode.html">FileSystem::Inode</a></div><div class="ttdef"><b>Definition:</b> fs.h:130</div></div>
-<div class="ttc" id="aclassFileSystem_html"><div class="ttname"><a href="classFileSystem.html">FileSystem</a></div><div class="ttdoc">FileSytem Class. Contains fs layer to access and store disk blocks. Used by sfssh (shell) to provide ...</div><div class="ttdef"><b>Definition:</b> fs.h:76</div></div>
-<div class="ttc" id="astructFileSystem_1_1Inode_html_a0cb81cdd8313db3b50fd5c3052d7cd0c"><div class="ttname"><a href="structFileSystem_1_1Inode.html#a0cb81cdd8313db3b50fd5c3052d7cd0c">FileSystem::Inode::Indirect</a></div><div class="ttdeci">uint32_t Indirect</div><div class="ttdef"><b>Definition:</b> fs.h:134</div></div>
-<div class="ttc" id="aunionFileSystem_1_1Block_html"><div class="ttname"><a href="unionFileSystem_1_1Block.html">FileSystem::Block</a></div><div class="ttdef"><b>Definition:</b> fs.h:137</div></div>
-<div class="ttc" id="astructFileSystem_1_1Dirent_html"><div class="ttname"><a href="structFileSystem_1_1Dirent.html">FileSystem::Dirent</a></div><div class="ttdoc">Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...</div><div class="ttdef"><b>Definition:</b> fs.h:108</div></div>
-<div class="ttc" id="astructFileSystem_1_1Inode_html_aa2bc377cb492d6d98e60a89185dab52f"><div class="ttname"><a href="structFileSystem_1_1Inode.html#aa2bc377cb492d6d98e60a89185dab52f">FileSystem::Inode::Size</a></div><div class="ttdeci">uint32_t Size</div><div class="ttdef"><b>Definition:</b> fs.h:132</div></div>
-<div class="ttc" id="astructFileSystem_1_1SuperBlock_html_a687323a691f5bd2752002fb3c7466994"><div class="ttname"><a href="structFileSystem_1_1SuperBlock.html#a687323a691f5bd2752002fb3c7466994">FileSystem::SuperBlock::Protected</a></div><div class="ttdeci">uint32_t Protected</div><div class="ttdef"><b>Definition:</b> fs.h:99</div></div>
-<div class="ttc" id="astructFileSystem_1_1SuperBlock_html"><div class="ttname"><a href="structFileSystem_1_1SuperBlock.html">FileSystem::SuperBlock</a></div><div class="ttdoc">Superblock structure. It is the first block in any disk. It's main function is to help validating the...</div><div class="ttdef"><b>Definition:</b> fs.h:93</div></div>
+<div class="ttc" id="astructFileSystem_1_1SuperBlock_html_aaaf1592f838d001f4e149af339d097f3"><div class="ttname"><a href="structFileSystem_1_1SuperBlock.html#aaaf1592f838d001f4e149af339d097f3">FileSystem::SuperBlock::InodeBlocks</a></div><div class="ttdeci">uint32_t InodeBlocks</div><div class="ttdef"><b>Definition:</b> <a href="fs_8h_source.html#l00097">fs.h:97</a></div></div>
+<div class="ttc" id="astructFileSystem_1_1Directory_html"><div class="ttname"><a href="structFileSystem_1_1Directory.html">FileSystem::Directory</a></div><div class="ttdoc">Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...</div><div class="ttdef"><b>Definition:</b> <a href="fs_8h_source.html#l00123">fs.h:123</a></div></div>
+<div class="ttc" id="astructFileSystem_1_1Dirent_html_ad846df2e01ee3bcb147e1606091750f0"><div class="ttname"><a href="structFileSystem_1_1Dirent.html#ad846df2e01ee3bcb147e1606091750f0">FileSystem::Dirent::valid</a></div><div class="ttdeci">uint8_t valid</div><div class="ttdef"><b>Definition:</b> <a href="fs_8h_source.html#l00111">fs.h:111</a></div></div>
+<div class="ttc" id="astructFileSystem_1_1SuperBlock_html_a01b7d2cc935b1f6535b9f5af4228e24b"><div class="ttname"><a href="structFileSystem_1_1SuperBlock.html#a01b7d2cc935b1f6535b9f5af4228e24b">FileSystem::SuperBlock::DirBlocks</a></div><div class="ttdeci">uint32_t DirBlocks</div><div class="ttdef"><b>Definition:</b> <a href="fs_8h_source.html#l00098">fs.h:98</a></div></div>
+<div class="ttc" id="astructFileSystem_1_1Directory_html_a6e4d2ea1c78bc1836f98076844895218"><div class="ttname"><a href="structFileSystem_1_1Directory.html#a6e4d2ea1c78bc1836f98076844895218">FileSystem::Directory::inum</a></div><div class="ttdeci">uint32_t inum</div><div class="ttdef"><b>Definition:</b> <a href="fs_8h_source.html#l00125">fs.h:125</a></div></div>
+<div class="ttc" id="astructFileSystem_1_1Dirent_html_a6b3ffd1d8a7d2f1297cec51a14cbc7b1"><div class="ttname"><a href="structFileSystem_1_1Dirent.html#a6b3ffd1d8a7d2f1297cec51a14cbc7b1">FileSystem::Dirent::inum</a></div><div class="ttdeci">uint32_t inum</div><div class="ttdef"><b>Definition:</b> <a href="fs_8h_source.html#l00112">fs.h:112</a></div></div>
+<div class="ttc" id="astructFileSystem_1_1SuperBlock_html_add4207f0a643f0beb4a3911bb7e33e51"><div class="ttname"><a href="structFileSystem_1_1SuperBlock.html#add4207f0a643f0beb4a3911bb7e33e51">FileSystem::SuperBlock::Inodes</a></div><div class="ttdeci">uint32_t Inodes</div><div class="ttdef"><b>Definition:</b> <a href="fs_8h_source.html#l00099">fs.h:99</a></div></div>
+<div class="ttc" id="astructFileSystem_1_1SuperBlock_html_af047d01641c8949cf7e82a8f19a60fef"><div class="ttname"><a href="structFileSystem_1_1SuperBlock.html#af047d01641c8949cf7e82a8f19a60fef">FileSystem::SuperBlock::Blocks</a></div><div class="ttdeci">uint32_t Blocks</div><div class="ttdef"><b>Definition:</b> <a href="fs_8h_source.html#l00096">fs.h:96</a></div></div>
+<div class="ttc" id="astructFileSystem_1_1Inode_html"><div class="ttname"><a href="structFileSystem_1_1Inode.html">FileSystem::Inode</a></div><div class="ttdoc">Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...</div><div class="ttdef"><b>Definition:</b> <a href="fs_8h_source.html#l00136">fs.h:136</a></div></div>
+<div class="ttc" id="aclassFileSystem_html"><div class="ttname"><a href="classFileSystem.html">FileSystem</a></div><div class="ttdoc">FileSytem Class. Contains fs layer to access and store disk blocks. Used by sfssh (shell) to provide ...</div><div class="ttdef"><b>Definition:</b> <a href="fs_8h_source.html#l00077">fs.h:77</a></div></div>
+<div class="ttc" id="astructFileSystem_1_1Inode_html_a0cb81cdd8313db3b50fd5c3052d7cd0c"><div class="ttname"><a href="structFileSystem_1_1Inode.html#a0cb81cdd8313db3b50fd5c3052d7cd0c">FileSystem::Inode::Indirect</a></div><div class="ttdeci">uint32_t Indirect</div><div class="ttdef"><b>Definition:</b> <a href="fs_8h_source.html#l00140">fs.h:140</a></div></div>
+<div class="ttc" id="aunionFileSystem_1_1Block_html"><div class="ttname"><a href="unionFileSystem_1_1Block.html">FileSystem::Block</a></div><div class="ttdoc">Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a Superblock,...</div><div class="ttdef"><b>Definition:</b> <a href="fs_8h_source.html#l00148">fs.h:148</a></div></div>
+<div class="ttc" id="astructFileSystem_1_1Dirent_html"><div class="ttname"><a href="structFileSystem_1_1Dirent.html">FileSystem::Dirent</a></div><div class="ttdoc">Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...</div><div class="ttdef"><b>Definition:</b> <a href="fs_8h_source.html#l00109">fs.h:109</a></div></div>
+<div class="ttc" id="astructFileSystem_1_1Inode_html_aa2bc377cb492d6d98e60a89185dab52f"><div class="ttname"><a href="structFileSystem_1_1Inode.html#aa2bc377cb492d6d98e60a89185dab52f">FileSystem::Inode::Size</a></div><div class="ttdeci">uint32_t Size</div><div class="ttdef"><b>Definition:</b> <a href="fs_8h_source.html#l00138">fs.h:138</a></div></div>
+<div class="ttc" id="astructFileSystem_1_1SuperBlock_html_a687323a691f5bd2752002fb3c7466994"><div class="ttname"><a href="structFileSystem_1_1SuperBlock.html#a687323a691f5bd2752002fb3c7466994">FileSystem::SuperBlock::Protected</a></div><div class="ttdeci">uint32_t Protected</div><div class="ttdef"><b>Definition:</b> <a href="fs_8h_source.html#l00100">fs.h:100</a></div></div>
+<div class="ttc" id="astructFileSystem_1_1SuperBlock_html"><div class="ttname"><a href="structFileSystem_1_1SuperBlock.html">FileSystem::SuperBlock</a></div><div class="ttdoc">Superblock structure. It is the first block in any disk. It's main function is to help validating the...</div><div class="ttdef"><b>Definition:</b> <a href="fs_8h_source.html#l00094">fs.h:94</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

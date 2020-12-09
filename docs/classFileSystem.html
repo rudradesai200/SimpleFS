@@ -65,6 +65,7 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="classFileSystem-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -85,6 +86,7 @@ Collaboration diagram for FileSystem:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="unionFileSystem_1_1Block.html">Block</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="unionFileSystem_1_1Block.html" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a Superblock,...">Block</a> Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a Superblock, <a class="el" href="structFileSystem_1_1Inode.html" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a>, Pointers block, or raw Data block.  <a href="unionFileSystem_1_1Block.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFileSystem_1_1Directory.html">Directory</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> Structure. Contains a table of directory entries for storing hierarchy. Also contains fields for Size and Valid bits. Name is matched against the one in <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> entry. Also, it is allocated from end for effectively using disk space.  <a href="structFileSystem_1_1Directory.html#details">More...</a><br /></td></tr>
@@ -93,6 +95,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object. Used to store information about a directory.  <a href="structFileSystem_1_1Dirent.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFileSystem_1_1Inode.html">Inode</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structFileSystem_1_1Inode.html" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used to store the data. Stores the size of the file.  <a href="structFileSystem_1_1Inode.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFileSystem_1_1SuperBlock.html">SuperBlock</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Superblock structure. It is the first block in any disk. It's main function is to help validating the disk. Contains metadata of the disk.  <a href="structFileSystem_1_1SuperBlock.html#details">More...</a><br /></td></tr>
@@ -100,6 +103,9 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:acfe7dee73ac508c3996fd63e30fe5af7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#acfe7dee73ac508c3996fd63e30fe5af7">mount</a> (Disk *disk)</td></tr>
+<tr class="memdesc:acfe7dee73ac508c3996fd63e30fe5af7"><td class="mdescLeft">&#160;</td><td class="mdescRight">mounts the file system onto the disk  <a href="classFileSystem.html#acfe7dee73ac508c3996fd63e30fe5af7">More...</a><br /></td></tr>
+<tr class="separator:acfe7dee73ac508c3996fd63e30fe5af7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a616c844236d9666441b406da64d940b3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a616c844236d9666441b406da64d940b3">set_password</a> ()</td></tr>
 <tr class="memdesc:a616c844236d9666441b406da64d940b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds password to the mounted disk (fs_disk). Gives the control to change_password if disk is pasword protected.  <a href="classFileSystem.html#a616c844236d9666441b406da64d940b3">More...</a><br /></td></tr>
 <tr class="separator:a616c844236d9666441b406da64d940b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -110,7 +116,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aad4304b8e9da680d481fa6e15eb0af51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes password from the mounted disk (fs_disk).  <a href="classFileSystem.html#aad4304b8e9da680d481fa6e15eb0af51">More...</a><br /></td></tr>
 <tr class="separator:aad4304b8e9da680d481fa6e15eb0af51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad36bee54dc860b4f96be526d0bea7105"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#ad36bee54dc860b4f96be526d0bea7105">touch</a> (char name[])</td></tr>
-<tr class="memdesc:ad36bee54dc860b4f96be526d0bea7105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a file with size 0. Main function is to allocate an <a class="el" href="structFileSystem_1_1Inode.html">Inode</a> and add <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> to the curr_dir. Error if file already exists.  <a href="classFileSystem.html#ad36bee54dc860b4f96be526d0bea7105">More...</a><br /></td></tr>
+<tr class="memdesc:ad36bee54dc860b4f96be526d0bea7105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a file with size 0. Main function is to allocate an <a class="el" href="structFileSystem_1_1Inode.html" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> and add <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> to the curr_dir. Error if file already exists.  <a href="classFileSystem.html#ad36bee54dc860b4f96be526d0bea7105">More...</a><br /></td></tr>
 <tr class="separator:ad36bee54dc860b4f96be526d0bea7105"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dd0d7c38a89e5ce6151ad8e53d16f5b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a8dd0d7c38a89e5ce6151ad8e53d16f5b">mkdir</a> (char name[])</td></tr>
 <tr class="memdesc:a8dd0d7c38a89e5ce6151ad8e53d16f5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an empty directory with the given name Adds 2 <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> , '.' and '..' in it's table.  <a href="classFileSystem.html#a8dd0d7c38a89e5ce6151ad8e53d16f5b">More...</a><br /></td></tr>
@@ -143,8 +149,53 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a007a2b47dc540ed42669a78706ff87b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the stat of the disk. The stat contains information like number of directories, number of files, block number etc.  <a href="classFileSystem.html#a007a2b47dc540ed42669a78706ff87b5">More...</a><br /></td></tr>
 <tr class="separator:a007a2b47dc540ed42669a78706ff87b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a638a41aa7cfb32a9d29a5c69563349a3"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a638a41aa7cfb32a9d29a5c69563349a3">debug</a> (Disk *disk)</td></tr>
+<tr class="memdesc:a638a41aa7cfb32a9d29a5c69563349a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">prints the basic outline of the disk  <a href="classFileSystem.html#a638a41aa7cfb32a9d29a5c69563349a3">More...</a><br /></td></tr>
+<tr class="separator:a638a41aa7cfb32a9d29a5c69563349a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b5b720c0fcda7fab862a62ad24411bb"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a7b5b720c0fcda7fab862a62ad24411bb">format</a> (Disk *disk)</td></tr>
+<tr class="memdesc:a7b5b720c0fcda7fab862a62ad24411bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">formats the entire disk  <a href="classFileSystem.html#a7b5b720c0fcda7fab862a62ad24411bb">More...</a><br /></td></tr>
+<tr class="separator:a7b5b720c0fcda7fab862a62ad24411bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
+<tr class="memitem:a0e274eaf21523812ef3ec8727079732b"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a0e274eaf21523812ef3ec8727079732b">create</a> ()</td></tr>
+<tr class="memdesc:a0e274eaf21523812ef3ec8727079732b"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a new inode  <a href="classFileSystem.html#a0e274eaf21523812ef3ec8727079732b">More...</a><br /></td></tr>
+<tr class="separator:a0e274eaf21523812ef3ec8727079732b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd29e32f0d7473d8777419cfc6e36dbe"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#abd29e32f0d7473d8777419cfc6e36dbe">remove</a> (size_t inumber)</td></tr>
+<tr class="memdesc:abd29e32f0d7473d8777419cfc6e36dbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">removes the inode  <a href="classFileSystem.html#abd29e32f0d7473d8777419cfc6e36dbe">More...</a><br /></td></tr>
+<tr class="separator:abd29e32f0d7473d8777419cfc6e36dbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8de2d02d62d56ffa3433b9fe76c154a"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#aa8de2d02d62d56ffa3433b9fe76c154a">stat</a> (size_t inumber)</td></tr>
+<tr class="memdesc:aa8de2d02d62d56ffa3433b9fe76c154a"><td class="mdescLeft">&#160;</td><td class="mdescRight">check size of an inode  <a href="classFileSystem.html#aa8de2d02d62d56ffa3433b9fe76c154a">More...</a><br /></td></tr>
+<tr class="separator:aa8de2d02d62d56ffa3433b9fe76c154a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cd48553ae0ed59577d8490b7608e008"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a6cd48553ae0ed59577d8490b7608e008">read</a> (size_t inumber, char *data, int length, size_t offset)</td></tr>
+<tr class="memdesc:a6cd48553ae0ed59577d8490b7608e008"><td class="mdescLeft">&#160;</td><td class="mdescRight">read from disk  <a href="classFileSystem.html#a6cd48553ae0ed59577d8490b7608e008">More...</a><br /></td></tr>
+<tr class="separator:a6cd48553ae0ed59577d8490b7608e008"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11b94bf1e3baf8650fcba2d1cc8d22ef"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a11b94bf1e3baf8650fcba2d1cc8d22ef">write</a> (size_t inumber, char *data, int length, size_t offset)</td></tr>
+<tr class="memdesc:a11b94bf1e3baf8650fcba2d1cc8d22ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">write to the disk  <a href="classFileSystem.html#a11b94bf1e3baf8650fcba2d1cc8d22ef">More...</a><br /></td></tr>
+<tr class="separator:a11b94bf1e3baf8650fcba2d1cc8d22ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaabd934cef54e7eb4836113efffd07eb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#aaabd934cef54e7eb4836113efffd07eb">load_inode</a> (size_t inumber, <a class="el" href="structFileSystem_1_1Inode.html">Inode</a> *node)</td></tr>
+<tr class="memdesc:aaabd934cef54e7eb4836113efffd07eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">loads inode corresponding to inumber into node  <a href="classFileSystem.html#aaabd934cef54e7eb4836113efffd07eb">More...</a><br /></td></tr>
+<tr class="separator:aaabd934cef54e7eb4836113efffd07eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1915305aaca586d161dce674becbb69"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#ac1915305aaca586d161dce674becbb69">allocate_free_block</a> ()</td></tr>
+<tr class="memdesc:ac1915305aaca586d161dce674becbb69"><td class="mdescLeft">&#160;</td><td class="mdescRight">allocate the first free block from the disk  <a href="classFileSystem.html#ac1915305aaca586d161dce674becbb69">More...</a><br /></td></tr>
+<tr class="separator:ac1915305aaca586d161dce674becbb69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a065f7198a1fd8f3924528d6fd42bbcfd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a065f7198a1fd8f3924528d6fd42bbcfd">read_helper</a> (uint32_t blocknum, int offset, int *length, char **data, char **ptr)</td></tr>
+<tr class="memdesc:a065f7198a1fd8f3924528d6fd42bbcfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads the block from disk and changes the pointers accordingly  <a href="classFileSystem.html#a065f7198a1fd8f3924528d6fd42bbcfd">More...</a><br /></td></tr>
+<tr class="separator:a065f7198a1fd8f3924528d6fd42bbcfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a240dfa91ec04eb426f01f4dc5b2c65c8"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a240dfa91ec04eb426f01f4dc5b2c65c8">write_ret</a> (size_t inumber, <a class="el" href="structFileSystem_1_1Inode.html">Inode</a> *node, int ret)</td></tr>
+<tr class="memdesc:a240dfa91ec04eb426f01f4dc5b2c65c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes the node into the corresponding inode block  <a href="classFileSystem.html#a240dfa91ec04eb426f01f4dc5b2c65c8">More...</a><br /></td></tr>
+<tr class="separator:a240dfa91ec04eb426f01f4dc5b2c65c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72e4ee96239f8baf9f969bcd206d4cc7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a72e4ee96239f8baf9f969bcd206d4cc7">read_buffer</a> (int offset, int *<a class="el" href="classFileSystem.html#a6cd48553ae0ed59577d8490b7608e008">read</a>, int length, char *data, uint32_t blocknum)</td></tr>
+<tr class="memdesc:a72e4ee96239f8baf9f969bcd206d4cc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads from buffer and writes to a block in the disk  <a href="classFileSystem.html#a72e4ee96239f8baf9f969bcd206d4cc7">More...</a><br /></td></tr>
+<tr class="separator:a72e4ee96239f8baf9f969bcd206d4cc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b0f75ee52938709c795a5f9cea38440"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a3b0f75ee52938709c795a5f9cea38440">check_allocation</a> (<a class="el" href="structFileSystem_1_1Inode.html">Inode</a> *node, int <a class="el" href="classFileSystem.html#a6cd48553ae0ed59577d8490b7608e008">read</a>, int orig_offset, uint32_t &amp;blocknum, bool write_indirect, <a class="el" href="unionFileSystem_1_1Block.html">Block</a> indirect)</td></tr>
+<tr class="memdesc:a3b0f75ee52938709c795a5f9cea38440"><td class="mdescLeft">&#160;</td><td class="mdescRight">allocates a block if required; if no block is available in the disk; returns false  <a href="classFileSystem.html#a3b0f75ee52938709c795a5f9cea38440">More...</a><br /></td></tr>
+<tr class="separator:a3b0f75ee52938709c795a5f9cea38440"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb617f6cf7bae50044ce387c3bf0c361"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#abb617f6cf7bae50044ce387c3bf0c361">allocate_block</a> ()</td></tr>
+<tr class="memdesc:abb617f6cf7bae50044ce387c3bf0c361"><td class="mdescLeft">&#160;</td><td class="mdescRight">allocates the first free block from free block bitmap  <a href="classFileSystem.html#abb617f6cf7bae50044ce387c3bf0c361">More...</a><br /></td></tr>
+<tr class="separator:abb617f6cf7bae50044ce387c3bf0c361"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac893795d0f4d355b028e6f908ab4fd1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFileSystem_1_1Directory.html">Directory</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#aac893795d0f4d355b028e6f908ab4fd1">add_dir_entry</a> (<a class="el" href="structFileSystem_1_1Directory.html">Directory</a> dir, uint32_t inum, uint32_t type, char name[])</td></tr>
 <tr class="separator:aac893795d0f4d355b028e6f908ab4fd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e4f91669c100c11f4d3fed225a05abc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a2e4f91669c100c11f4d3fed225a05abc">write_dir_back</a> (struct <a class="el" href="structFileSystem_1_1Directory.html">Directory</a> dir)</td></tr>
@@ -165,6 +216,8 @@ Private Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>FileSytem Class. Contains fs layer to access and store disk blocks. Used by sfssh (shell) to provide access to the end-user. </p>
+
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00077">77</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aac893795d0f4d355b028e6f908ab4fd1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aac893795d0f4d355b028e6f908ab4fd1">&#9670;&nbsp;</a></span>add_dir_entry()</h2>
@@ -237,6 +290,75 @@ Private Member Functions</h2></td></tr>
 </li>
 </ul>
 
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00393">393</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+
+</div>
+</div>
+<a id="abb617f6cf7bae50044ce387c3bf0c361"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb617f6cf7bae50044ce387c3bf0c361">&#9670;&nbsp;</a></span>allocate_block()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t FileSystem::allocate_block </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>allocates the first free block from free block bitmap </p>
+<dl class="section return"><dt>Returns</dt><dd>block number of the block allocated; 0 if no block is available </dd></dl>
+<dl class="section implementation">
+<dt>Implementation details  </dt>
+<dd></dd>
+</dl>
+<ul>
+<li>sanity check</li>
+<li>iterate through the free bit map and allocate the first free block</li>
+<li>disk is full</li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__1_8cpp_source.html#l00299">299</a> of file <a class="el" href="fs__layer__1_8cpp_source.html">fs_layer_1.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ac1915305aaca586d161dce674becbb69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1915305aaca586d161dce674becbb69">&#9670;&nbsp;</a></span>allocate_free_block()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ssize_t FileSystem::allocate_free_block </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>allocate the first free block from the disk </p>
+<dl class="section return"><dt>Returns</dt><dd>returns the blocknum of the disk; if the disk is full, returns 0 </dd></dl>
+
 </div>
 </div>
 <a id="a8334ca97257fbf6730b35aa7bce50913"></a>
@@ -274,6 +396,8 @@ false incase of error </dd></dl>
 </li>
 </ul>
 
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00709">709</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+
 </div>
 </div>
 <a id="adf389211c4a979e091068a7e7e8806fc"></a>
@@ -310,6 +434,93 @@ false incase of error </dd></dl>
 <li>Store it in cached MetaData <br  />
 </li>
 </ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00325">325</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a3b0f75ee52938709c795a5f9cea38440"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b0f75ee52938709c795a5f9cea38440">&#9670;&nbsp;</a></span>check_allocation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FileSystem::check_allocation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFileSystem_1_1Inode.html">Inode</a> *&#160;</td>
+          <td class="paramname"><em>node</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>read</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>orig_offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t &amp;&#160;</td>
+          <td class="paramname"><em>blocknum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>write_indirect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="unionFileSystem_1_1Block.html">Block</a>&#160;</td>
+          <td class="paramname"><em>indirect</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>allocates a block if required; if no block is available in the disk; returns false </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">node</td><td>used to set the size of inode in case allocation fails </td></tr>
+    <tr><td class="paramname">read</td><td>bytes read from buffer so far </td></tr>
+    <tr><td class="paramname">orig_offset</td><td>offset passed to <a class="el" href="classFileSystem.html#a11b94bf1e3baf8650fcba2d1cc8d22ef" title="write to the disk">write()</a> function call </td></tr>
+    <tr><td class="paramname">blocknum</td><td>index of block in the free block bitmap </td></tr>
+    <tr><td class="paramname">write_indirect</td><td>true if the block is an indirect node </td></tr>
+    <tr><td class="paramname">indirect</td><td>the indirect node if required </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if allocation is successful; false otherwise </dd></dl>
+<dl class="section implementation">
+<dt>Implementation details  </dt>
+<dd></dd>
+</dl>
+<ul>
+<li>sanity check</li>
+<li>if blocknum is 0, then allocate a new block</li>
+<li>set size of node and write back to disk if it is an indirect node</li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__1_8cpp_source.html#l00368">368</a> of file <a class="el" href="fs__layer__1_8cpp_source.html">fs_layer_1.cpp</a>.</p>
 
 </div>
 </div>
@@ -365,6 +576,8 @@ false incase of error. </dd></dl>
 <li>Endings</li>
 </ul>
 
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00794">794</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+
 </div>
 </div>
 <a id="a6ef26f8bb03e06ea21339df0a320cbb6"></a>
@@ -415,6 +628,103 @@ false incase of error. </dd></dl>
 <li>Read from the inode and write it to the File</li>
 <li>Endings</li>
 </ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00753">753</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a0e274eaf21523812ef3ec8727079732b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e274eaf21523812ef3ec8727079732b">&#9670;&nbsp;</a></span>create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ssize_t FileSystem::create </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>creates a new inode </p>
+<dl class="section return"><dt>Returns</dt><dd>the inumber of the newly created inode </dd></dl>
+<dl class="section implementation">
+<dt>Implementation details  </dt>
+<dd></dd>
+</dl>
+<ul>
+<li>sanity check</li>
+<li>read the superblock</li>
+<li>locate free inode in inode table</li>
+<li>check if inode block is full</li>
+<li>find the first empty inode</li>
+<li>set the inode to default values</li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__1_8cpp_source.html#l00024">24</a> of file <a class="el" href="fs__layer__1_8cpp_source.html">fs_layer_1.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a638a41aa7cfb32a9d29a5c69563349a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a638a41aa7cfb32a9d29a5c69563349a3">&#9670;&nbsp;</a></span>debug()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FileSystem::debug </td>
+          <td>(</td>
+          <td class="paramtype">Disk *&#160;</td>
+          <td class="paramname"><em>disk</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>prints the basic outline of the disk </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">disk</td><td>the disk to be debugged </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void function; returns nothing </dd></dl>
+<dl class="section implementation">
+<dt>Implementation details  </dt>
+<dd></dd>
+</dl>
+<ul>
+<li>read superblock</li>
+<li>verifying the integrity of the file system</li>
+<li>printing the superblock</li>
+<li>reading the inode blocks</li>
+<li>array of inodes</li>
+<li>iterating through INODES_PER_BLOCK inodes</li>
+</ul>
+<p>iterating through the direct nodes</p>
+<ul>
+<li>iterate through the indirect nodes</li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00028">28</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
 
 </div>
 </div>
@@ -472,6 +782,8 @@ false incase of error. </dd></dl>
 </li>
 </ul>
 
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00464">464</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+
 </div>
 </div>
 <a id="a0a52b3544e11bf6e40ed6c52b4f146a8"></a>
@@ -490,6 +802,119 @@ false incase of error. </dd></dl>
 </div><div class="memdoc">
 
 <p>Unmounts the disk and resets pointer. </p>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00745">745</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a7b5b720c0fcda7fab862a62ad24411bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b5b720c0fcda7fab862a62ad24411bb">&#9670;&nbsp;</a></span>format()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FileSystem::format </td>
+          <td>(</td>
+          <td class="paramtype">Disk *&#160;</td>
+          <td class="paramname"><em>disk</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>formats the entire disk </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">disk</td><td>the disk to be formatted </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the formatting was successful; false otherwise </dd></dl>
+<dl class="section implementation">
+<dt>Implementation details  </dt>
+<dd></dd>
+</dl>
+<ul>
+<li>write superblock</li>
+<li>Reinitialising password protection</li>
+<li>clear all other blocks</li>
+<li>clear individual Inodes</li>
+<li>clear all direct Pointers</li>
+<li>clear indirect Pointer</li>
+<li>Free Data Blocks</li>
+<li>Free <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> Blocks</li>
+<li>Create Root directory</li>
+<li>Create table entries for "." and ".."</li>
+<li>Empty the directories</li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00092">92</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+
+</div>
+</div>
+<a id="aaabd934cef54e7eb4836113efffd07eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaabd934cef54e7eb4836113efffd07eb">&#9670;&nbsp;</a></span>load_inode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FileSystem::load_inode </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>inumber</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFileSystem_1_1Inode.html">Inode</a> *&#160;</td>
+          <td class="paramname"><em>node</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>loads inode corresponding to inumber into node </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">inumber</td><td>index into inode table </td></tr>
+    <tr><td class="paramname">node</td><td>pointer to inode </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>boolean value indicative of success of the load operation </dd></dl>
+<dl class="section implementation">
+<dt>Implementation details  </dt>
+<dd></dd>
+</dl>
+<ul>
+<li>sanity check</li>
+<li>find index of inode in the inode table</li>
+<li>load the inode into <a class="el" href="structFileSystem_1_1Inode.html" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> *node</li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__1_8cpp_source.html#l00066">66</a> of file <a class="el" href="fs__layer__1_8cpp_source.html">fs_layer_1.cpp</a>.</p>
 
 </div>
 </div>
@@ -512,6 +937,8 @@ false incase of error. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>true if successful </dd>
 <dd>
 false incase of error </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00729">729</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
 
 </div>
 </div>
@@ -555,6 +982,8 @@ false incase of error. </dd></dl>
 <li>Print <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> Data <br  />
 </li>
 </ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00484">484</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
 
 </div>
 </div>
@@ -609,6 +1038,230 @@ false incase of errors </dd></dl>
 </li>
 </ul>
 
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00513">513</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+
+</div>
+</div>
+<a id="acfe7dee73ac508c3996fd63e30fe5af7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfe7dee73ac508c3996fd63e30fe5af7">&#9670;&nbsp;</a></span>mount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FileSystem::mount </td>
+          <td>(</td>
+          <td class="paramtype">Disk *&#160;</td>
+          <td class="paramname"><em>disk</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>mounts the file system onto the disk </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">disk</td><td>the disk to be mounted </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the mount operation was successful; false otherwise </dd></dl>
+<dl class="section implementation">
+<dt>Implementation details  </dt>
+<dd></dd>
+</dl>
+<ul>
+<li>sanity check</li>
+<li>read superblock</li>
+<li>Handle Password Protection</li>
+<li>copy metadata</li>
+<li>allocate free block bitmap</li>
+<li>allocate inode counter</li>
+<li>setting free bit map node 0 to true for superblock</li>
+<li>read inode blocks</li>
+<li>set free bit map for inode blocks</li>
+<li>set free bit map for direct pointers</li>
+<li>set free bit map for indirect pointers</li>
+<li>Allocate dir_counter</li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00183">183</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a6cd48553ae0ed59577d8490b7608e008"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cd48553ae0ed59577d8490b7608e008">&#9670;&nbsp;</a></span>read()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ssize_t FileSystem::read </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>inumber</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>offset</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>read from disk </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">inumber</td><td>index into the inode table of the corresponding inode </td></tr>
+    <tr><td class="paramname">data</td><td>data buffer </td></tr>
+    <tr><td class="paramname">length</td><td>bytes to be read from disk </td></tr>
+    <tr><td class="paramname">offset</td><td>start point of the read operation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bytes read from disk; -1 in case of an error </dd></dl>
+<dl class="section implementation">
+<dt>Implementation details  </dt>
+<dd></dd>
+</dl>
+<ul>
+<li>sanity check</li>
+<li>IMPORTANT: start reading from index = offset</li>
+<li>if offset is greater than size of inode, then no data can be read if length + offset exceeds the size of inode, adjust length accordingly</li>
+<li>data is head; ptr is tail</li>
+<li>load inode; if invalid, return error</li>
+<li>the offset is within direct pointers</li>
+<li>calculate the node to start reading from</li>
+<li>check if the direct node is valid</li>
+<li>read the direct blocks</li>
+<li>if length &lt;= 0, then enough data has been read</li>
+<li>more data is to be read</li>
+<li>check if all the direct nodes have been read completely and if the indirect pointer is valid</li>
+<li>read the indirect nodes</li>
+<li>if length &lt;= 0, then enough data has been read</li>
+<li>data exhausted but the length requested was more</li>
+<li>logically, this should never print</li>
+<li>data exhausted but the length requested was more</li>
+<li>logically, this should never print</li>
+<li>inode has no stored data</li>
+<li>offset begins in the indirect block</li>
+<li>check if the indirect node is valid</li>
+<li>change offset accordingly and find the indirect node to start reading from</li>
+<li>iterate through the indirect nodes</li>
+<li>if length &lt;= 0, then enough data has been read</li>
+<li>data exhausted but the length requested was more</li>
+<li>logically, this should never print</li>
+<li>the indirect node is invalid</li>
+<li>inode is invalid</li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__1_8cpp_source.html#l00176">176</a> of file <a class="el" href="fs__layer__1_8cpp_source.html">fs_layer_1.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a72e4ee96239f8baf9f969bcd206d4cc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72e4ee96239f8baf9f969bcd206d4cc7">&#9670;&nbsp;</a></span>read_buffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FileSystem::read_buffer </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>read</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>blocknum</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>reads from buffer and writes to a block in the disk </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">offset</td><td>starts writing at index = offset </td></tr>
+    <tr><td class="paramname">read</td><td>bytes read from buffer so far </td></tr>
+    <tr><td class="paramname">length</td><td>bytes to be written to the disk </td></tr>
+    <tr><td class="paramname">data</td><td>data buffer </td></tr>
+    <tr><td class="paramname">blocknum</td><td>index of block in free block bitmap </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void function; returns nothing </dd></dl>
+<dl class="section implementation">
+<dt>Implementation details  </dt>
+<dd></dd>
+</dl>
+<ul>
+<li>sanity check</li>
+<li>allocate memory to ptr which acts as buffer for reading from disk</li>
+<li>read data into ptr and change pointers accordingly</li>
+<li>free the allocated memory</li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__1_8cpp_source.html#l00343">343</a> of file <a class="el" href="fs__layer__1_8cpp_source.html">fs_layer_1.cpp</a>.</p>
+
 </div>
 </div>
 <a id="ac4dbe11335ea970b965cb4b6f6cc809d"></a>
@@ -652,9 +1305,135 @@ false incase of errors </dd></dl>
 </li>
 <li>Get offsets and indexes <br  />
 </li>
-<li>Read <a class="el" href="unionFileSystem_1_1Block.html">Block</a> <br  />
+<li>Read <a class="el" href="unionFileSystem_1_1Block.html" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a Superblock,...">Block</a> <br  />
 </li>
 </ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00422">422</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a065f7198a1fd8f3924528d6fd42bbcfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a065f7198a1fd8f3924528d6fd42bbcfd">&#9670;&nbsp;</a></span>read_helper()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FileSystem::read_helper </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>blocknum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>ptr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>reads the block from disk and changes the pointers accordingly </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">blocknum</td><td>index into the free block bitmap </td></tr>
+    <tr><td class="paramname">offset</td><td>start reading from index = offset </td></tr>
+    <tr><td class="paramname">length</td><td>number of bytes to be read </td></tr>
+    <tr><td class="paramname">data</td><td>data buffer </td></tr>
+    <tr><td class="paramname">ptr</td><td>buffer to store the read data </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void function; returns nothing </dd></dl>
+<dl class="section implementation">
+<dt>Implementation details  </dt>
+<dd></dd>
+</dl>
+<ul>
+<li>read the block from disk and change the pointers accordingly</li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__1_8cpp_source.html#l00161">161</a> of file <a class="el" href="fs__layer__1_8cpp_source.html">fs_layer_1.cpp</a>.</p>
+
+</div>
+</div>
+<a id="abd29e32f0d7473d8777419cfc6e36dbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd29e32f0d7473d8777419cfc6e36dbe">&#9670;&nbsp;</a></span>remove()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FileSystem::remove </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>inumber</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>removes the inode </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">inumber</td><td>index into the inode table of the inode to be removed </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the remove operation was successful; false otherwise </dd></dl>
+<dl class="section implementation">
+<dt>Implementation details  </dt>
+<dd></dd>
+</dl>
+<ul>
+<li>sanity check</li>
+<li>check if the node is valid; if yes, then load the inode</li>
+<li>decrement the corresponding inode block in inode counter if the inode counter decreases to 0, then set the free bit map to false</li>
+<li>free direct blocks</li>
+<li>free indirect blocks</li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__1_8cpp_source.html#l00094">94</a> of file <a class="el" href="fs__layer__1_8cpp_source.html">fs_layer_1.cpp</a>.</p>
 
 </div>
 </div>
@@ -694,6 +1473,8 @@ false incase of error </dd></dl>
 </li>
 </ul>
 
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00355">355</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+
 </div>
 </div>
 <a id="a9c9294143151ebf992df35a6b5281f78"></a>
@@ -722,6 +1503,8 @@ false incase of error </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>true if successful </dd>
 <dd>
 false incase of error </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00736">736</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
 
 </div>
 </div>
@@ -787,6 +1570,8 @@ false incase of error </dd></dl>
 </li>
 </ul>
 
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00632">632</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+
 </div>
 </div>
 <a id="ace5ae4a8ac3881a3b17580d2c7ca30ea"></a>
@@ -819,6 +1604,8 @@ false incase of errors. </dd></dl>
 <dt>Implementation details  </dt>
 <dd></dd>
 </dl>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00665">665</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
 
 </div>
 </div>
@@ -893,6 +1680,8 @@ false incase of errors. </dd></dl>
 </li>
 </ul>
 
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00574">574</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+
 </div>
 </div>
 <a id="a616c844236d9666441b406da64d940b3"></a>
@@ -929,10 +1718,12 @@ false incase of error </dd></dl>
 </li>
 </ul>
 
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00295">295</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+
 </div>
 </div>
 <a id="a007a2b47dc540ed42669a78706ff87b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a007a2b47dc540ed42669a78706ff87b5">&#9670;&nbsp;</a></span>stat()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a007a2b47dc540ed42669a78706ff87b5">&#9670;&nbsp;</a></span>stat() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -956,11 +1747,58 @@ false incase of error </dd></dl>
 </dl>
 <ul>
 <li>Sanity checks</li>
-<li>Read Super <a class="el" href="unionFileSystem_1_1Block.html">Block</a> and print MetaData</li>
+<li>Read Super <a class="el" href="unionFileSystem_1_1Block.html" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a Superblock,...">Block</a> and print MetaData</li>
 <li>Read directory blocks</li>
 <li>Read Directoreis in each directory block</li>
 <li>Read Table Entries for each directory</li>
 </ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00851">851</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+
+</div>
+</div>
+<a id="aa8de2d02d62d56ffa3433b9fe76c154a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8de2d02d62d56ffa3433b9fe76c154a">&#9670;&nbsp;</a></span>stat() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ssize_t FileSystem::stat </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>inumber</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>check size of an inode </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">inumber</td><td>index into the inode table of inode whose size is to be determined </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>size of the inode; -1 if the inode is invalid </dd></dl>
+<dl class="section implementation">
+<dt>Implementation details  </dt>
+<dd></dd>
+</dl>
+<ul>
+<li>sanity check</li>
+<li>load inode; if valid, return its size</li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__1_8cpp_source.html#l00145">145</a> of file <a class="el" href="fs__layer__1_8cpp_source.html">fs_layer_1.cpp</a>.</p>
 
 </div>
 </div>
@@ -980,7 +1818,7 @@ false incase of error </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Creates a file with size 0. Main function is to allocate an <a class="el" href="structFileSystem_1_1Inode.html">Inode</a> and add <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> to the curr_dir. Error if file already exists. </p>
+<p>Creates a file with size 0. Main function is to allocate an <a class="el" href="structFileSystem_1_1Inode.html" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> and add <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> to the curr_dir. Error if file already exists. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>Name of the file to be added </td></tr>
@@ -1004,6 +1842,114 @@ false incase of error </dd></dl>
 <li>Write back the changes <br  />
 </li>
 </ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00678">678</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a11b94bf1e3baf8650fcba2d1cc8d22ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11b94bf1e3baf8650fcba2d1cc8d22ef">&#9670;&nbsp;</a></span>write()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ssize_t FileSystem::write </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>inumber</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>offset</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>write to the disk </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">inumber</td><td>index into the inode table of the corresponding inode </td></tr>
+    <tr><td class="paramname">data</td><td>data buffer </td></tr>
+    <tr><td class="paramname">length</td><td>bytes to be written to disk </td></tr>
+    <tr><td class="paramname">offset</td><td>start point of the write operation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bytes written to disk; -1 in case of an error </dd></dl>
+<dl class="section implementation">
+<dt>Implementation details  </dt>
+<dd></dd>
+</dl>
+<ul>
+<li>sanity check</li>
+<li>insufficient size</li>
+<li>if the inode is invalid, allocate inode. need not write to disk right now; will be taken care of in <a class="el" href="classFileSystem.html#a240dfa91ec04eb426f01f4dc5b2c65c8" title="writes the node into the corresponding inode block">write_ret()</a></li>
+<li>set size of the node</li>
+<li>check if the offset is within direct pointers</li>
+<li>find the first node to start writing at and change offset accordingly</li>
+<li>check if the node is valid; if invalid; allocates a block and if no block is available, returns false</li>
+<li>read from data buffer</li>
+<li>enough data has been read from data buffer</li>
+<li>store in direct pointers till either one of the two things happen:</li>
+</ul>
+<ol type="1">
+<li>all the data is stored in the direct pointers</li>
+<li>the data is stored in indirect pointers</li>
+</ol>
+<ul>
+<li>start writing into direct nodes</li>
+<li>check if the node is valid; if invalid; allocates a block and if no block is available, returns false</li>
+<li>enough data has been read from data buffer</li>
+<li>check if the indirect node is valid</li>
+<li>check if the node is valid; if invalid; allocates a block and if no block is available, returns false</li>
+<li>initialise the indirect nodes</li>
+<li>write into indirect nodes</li>
+<li>check if the node is valid; if invalid; allocates a block and if no block is available, returns false</li>
+<li>enough data has been read from data buffer</li>
+<li>space exhausted</li>
+<li>offset begins in indirect blocks</li>
+<li>find the first indirect node to write into and change offset accordingly</li>
+<li>check if the indirect node is valid</li>
+<li>check if the node is valid; if invalid; allocates a block and if no block is available, returns false</li>
+<li>initialise the indirect nodes</li>
+<li>check if the node is valid; if invalid; allocates a block and if no block is available, returns false</li>
+<li>enough data has been read from data buffer</li>
+<li>write into indirect nodes</li>
+<li>check if the node is valid; if invalid; allocates a block and if no block is available, returns false</li>
+<li>enough data has been read from data buffer</li>
+<li>space exhausted</li>
+<li>error</li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__1_8cpp_source.html#l00391">391</a> of file <a class="el" href="fs__layer__1_8cpp_source.html">fs_layer_1.cpp</a>.</p>
 
 </div>
 </div>
@@ -1045,18 +1991,85 @@ false incase of error </dd></dl>
 <ul>
 <li>Get block offset and index <br  />
 </li>
-<li>Read <a class="el" href="unionFileSystem_1_1Block.html">Block</a> <br  />
+<li>Read <a class="el" href="unionFileSystem_1_1Block.html" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a Superblock,...">Block</a> <br  />
 </li>
 <li>Write the Dirblock <br  />
 </li>
 </ul>
 
+<p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00446">446</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a240dfa91ec04eb426f01f4dc5b2c65c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a240dfa91ec04eb426f01f4dc5b2c65c8">&#9670;&nbsp;</a></span>write_ret()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ssize_t FileSystem::write_ret </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>inumber</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFileSystem_1_1Inode.html">Inode</a> *&#160;</td>
+          <td class="paramname"><em>node</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ret</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>writes the node into the corresponding inode block </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">inumber</td><td>index into inode table </td></tr>
+    <tr><td class="paramname">node</td><td>the inode to be written back to disk </td></tr>
+    <tr><td class="paramname">ret</td><td>the value that is returned by the function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>returns the parameter ret </dd></dl>
+<dl class="section implementation">
+<dt>Implementation details  </dt>
+<dd></dd>
+</dl>
+<ul>
+<li>sanity check</li>
+<li>find index of inode in the inode table</li>
+<li>store the node into the block</li>
+<li>return ret</li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="fs__layer__1_8cpp_source.html#l00320">320</a> of file <a class="el" href="fs__layer__1_8cpp_source.html">fs_layer_1.cpp</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/sfs/<a class="el" href="fs_8h_source.html">fs.h</a></li>
-<li>src/library/fs_layer_1.cpp</li>
-<li>src/library/fs_layer_2.cpp</li>
+<li>src/library/<a class="el" href="fs__layer__1_8cpp_source.html">fs_layer_1.cpp</a></li>
+<li>src/library/<a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
