@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['reads_146',['Reads',['../classDisk.html#a69502f7062a7f841649c8679f080a9c9',1,'Disk']]]
+  ['reads_148',['Reads',['../classDisk.html#a69502f7062a7f841649c8679f080a9c9',1,'Disk']]]
 ];

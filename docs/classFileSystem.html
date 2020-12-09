@@ -13,6 +13,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="html_css.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -239,7 +240,7 @@ Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>FileSytem Class. Contains fs layer to access and store disk blocks. Used by sfssh (shell) to provide access to the end-user. </p>
 
-<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00077">77</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00131">131</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
 </div><hr/><h2 class="groupheader">Class Documentation</h2>
 <a name="unionFileSystem_1_1Block" id="unionFileSystem_1_1Block"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#unionFileSystem_1_1Block">&#9670;&nbsp;</a></span>FileSystem::Block</h2>
@@ -254,7 +255,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <div class="textblock"><p><a class="el" href="classFileSystem.html#unionFileSystem_1_1Block" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a SuperBlock,...">Block</a> Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a <a class="el" href="classFileSystem.html#structFileSystem_1_1SuperBlock" title="SuperBlock structure. It is the first block in any disk. It&#39;s main function is to help validating the...">SuperBlock</a>, <a class="el" href="classFileSystem.html#structFileSystem_1_1Inode" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a>, Pointers block, or raw Data block. </p>
 
-<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00148">148</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00202">202</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
 </div><div class="dynheader">
 Collaboration diagram for FileSystem::Block:</div>
 <div class="dyncontent">
@@ -320,7 +321,7 @@ Super</td>
 </div><div class="memdoc">
 <div class="textblock"><p><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> Structure. Contains a table of directory entries for storing hierarchy. Also contains fields for Size and Valid bits. Name is matched against the one in <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> entry. Also, it is allocated from end for effectively using disk space. </p>
 
-<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00123">123</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00177">177</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
 </div><div class="dynheader">
 Collaboration diagram for FileSystem::Directory:</div>
 <div class="dyncontent">
@@ -376,7 +377,7 @@ Valid</td>
 </div><div class="memdoc">
 <div class="textblock"><p><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object. Used to store information about a directory. </p>
 
-<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00109">109</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00163">163</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -423,7 +424,7 @@ valid</td>
 </div><div class="memdoc">
 <div class="textblock"><p><a class="el" href="classFileSystem.html#structFileSystem_1_1Inode" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used to store the data. Stores the size of the file. </p>
 
-<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00136">136</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00190">190</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -470,7 +471,7 @@ Valid</td>
 </div><div class="memdoc">
 <div class="textblock"><p><a class="el" href="classFileSystem.html#structFileSystem_1_1SuperBlock" title="SuperBlock structure. It is the first block in any disk. It&#39;s main function is to help validating the...">SuperBlock</a> structure. It is the first block in any disk. It's main function is to help validating the disk. Contains metadata of the disk. </p>
 
-<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00094">94</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00148">148</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -2445,7 +2446,7 @@ false incase of error </dd></dl>
 </div><div class="memdoc">
 <p>Caches curr dir to save a disk-read </p>
 
-<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00271">271</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00325">325</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
 
 </div>
 </div>
@@ -2470,7 +2471,7 @@ false incase of error </dd></dl>
 </div><div class="memdoc">
 <p>Stores the number of <a class="el" href="classFileSystem.html#structFileSystem_1_1Inode" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> contained in an <a class="el" href="classFileSystem.html#structFileSystem_1_1Inode" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> <a class="el" href="classFileSystem.html#unionFileSystem_1_1Block" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a SuperBlock,...">Block</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00160">160</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00214">214</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
 
 </div>
 </div>
@@ -2495,7 +2496,7 @@ false incase of error </dd></dl>
 </div><div class="memdoc">
 <p>Stores disk pointer after successful mounting </p>
 
-<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00158">158</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00212">212</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
 
 </div>
 </div>
@@ -2520,7 +2521,7 @@ false incase of error </dd></dl>
 </div><div class="memdoc">
 <p>Stores whether a block is free or not </p>
 
-<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00159">159</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00213">213</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
 
 </div>
 </div>
@@ -2545,7 +2546,7 @@ false incase of error </dd></dl>
 </div><div class="memdoc">
 <p>Stores the number of <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> contianed in a <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> <a class="el" href="classFileSystem.html#unionFileSystem_1_1Block" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a SuperBlock,...">Block</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00161">161</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00215">215</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
 
 </div>
 </div>

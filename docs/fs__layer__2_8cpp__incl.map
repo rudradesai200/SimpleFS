@@ -1,6 +1,6 @@
 <map id="src/library/fs_layer_2.cpp" name="src/library/fs_layer_2.cpp">
 <area shape="rect" id="node1" title="Implementation of fs.h layer_2 functions." alt="" coords="533,5,676,47"/>
-<area shape="rect" id="node2" href="$fs_8h_source.html" title=" " alt="" coords="157,95,226,121"/>
+<area shape="rect" id="node2" href="$fs_8h.html" title="Interface for the FileSystem layer." alt="" coords="157,95,226,121"/>
 <area shape="rect" id="node8" title=" " alt="" coords="250,95,354,121"/>
 <area shape="rect" id="node9" title=" " alt="" coords="378,95,463,121"/>
 <area shape="rect" id="node10" title=" " alt="" coords="487,95,546,121"/>
