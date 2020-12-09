@@ -19,7 +19,7 @@
  * Here, we provide a simple implementation of a disk-based file system. A custom shell is also provided to access the file system.
  * The shell (sfs) and the disk emulator were pre-implemented by the University of Notre Dame. Our task was to build upon the given tools and implement the File System layer and, in doing so, bridge the gap between shell and disk emulator.
  * 
- * \section Features
+ * @section Features
  *-# <b> Ability to view and modify data stored in the disk.</b>
  *  - Disks can be accessed only in blocks of size 4KB (can be changed in the disk implementation).
  *  - A file system is an abstraction layer that allows the user to modify the disk without worrying about the block size.
@@ -29,13 +29,13 @@
  *  - Our implementation of the format() function hard-resets the disk, i.e., it does not only delete the inodes but sets each byte to zero. 
  *  - The number of blocks for metadata and storage purposes is dependent on the type and implementation of the file system used. 
  *  - Our implementation uses one single block named “superblock” to store metadata, 10% blocks to store inodes, 1% blocks to store directories and files. The remaining blocks are used to store raw data.
- *-# <b> Create, Read and Write inodes.  </b>
+ *-# <b> Create, Read, and Write inodes.  </b>
  *  - Inodes are data structures that are used to store files. The data to be stored is saved across an array of direct blocks and indirect blocks. Such distinction is made so that the access time for small files is significantly reduced. 
  *  - The indirect block is simply an array of pointers to raw data blocks. This implementation has a major pitfall: it limits the maximum size of files. A simple workaround is to make the last pointer of the indirect block point to another indirect block. We have not yet implemented this scheme in order to keep the file system simple.
  *  - The implementation provides functions to create, read, and write inodes. Support for directly creating files and directories has been added as an extra feature.
  *  - The inodes store extra data in its member variables to enable features such as permissions. Though we have not implemented this feature, it can be easily achieved. 
  *
- * \section Additional-Features
+ * @section Additional-Features
  *-# <b> Added support for directly creating files and multi-level directories. </b>
  * - Used additional data structures to maintain directories.
  * - Files and directories are associated with a name for user’s ease and can be accessed from the root directory.
@@ -60,15 +60,15 @@
  * - The hashed password is stored right in the superblock as most of the space in this block is left unutilised.
  * - Upon mounting the disk, the user is prompted to enter the password. Only after logging in can the user access the disk and make use of the user functions.
  *
- * \section Future-Aspects
- *-# <b> Extend support to devices </b>
+ * @section Future-Aspects
+ *-# <b> Extend support to devices. </b>
  * - A device descriptor is a number used by the operating system to identify the device uniquely. An array of device descriptors is used to support multiple devices.
  * - Support for devices can be added by mapping these device descriptors to the device drivers.
  * - The standard read/write functions are overridden by the device driver’s corresponding functions. This ensures a consistent universal interface for  devices as well as files.
  * - The only difference is an additional field that is needed to store the device descriptor.
  * - Generally, the file systems are equipped with caching and buffer layers for files. Thus, the universal interface can ensure the same crash recovery for devices too.
  *
- *-# <b> Extend support to networks </b>
+ *-# <b> Extend support to networks. </b>
  * - Similar to devices, support for networks can be extended by mapping network descriptors to device drivers.
  * - A significant benefit of handling networks and devices as regular files is that the file system’s implementation remains universal and minimal.
  * - An end-user need not worry about the devices/networks as a separate entity. The OS and file system provides a consistent interface.  
@@ -93,7 +93,7 @@
  * - Spin-locks are an excellent choice when the critical section is small. In contrast, a more extensive critical section may require mutexes.
  * - Synchronized code ensures the correctness of the code even when executed on a multiprocessor system. 
  *
- *-# <b> Encryption of disk. </b> 
+ *-# <b> Encryption of disk. </b>
  * - The current password protection implementation is minimal as it does not prevent the adversary from creating their file system to access the data stored on the disk without ever entering the password. 
  * - Hence, to provide a much more secure system, the entire disk can be encrypted using advanced encryption algorithms.
  *
@@ -102,7 +102,7 @@
  * - Added support for password protection.
  * - Added support for directories and files.
  * \image html Success.png
- * \section Refrences
+ * \section References
  * - https://www3.nd.edu/~pbui/teaching/cse.30341.fa17/project06.html - Notre Dame University for providing the project and the boilerplate code
  * - https://drive.google.com/file/d/1oL5cUGzU7IchOZO_Jx7R9j8HqGxJ-wDX/view - File System lecture slides by Dr. Chester Rebeiro
  * - https://en.wikipedia.org/wiki/File_system - Wikipedia entry for File Systems

@@ -90,7 +90,7 @@ Features</h1>
 <li>Our implementation uses one single block named “superblock” to store metadata, 10% blocks to store inodes, 1% blocks to store directories and files. The remaining blocks are used to store raw data.</li>
 </ul>
 </li>
-<li><b> Create, Read and Write inodes. </b><ul>
+<li><b> Create, Read, and Write inodes. </b><ul>
 <li>Inodes are data structures that are used to store files. The data to be stored is saved across an array of direct blocks and indirect blocks. Such distinction is made so that the access time for small files is significantly reduced.</li>
 <li>The indirect block is simply an array of pointers to raw data blocks. This implementation has a major pitfall: it limits the maximum size of files. A simple workaround is to make the last pointer of the indirect block point to another indirect block. We have not yet implemented this scheme in order to keep the file system simple.</li>
 <li>The implementation provides functions to create, read, and write inodes. Support for directly creating files and directories has been added as an extra feature.</li>
@@ -132,7 +132,7 @@ Additional-Features</h1>
 <h1><a class="anchor" id="Future-Aspects"></a>
 Future-Aspects</h1>
 <ol type="1">
-<li><b> Extend support to devices </b><ul>
+<li><b> Extend support to devices. </b><ul>
 <li>A device descriptor is a number used by the operating system to identify the device uniquely. An array of device descriptors is used to support multiple devices.</li>
 <li>Support for devices can be added by mapping these device descriptors to the device drivers.</li>
 <li>The standard read/write functions are overridden by the device driver’s corresponding functions. This ensures a consistent universal interface for devices as well as files.</li>
@@ -140,7 +140,7 @@ Future-Aspects</h1>
 <li>Generally, the file systems are equipped with caching and buffer layers for files. Thus, the universal interface can ensure the same crash recovery for devices too.</li>
 </ul>
 </li>
-<li><b> Extend support to networks </b><ul>
+<li><b> Extend support to networks. </b><ul>
 <li>Similar to devices, support for networks can be extended by mapping network descriptors to device drivers.</li>
 <li>A significant benefit of handling networks and devices as regular files is that the file system’s implementation remains universal and minimal.</li>
 <li>An end-user need not worry about the devices/networks as a separate entity. The OS and file system provides a consistent interface. <br  />
@@ -186,8 +186,8 @@ Results</h1>
 </div>
  </li>
 </ul>
-<h1><a class="anchor" id="Refrences"></a>
-Refrences</h1>
+<h1><a class="anchor" id="References"></a>
+References</h1>
 <ul>
 <li><a href="https://www3.nd.edu/~pbui/teaching/cse.30341.fa17/project06.html">https://www3.nd.edu/~pbui/teaching/cse.30341.fa17/project06.html</a> - Notre Dame University for providing the project and the boilerplate code</li>
 <li><a href="https://drive.google.com/file/d/1oL5cUGzU7IchOZO_Jx7R9j8HqGxJ-wDX/view">https://drive.google.com/file/d/1oL5cUGzU7IchOZO_Jx7R9j8HqGxJ-wDX/view</a> - File System lecture slides by Dr. Chester Rebeiro</li>
