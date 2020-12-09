@@ -65,6 +65,7 @@
 #include <cstring>
 #include <vector>
 #include <stdint.h>
+#include <vector>
 
 using namespace std;
 
@@ -126,14 +127,24 @@ private:
         Dirent Table[ENTRIES_PER_DIR];  /** Each Table by default contains 2 entries, "." and ".." @hideinitializer*/
     };
 
-
+    /**
+     * @brief Inode Structure
+     * Corresponds to a file stored on the disk.
+     * Contains the list of raw data blocks used to store the data.
+     * Stores the size of the file.
+    */
     struct Inode {
-    	uint32_t Valid;		                    /**  Whether or not inode is valid @hideinitializer*/
-    	uint32_t Size;		                    /**  Size of file @hideinitializer*/
-    	uint32_t Direct[FileSystem::POINTERS_PER_INODE];    /**  Direct pointers @hideinitializer*/
-    	uint32_t Indirect;	                    /**  Indirect pointer @hideinitializer*/
+    	uint32_t Valid;		                                            /** Whether or not inode is valid */
+    	uint32_t Size;		                                            /** Size of file */
+    	uint32_t Direct[FileSystem::POINTERS_PER_INODE];                /** Direct pointers */
+    	uint32_t Indirect;	                                            /** Indirect pointer */
     };
 
+    /**
+     * @brief Block Union
+     * Corresponds to one block of disk of size Disk::BLOCKSIZE.
+     * Can be used as a Superblock, Inode, Pointers block, or raw Data block.
+    */
     union Block {
     	struct SuperBlock   Super;			                            /**  Superblock @hideinitializer*/
     	struct Inode	    Inodes[FileSystem::INODES_PER_BLOCK];	    /**  Inode block @hideinitializer*/
@@ -151,16 +162,110 @@ private:
     bool mounted;                       //  Boolean to check if the disk is mounted and saved @hideinitializer
 
     // Layer 1 Core Functions
-    ssize_t create();                   
-    bool    remove(size_t inumber);
-    ssize_t read(size_t inumber, char *data, int length, size_t offset);
-    ssize_t write(size_t inumber, char *data, int length, size_t offset);
+        /**
+     * @brief creates a new inode
+     * @return the inumber of the newly created inode 
+    */
+    ssize_t     create();
+    
+    /**
+     * @brief removes the inode
+     * @param inumber index into the inode table of the inode to be removed
+     * @return true if the remove operation was successful; false otherwise
+    */
+    bool        remove(size_t inumber);
+    
+    /**
+     * @brief check size of an inode
+     * @param inumber index into the inode table of inode whose size is to be determined
+     * @return size of the inode; -1 if the inode is invalid
+    */
+    ssize_t     stat(size_t inumber);
+    
+    /**
+     * @brief read from disk
+     * @param inumber index into the inode table of the corresponding inode
+     * @param data data buffer
+     * @param length bytes to be read from disk
+     * @param offset start point of the read operation
+     * @return bytes read from disk; -1 in case of an error
+    */
+    ssize_t     read(size_t inumber, char *data, int length, size_t offset);
+    
+    /**
+     * @brief write to the disk
+     * @param inumber index into the inode table of the corresponding inode
+     * @param data data buffer
+     * @param length bytes to be written to disk
+     * @param offset start point of the write operation
+     * @return bytes written to disk; -1 in case of an error
+    */
+    ssize_t     write(size_t inumber, char *data, int length, size_t offset);
 
     //  Helper functions for Layer 1
-    ssize_t  write_ret(size_t inumber, Inode* node, int ret);
-    bool     load_inode(size_t inumber, Inode *node);
-    ssize_t  allocate_free_block();
-    uint32_t allocate_block();
+    /**
+     * @brief loads inode corresponding to inumber into node
+     * @param inumber index into inode table
+     * @param node pointer to inode
+     * @return boolean value indicative of success of the load operation
+    */
+    bool        load_inode(size_t inumber, Inode *node);
+
+    /**
+     * @brief allocate the first free block from the disk
+     * @return returns the blocknum of the disk; if the disk is full, returns 0
+    */
+    ssize_t     allocate_free_block();
+
+    /**
+     * @brief reads the block from disk and changes the pointers accordingly
+     * @param blocknum index into the free block bitmap
+     * @param offset start reading from index = offset
+     * @param length number of bytes to be read
+     * @param data data buffer
+     * @param ptr buffer to store the read data
+     * @return void function; returns nothing
+    */
+    void        read_helper(uint32_t blocknum, int offset, int *length, char **data, char **ptr);
+    
+    /**
+     * @brief writes the node into the corresponding inode block
+     * @param inumber index into inode table
+     * @param node the inode to be written back to disk
+     * @param ret the value that is returned by the function
+     * @return returns the parameter ret
+    */
+    ssize_t     write_ret(size_t inumber, Inode* node, int ret);
+    
+    /**
+     * @brief reads from buffer and writes to a block in the disk 
+     * @param offset starts writing at index = offset
+     * @param read bytes read from buffer so far
+     * @param length bytes to be written to the disk
+     * @param data data buffer
+     * @param blocknum index of block in free block bitmap
+     * @return  void function; returns nothing
+    */
+    void        read_buffer(int offset, int *read, int length, char *data, uint32_t blocknum);
+    
+    /**
+     * @brief allocates a block if required; if no block is available in the disk; returns false
+     * @param node used to set the size of inode in case allocation fails
+     * @param read bytes read from buffer so far
+     * @param orig_offset offset passed to write() function call
+     * @param blocknum index of block in the free block bitmap
+     * @param write_indirect true if the block is an indirect node
+     * @param indirect the indirect node if required
+     * @return true if allocation is successful; false otherwise
+    */
+    bool        check_allocation(Inode *node, int read, int orig_offset, uint32_t &blocknum, bool write_indirect, Block indirect);
+    
+    /**
+     * @brief allocates the first free block from free block bitmap
+     * @return block number of the block allocated; 0 if no block is available
+    */
+    uint32_t    allocate_block();
+
     ssize_t stat(size_t inumber);
 
     // Helper functions for Layer 2
@@ -224,10 +329,30 @@ private:
     Directory      rm_helper(Directory parent, char name[]);
 
 public:
-    static void debug(Disk *disk);
-    static bool format(Disk *disk);
-    bool    mount(Disk *disk);
 
+    /**
+     * @brief prints the basic outline of the disk
+     * @param disk the disk to be debugged
+     * @return void function; returns nothing
+    */
+    static void debug(Disk *disk);
+    
+    /**
+     * @brief formats the entire disk
+     * @param disk the disk to be formatted
+     * @return true if the formatting was successful; false otherwise
+    */
+    static bool format(Disk *disk);
+
+
+    /**
+     * @brief mounts the file system onto the disk
+     * @param disk the disk to be mounted
+     * @return true if the mount operation was successful; false otherwise
+    */
+    bool        mount(Disk *disk);
+
+    
     //  Security Functions
 
     /**
