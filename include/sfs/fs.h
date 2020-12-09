@@ -266,8 +266,6 @@ private:
     */
     uint32_t    allocate_block();
 
-    ssize_t stat(size_t inumber);
-
     // Helper functions for Layer 2
     
     //  Caches curr dir to save a disk-read @hideinitializer
