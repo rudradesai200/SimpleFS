@@ -1,5 +1,13 @@
 var searchData=
 [
-  ['set_5fpassword_95',['set_password',['../classFileSystem.html#a616c844236d9666441b406da64d940b3',1,'FileSystem']]],
-  ['stat_96',['stat',['../classFileSystem.html#aa8de2d02d62d56ffa3433b9fe76c154a',1,'FileSystem::stat(size_t inumber)'],['../classFileSystem.html#a007a2b47dc540ed42669a78706ff87b5',1,'FileSystem::stat()']]]
+  ['read_102',['read',['../classFileSystem.html#a6cd48553ae0ed59577d8490b7608e008',1,'FileSystem::read()'],['../classDisk.html#a4d5ac631ca95259c2b93e76a725d52a6',1,'Disk::read()']]],
+  ['read_5fbuffer_103',['read_buffer',['../classFileSystem.html#a72e4ee96239f8baf9f969bcd206d4cc7',1,'FileSystem']]],
+  ['read_5fdir_5ffrom_5foffset_104',['read_dir_from_offset',['../classFileSystem.html#ac4dbe11335ea970b965cb4b6f6cc809d',1,'FileSystem']]],
+  ['read_5fhelper_105',['read_helper',['../classFileSystem.html#a065f7198a1fd8f3924528d6fd42bbcfd',1,'FileSystem']]],
+  ['remove_106',['remove',['../classFileSystem.html#abd29e32f0d7473d8777419cfc6e36dbe',1,'FileSystem']]],
+  ['remove_5fpassword_107',['remove_password',['../classFileSystem.html#aad4304b8e9da680d481fa6e15eb0af51',1,'FileSystem']]],
+  ['rm_108',['rm',['../classFileSystem.html#a9c9294143151ebf992df35a6b5281f78',1,'FileSystem']]],
+  ['rm_5fhelper_109',['rm_helper',['../classFileSystem.html#a4da740d4d909a635d8aed98465d4f1ca',1,'FileSystem']]],
+  ['rmdir_110',['rmdir',['../classFileSystem.html#ace5ae4a8ac3881a3b17580d2c7ca30ea',1,'FileSystem']]],
+  ['rmdir_5fhelper_111',['rmdir_helper',['../classFileSystem.html#af62ced2f60c6ab9240c36a4fc40ba29a',1,'FileSystem']]]
 ];

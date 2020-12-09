@@ -10,4 +10,6 @@ digraph "FileSystem"
   Node3 [label="FileSystem::Directory",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structFileSystem_1_1Directory.html",tooltip="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field..."];
   Node4 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" Table" ,fontname="Helvetica"];
   Node4 [label="FileSystem::Dirent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structFileSystem_1_1Dirent.html",tooltip="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object..."];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" fs_disk" ,fontname="Helvetica"];
+  Node5 [label="Disk",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classDisk.html",tooltip="Disk class Implements Disk abstraction that enables emulation of a disk image. Used by file system to..."];
 }
