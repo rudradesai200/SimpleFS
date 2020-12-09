@@ -118,7 +118,7 @@ Additional-Features</h1>
 </li>
 <li><b> Added Security layer to encrypt and decrypt the disk.</b><ul>
 <li>We implemented sha256 encryption for storing passwords on the disk.</li>
-<li>The main question we faced was to decide where to store the password. So, we decided to store it in the Superblock.</li>
+<li>The main question we faced was to decide where to store the password. So, we decided to store it in the SuperBlock.</li>
 <li>Only password hash is stored, which can be compared with later to validate the user.</li>
 <li>Functions like debug and mount cannot be used without opening the lock, which inherently restricts other functions to be accessed.</li>
 </ul>

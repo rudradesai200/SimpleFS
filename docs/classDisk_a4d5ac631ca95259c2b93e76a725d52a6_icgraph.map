@@ -1,0 +1,5 @@
+<map id="Disk::read" name="Disk::read">
+<area shape="rect" id="node1" title="read from disk" alt="" coords="197,31,285,57"/>
+<area shape="rect" id="node2" href="$classFileSystem.html#a638a41aa7cfb32a9d29a5c69563349a3" title="prints the basic outline of the disk" alt="" coords="6,5,149,32"/>
+<area shape="rect" id="node3" href="$classFileSystem.html#acfe7dee73ac508c3996fd63e30fe5af7" title="mounts the file system onto the disk" alt="" coords="5,56,149,83"/>
+</map>

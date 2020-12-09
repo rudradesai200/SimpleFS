@@ -1,0 +1,7 @@
+<map id="FileSystem::Block" name="FileSystem::Block">
+<area shape="rect" id="node1" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a SuperBlock,..." alt="" coords="217,184,355,211"/>
+<area shape="rect" id="node2" href="$classFileSystem.html#structFileSystem_1_1SuperBlock" title="SuperBlock structure. It is the first block in any disk. It&#39;s main function is to help validating the..." alt="" coords="5,95,180,121"/>
+<area shape="rect" id="node3" href="$classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field..." alt="" coords="205,95,367,121"/>
+<area shape="rect" id="node4" href="$classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object..." alt="" coords="215,5,357,32"/>
+<area shape="rect" id="node5" href="$classFileSystem.html#structFileSystem_1_1Inode" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t..." alt="" coords="391,95,530,121"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="FileSystem::set_password" name="FileSystem::set_password">
+<area shape="rect" id="node1" title="Adds password to the mounted disk (fs_disk). Gives the control to change_password if disk is pasword ..." alt="" coords="203,13,393,39"/>
+<area shape="rect" id="node2" href="$classFileSystem.html#adf389211c4a979e091068a7e7e8806fc" title="Changes password in the mounted disk (fs_disk). Checks the current password and gives control to set_..." alt="" coords="5,5,155,47"/>
+</map>

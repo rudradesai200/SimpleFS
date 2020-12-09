@@ -1,0 +1,8 @@
+<map id="Disk::sanity_check" name="Disk::sanity_check">
+<area shape="rect" id="node1" title="check if the block is within valid range" alt="" coords="340,81,484,108"/>
+<area shape="rect" id="node2" href="$classDisk.html#a4d5ac631ca95259c2b93e76a725d52a6" title="read from disk" alt="" coords="202,56,290,83"/>
+<area shape="rect" id="node5" href="$classDisk.html#adf545c67aa2e095bfc3308895072ff56" title="write to disk" alt="" coords="200,107,292,133"/>
+<area shape="rect" id="node3" href="$classFileSystem.html#a638a41aa7cfb32a9d29a5c69563349a3" title="prints the basic outline of the disk" alt="" coords="7,5,150,32"/>
+<area shape="rect" id="node4" href="$classFileSystem.html#acfe7dee73ac508c3996fd63e30fe5af7" title="mounts the file system onto the disk" alt="" coords="7,56,151,83"/>
+<area shape="rect" id="node6" href="$classFileSystem.html#a7b5b720c0fcda7fab862a62ad24411bb" title="formats the entire disk" alt="" coords="5,107,152,133"/>
+</map>

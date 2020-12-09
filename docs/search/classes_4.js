@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['superblock_76',['SuperBlock',['../structFileSystem_1_1SuperBlock.html',1,'FileSystem']]]
+  ['superblock_81',['SuperBlock',['../classFileSystem.html#structFileSystem_1_1SuperBlock',1,'FileSystem']]]
 ];

@@ -1,0 +1,7 @@
+<map id="FileSystem::mount" name="FileSystem::mount">
+<area shape="rect" id="node1" title="mounts the file system onto the disk" alt="" coords="5,56,149,83"/>
+<area shape="rect" id="node2" href="$classDisk.html#a123447ae8556e1dbf6f88bddef33408e" title="mount the disk" alt="" coords="205,5,307,32"/>
+<area shape="rect" id="node3" href="$classDisk.html#a4209dfd7334038364f7decc1e7ea1dc2" title="check if the disk has been mounted" alt="" coords="197,56,315,83"/>
+<area shape="rect" id="node4" href="$classDisk.html#a4d5ac631ca95259c2b93e76a725d52a6" title="read from disk" alt="" coords="212,107,300,133"/>
+<area shape="rect" id="node5" href="$classDisk.html#a7265cfa52d55c0326517e4921d091d56" title="check if the block is within valid range" alt="" coords="363,107,507,133"/>
+</map>

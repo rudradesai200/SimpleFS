@@ -1,0 +1,7 @@
+<map id="FileSystem::format" name="FileSystem::format">
+<area shape="rect" id="node1" title="formats the entire disk" alt="" coords="5,56,152,83"/>
+<area shape="rect" id="node2" href="$classDisk.html#a4209dfd7334038364f7decc1e7ea1dc2" title="check if the disk has been mounted" alt="" coords="200,5,317,32"/>
+<area shape="rect" id="node3" href="$classDisk.html#a80095d17d17b215eea51693a93a91017" title="check size of disk" alt="" coords="216,56,301,83"/>
+<area shape="rect" id="node4" href="$classDisk.html#adf545c67aa2e095bfc3308895072ff56" title="write to disk" alt="" coords="213,107,305,133"/>
+<area shape="rect" id="node5" href="$classDisk.html#a7265cfa52d55c0326517e4921d091d56" title="check if the block is within valid range" alt="" coords="365,107,509,133"/>
+</map>

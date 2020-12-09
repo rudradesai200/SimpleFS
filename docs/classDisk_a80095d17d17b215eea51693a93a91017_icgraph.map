@@ -1,0 +1,4 @@
+<map id="Disk::size" name="Disk::size">
+<area shape="rect" id="node1" title="check size of disk" alt="" coords="200,5,285,32"/>
+<area shape="rect" id="node2" href="$classFileSystem.html#a7b5b720c0fcda7fab862a62ad24411bb" title="formats the entire disk" alt="" coords="5,5,152,32"/>
+</map>

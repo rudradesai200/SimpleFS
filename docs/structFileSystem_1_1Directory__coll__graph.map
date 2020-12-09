@@ -1,0 +1,4 @@
+<map id="FileSystem::Directory" name="FileSystem::Directory">
+<area shape="rect" id="node1" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field..." alt="" coords="5,95,168,121"/>
+<area shape="rect" id="node2" href="$classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object..." alt="" coords="15,5,158,32"/>
+</map>

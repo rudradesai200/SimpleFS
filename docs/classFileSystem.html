@@ -67,6 +67,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classFileSystem-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">FileSystem Class Reference</div>  </div>
@@ -81,25 +82,32 @@ $(function() {
 Collaboration diagram for FileSystem:</div>
 <div class="dyncontent">
 <div class="center"><img src="classFileSystem__coll__graph.png" border="0" usemap="#FileSystem_coll__map" alt="Collaboration graph"/></div>
+<map name="FileSystem_coll__map" id="FileSystem_coll__map">
+<area shape="rect" title="FileSytem Class. Contains fs layer to access and store disk blocks. Used by sfssh (shell) to provide ..." alt="" coords="239,184,333,211"/>
+<area shape="rect" href="classFileSystem.html#structFileSystem_1_1SuperBlock" title="SuperBlock structure. It is the first block in any disk. It&#39;s main function is to help validating the..." alt="" coords="5,95,180,121"/>
+<area shape="rect" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field..." alt="" coords="205,95,367,121"/>
+<area shape="rect" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object..." alt="" coords="215,5,357,32"/>
+<area shape="rect" href="classDisk.html" title="Disk class Implements Disk abstraction that enables emulation of a disk image. Used by file system to..." alt="" coords="391,95,442,121"/>
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="unionFileSystem_1_1Block.html">Block</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="unionFileSystem_1_1Block.html" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a Superblock,...">Block</a> Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a Superblock, <a class="el" href="structFileSystem_1_1Inode.html" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a>, Pointers block, or raw Data block.  <a href="unionFileSystem_1_1Block.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFileSystem_1_1Directory.html">Directory</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> Structure. Contains a table of directory entries for storing hierarchy. Also contains fields for Size and Valid bits. Name is matched against the one in <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> entry. Also, it is allocated from end for effectively using disk space.  <a href="structFileSystem_1_1Directory.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFileSystem_1_1Dirent.html">Dirent</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object. Used to store information about a directory.  <a href="structFileSystem_1_1Dirent.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFileSystem_1_1Inode.html">Inode</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structFileSystem_1_1Inode.html" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used to store the data. Stores the size of the file.  <a href="structFileSystem_1_1Inode.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFileSystem_1_1SuperBlock.html">SuperBlock</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Superblock structure. It is the first block in any disk. It's main function is to help validating the disk. Contains metadata of the disk.  <a href="structFileSystem_1_1SuperBlock.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:unionFileSystem_1_1Block"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#unionFileSystem_1_1Block">Block</a></td></tr>
+<tr class="memdesc:unionFileSystem_1_1Block"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classFileSystem.html#unionFileSystem_1_1Block" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a SuperBlock,...">Block</a> Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a <a class="el" href="classFileSystem.html#structFileSystem_1_1SuperBlock" title="SuperBlock structure. It is the first block in any disk. It&#39;s main function is to help validating the...">SuperBlock</a>, <a class="el" href="classFileSystem.html#structFileSystem_1_1Inode" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a>, Pointers block, or raw Data block.  <a href="classFileSystem.html#unionFileSystem_1_1Block">More...</a><br /></td></tr>
+<tr class="separator:unionFileSystem_1_1Block"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structFileSystem_1_1Directory"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">Directory</a></td></tr>
+<tr class="memdesc:structFileSystem_1_1Directory"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> Structure. Contains a table of directory entries for storing hierarchy. Also contains fields for Size and Valid bits. Name is matched against the one in <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> entry. Also, it is allocated from end for effectively using disk space.  <a href="classFileSystem.html#structFileSystem_1_1Directory">More...</a><br /></td></tr>
+<tr class="separator:structFileSystem_1_1Directory"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structFileSystem_1_1Dirent"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent">Dirent</a></td></tr>
+<tr class="memdesc:structFileSystem_1_1Dirent"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object. Used to store information about a directory.  <a href="classFileSystem.html#structFileSystem_1_1Dirent">More...</a><br /></td></tr>
+<tr class="separator:structFileSystem_1_1Dirent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structFileSystem_1_1Inode"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#structFileSystem_1_1Inode">Inode</a></td></tr>
+<tr class="memdesc:structFileSystem_1_1Inode"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classFileSystem.html#structFileSystem_1_1Inode" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used to store the data. Stores the size of the file.  <a href="classFileSystem.html#structFileSystem_1_1Inode">More...</a><br /></td></tr>
+<tr class="separator:structFileSystem_1_1Inode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structFileSystem_1_1SuperBlock"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#structFileSystem_1_1SuperBlock">SuperBlock</a></td></tr>
+<tr class="memdesc:structFileSystem_1_1SuperBlock"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classFileSystem.html#structFileSystem_1_1SuperBlock" title="SuperBlock structure. It is the first block in any disk. It&#39;s main function is to help validating the...">SuperBlock</a> structure. It is the first block in any disk. It's main function is to help validating the disk. Contains metadata of the disk.  <a href="classFileSystem.html#structFileSystem_1_1SuperBlock">More...</a><br /></td></tr>
+<tr class="separator:structFileSystem_1_1SuperBlock"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -116,19 +124,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aad4304b8e9da680d481fa6e15eb0af51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes password from the mounted disk (fs_disk).  <a href="classFileSystem.html#aad4304b8e9da680d481fa6e15eb0af51">More...</a><br /></td></tr>
 <tr class="separator:aad4304b8e9da680d481fa6e15eb0af51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad36bee54dc860b4f96be526d0bea7105"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#ad36bee54dc860b4f96be526d0bea7105">touch</a> (char name[])</td></tr>
-<tr class="memdesc:ad36bee54dc860b4f96be526d0bea7105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a file with size 0. Main function is to allocate an <a class="el" href="structFileSystem_1_1Inode.html" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> and add <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> to the curr_dir. Error if file already exists.  <a href="classFileSystem.html#ad36bee54dc860b4f96be526d0bea7105">More...</a><br /></td></tr>
+<tr class="memdesc:ad36bee54dc860b4f96be526d0bea7105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a file with size 0. Main function is to allocate an <a class="el" href="classFileSystem.html#structFileSystem_1_1Inode" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> and add <a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> to the curr_dir. Error if file already exists.  <a href="classFileSystem.html#ad36bee54dc860b4f96be526d0bea7105">More...</a><br /></td></tr>
 <tr class="separator:ad36bee54dc860b4f96be526d0bea7105"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dd0d7c38a89e5ce6151ad8e53d16f5b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a8dd0d7c38a89e5ce6151ad8e53d16f5b">mkdir</a> (char name[])</td></tr>
-<tr class="memdesc:a8dd0d7c38a89e5ce6151ad8e53d16f5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an empty directory with the given name Adds 2 <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> , '.' and '..' in it's table.  <a href="classFileSystem.html#a8dd0d7c38a89e5ce6151ad8e53d16f5b">More...</a><br /></td></tr>
+<tr class="memdesc:a8dd0d7c38a89e5ce6151ad8e53d16f5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an empty directory with the given name Adds 2 <a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> , '.' and '..' in it's table.  <a href="classFileSystem.html#a8dd0d7c38a89e5ce6151ad8e53d16f5b">More...</a><br /></td></tr>
 <tr class="separator:a8dd0d7c38a89e5ce6151ad8e53d16f5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace5ae4a8ac3881a3b17580d2c7ca30ea"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#ace5ae4a8ac3881a3b17580d2c7ca30ea">rmdir</a> (char name[])</td></tr>
-<tr class="memdesc:ace5ae4a8ac3881a3b17580d2c7ca30ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the directory with given name. Also removes all the <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> in it's table.  <a href="classFileSystem.html#ace5ae4a8ac3881a3b17580d2c7ca30ea">More...</a><br /></td></tr>
+<tr class="memdesc:ace5ae4a8ac3881a3b17580d2c7ca30ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the directory with given name. Also removes all the <a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> in it's table.  <a href="classFileSystem.html#ace5ae4a8ac3881a3b17580d2c7ca30ea">More...</a><br /></td></tr>
 <tr class="separator:ace5ae4a8ac3881a3b17580d2c7ca30ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8334ca97257fbf6730b35aa7bce50913"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a8334ca97257fbf6730b35aa7bce50913">cd</a> (char name[])</td></tr>
-<tr class="memdesc:a8334ca97257fbf6730b35aa7bce50913"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change curr_dir to the given <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> name.  <a href="classFileSystem.html#a8334ca97257fbf6730b35aa7bce50913">More...</a><br /></td></tr>
+<tr class="memdesc:a8334ca97257fbf6730b35aa7bce50913"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change curr_dir to the given <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> name.  <a href="classFileSystem.html#a8334ca97257fbf6730b35aa7bce50913">More...</a><br /></td></tr>
 <tr class="separator:a8334ca97257fbf6730b35aa7bce50913"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d1bc59c9d62c27da49ce01e8d16986e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a0d1bc59c9d62c27da49ce01e8d16986e">ls</a> ()</td></tr>
-<tr class="memdesc:a0d1bc59c9d62c27da49ce01e8d16986e"><td class="mdescLeft">&#160;</td><td class="mdescRight">List all the curr_dir <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a>.  <a href="classFileSystem.html#a0d1bc59c9d62c27da49ce01e8d16986e">More...</a><br /></td></tr>
+<tr class="memdesc:a0d1bc59c9d62c27da49ce01e8d16986e"><td class="mdescLeft">&#160;</td><td class="mdescRight">List all the curr_dir <a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a>.  <a href="classFileSystem.html#a0d1bc59c9d62c27da49ce01e8d16986e">More...</a><br /></td></tr>
 <tr class="separator:a0d1bc59c9d62c27da49ce01e8d16986e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c9294143151ebf992df35a6b5281f78"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a9c9294143151ebf992df35a6b5281f78">rm</a> (char name[])</td></tr>
 <tr class="memdesc:a9c9294143151ebf992df35a6b5281f78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the given file/Directory.  <a href="classFileSystem.html#a9c9294143151ebf992df35a6b5281f78">More...</a><br /></td></tr>
@@ -140,7 +148,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aa897c025cf35ac5bcb84a2228ac17d4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the file with path provided to the curr_dir. Prints amount of bytes copied. Creates a newfile if file doesn't exist. Overwrites the file if already exists.  <a href="classFileSystem.html#aa897c025cf35ac5bcb84a2228ac17d4d">More...</a><br /></td></tr>
 <tr class="separator:aa897c025cf35ac5bcb84a2228ac17d4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a0284a4e187bfc6c72ac23f472ea396"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a0a0284a4e187bfc6c72ac23f472ea396">ls_dir</a> (char name[])</td></tr>
-<tr class="memdesc:a0a0284a4e187bfc6c72ac23f472ea396"><td class="mdescLeft">&#160;</td><td class="mdescRight">List the <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> given by the name. Called by ls to print curr_dir. Prints a table of <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a>.  <a href="classFileSystem.html#a0a0284a4e187bfc6c72ac23f472ea396">More...</a><br /></td></tr>
+<tr class="memdesc:a0a0284a4e187bfc6c72ac23f472ea396"><td class="mdescLeft">&#160;</td><td class="mdescRight">List the <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> given by the name. Called by ls to print curr_dir. Prints a table of <a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a>.  <a href="classFileSystem.html#a0a0284a4e187bfc6c72ac23f472ea396">More...</a><br /></td></tr>
 <tr class="separator:a0a0284a4e187bfc6c72ac23f472ea396"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a52b3544e11bf6e40ed6c52b4f146a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a0a52b3544e11bf6e40ed6c52b4f146a8">exit</a> ()</td></tr>
 <tr class="memdesc:a0a52b3544e11bf6e40ed6c52b4f146a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unmounts the disk and resets pointer.  <a href="classFileSystem.html#a0a52b3544e11bf6e40ed6c52b4f146a8">More...</a><br /></td></tr>
@@ -175,7 +183,7 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a11b94bf1e3baf8650fcba2d1cc8d22ef"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a11b94bf1e3baf8650fcba2d1cc8d22ef">write</a> (size_t inumber, char *data, int length, size_t offset)</td></tr>
 <tr class="memdesc:a11b94bf1e3baf8650fcba2d1cc8d22ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">write to the disk  <a href="classFileSystem.html#a11b94bf1e3baf8650fcba2d1cc8d22ef">More...</a><br /></td></tr>
 <tr class="separator:a11b94bf1e3baf8650fcba2d1cc8d22ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaabd934cef54e7eb4836113efffd07eb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#aaabd934cef54e7eb4836113efffd07eb">load_inode</a> (size_t inumber, <a class="el" href="structFileSystem_1_1Inode.html">Inode</a> *node)</td></tr>
+<tr class="memitem:aaabd934cef54e7eb4836113efffd07eb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#aaabd934cef54e7eb4836113efffd07eb">load_inode</a> (size_t inumber, <a class="el" href="classFileSystem.html#structFileSystem_1_1Inode">Inode</a> *node)</td></tr>
 <tr class="memdesc:aaabd934cef54e7eb4836113efffd07eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">loads inode corresponding to inumber into node  <a href="classFileSystem.html#aaabd934cef54e7eb4836113efffd07eb">More...</a><br /></td></tr>
 <tr class="separator:aaabd934cef54e7eb4836113efffd07eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1915305aaca586d161dce674becbb69"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#ac1915305aaca586d161dce674becbb69">allocate_free_block</a> ()</td></tr>
@@ -184,41 +192,340 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a065f7198a1fd8f3924528d6fd42bbcfd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a065f7198a1fd8f3924528d6fd42bbcfd">read_helper</a> (uint32_t blocknum, int offset, int *length, char **data, char **ptr)</td></tr>
 <tr class="memdesc:a065f7198a1fd8f3924528d6fd42bbcfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads the block from disk and changes the pointers accordingly  <a href="classFileSystem.html#a065f7198a1fd8f3924528d6fd42bbcfd">More...</a><br /></td></tr>
 <tr class="separator:a065f7198a1fd8f3924528d6fd42bbcfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a240dfa91ec04eb426f01f4dc5b2c65c8"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a240dfa91ec04eb426f01f4dc5b2c65c8">write_ret</a> (size_t inumber, <a class="el" href="structFileSystem_1_1Inode.html">Inode</a> *node, int ret)</td></tr>
+<tr class="memitem:a240dfa91ec04eb426f01f4dc5b2c65c8"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a240dfa91ec04eb426f01f4dc5b2c65c8">write_ret</a> (size_t inumber, <a class="el" href="classFileSystem.html#structFileSystem_1_1Inode">Inode</a> *node, int ret)</td></tr>
 <tr class="memdesc:a240dfa91ec04eb426f01f4dc5b2c65c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes the node into the corresponding inode block  <a href="classFileSystem.html#a240dfa91ec04eb426f01f4dc5b2c65c8">More...</a><br /></td></tr>
 <tr class="separator:a240dfa91ec04eb426f01f4dc5b2c65c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72e4ee96239f8baf9f969bcd206d4cc7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a72e4ee96239f8baf9f969bcd206d4cc7">read_buffer</a> (int offset, int *<a class="el" href="classFileSystem.html#a6cd48553ae0ed59577d8490b7608e008">read</a>, int length, char *data, uint32_t blocknum)</td></tr>
 <tr class="memdesc:a72e4ee96239f8baf9f969bcd206d4cc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads from buffer and writes to a block in the disk  <a href="classFileSystem.html#a72e4ee96239f8baf9f969bcd206d4cc7">More...</a><br /></td></tr>
 <tr class="separator:a72e4ee96239f8baf9f969bcd206d4cc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b0f75ee52938709c795a5f9cea38440"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a3b0f75ee52938709c795a5f9cea38440">check_allocation</a> (<a class="el" href="structFileSystem_1_1Inode.html">Inode</a> *node, int <a class="el" href="classFileSystem.html#a6cd48553ae0ed59577d8490b7608e008">read</a>, int orig_offset, uint32_t &amp;blocknum, bool write_indirect, <a class="el" href="unionFileSystem_1_1Block.html">Block</a> indirect)</td></tr>
+<tr class="memitem:a3b0f75ee52938709c795a5f9cea38440"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a3b0f75ee52938709c795a5f9cea38440">check_allocation</a> (<a class="el" href="classFileSystem.html#structFileSystem_1_1Inode">Inode</a> *node, int <a class="el" href="classFileSystem.html#a6cd48553ae0ed59577d8490b7608e008">read</a>, int orig_offset, uint32_t &amp;blocknum, bool write_indirect, <a class="el" href="classFileSystem.html#unionFileSystem_1_1Block">Block</a> indirect)</td></tr>
 <tr class="memdesc:a3b0f75ee52938709c795a5f9cea38440"><td class="mdescLeft">&#160;</td><td class="mdescRight">allocates a block if required; if no block is available in the disk; returns false  <a href="classFileSystem.html#a3b0f75ee52938709c795a5f9cea38440">More...</a><br /></td></tr>
 <tr class="separator:a3b0f75ee52938709c795a5f9cea38440"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb617f6cf7bae50044ce387c3bf0c361"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#abb617f6cf7bae50044ce387c3bf0c361">allocate_block</a> ()</td></tr>
 <tr class="memdesc:abb617f6cf7bae50044ce387c3bf0c361"><td class="mdescLeft">&#160;</td><td class="mdescRight">allocates the first free block from free block bitmap  <a href="classFileSystem.html#abb617f6cf7bae50044ce387c3bf0c361">More...</a><br /></td></tr>
 <tr class="separator:abb617f6cf7bae50044ce387c3bf0c361"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac893795d0f4d355b028e6f908ab4fd1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFileSystem_1_1Directory.html">Directory</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#aac893795d0f4d355b028e6f908ab4fd1">add_dir_entry</a> (<a class="el" href="structFileSystem_1_1Directory.html">Directory</a> dir, uint32_t inum, uint32_t type, char name[])</td></tr>
+<tr class="memitem:aac893795d0f4d355b028e6f908ab4fd1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">Directory</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#aac893795d0f4d355b028e6f908ab4fd1">add_dir_entry</a> (<a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">Directory</a> dir, uint32_t inum, uint32_t type, char name[])</td></tr>
+<tr class="memdesc:aac893795d0f4d355b028e6f908ab4fd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds directory entry to the cached curr_dir. dir_write_back should be done by the caller.  <a href="classFileSystem.html#aac893795d0f4d355b028e6f908ab4fd1">More...</a><br /></td></tr>
 <tr class="separator:aac893795d0f4d355b028e6f908ab4fd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e4f91669c100c11f4d3fed225a05abc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a2e4f91669c100c11f4d3fed225a05abc">write_dir_back</a> (struct <a class="el" href="structFileSystem_1_1Directory.html">Directory</a> dir)</td></tr>
-<tr class="memdesc:a2e4f91669c100c11f4d3fed225a05abc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> back to the disk.  <a href="classFileSystem.html#a2e4f91669c100c11f4d3fed225a05abc">More...</a><br /></td></tr>
+<tr class="memitem:a2e4f91669c100c11f4d3fed225a05abc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a2e4f91669c100c11f4d3fed225a05abc">write_dir_back</a> (struct <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">Directory</a> dir)</td></tr>
+<tr class="memdesc:a2e4f91669c100c11f4d3fed225a05abc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> back to the disk.  <a href="classFileSystem.html#a2e4f91669c100c11f4d3fed225a05abc">More...</a><br /></td></tr>
 <tr class="separator:a2e4f91669c100c11f4d3fed225a05abc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9abf75ba33adaea8d84afeb10845048d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a9abf75ba33adaea8d84afeb10845048d">dir_lookup</a> (<a class="el" href="structFileSystem_1_1Directory.html">Directory</a> dir, char name[])</td></tr>
+<tr class="memitem:a9abf75ba33adaea8d84afeb10845048d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a9abf75ba33adaea8d84afeb10845048d">dir_lookup</a> (<a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">Directory</a> dir, char name[])</td></tr>
 <tr class="memdesc:a9abf75ba33adaea8d84afeb10845048d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds a valid entry with the same name.  <a href="classFileSystem.html#a9abf75ba33adaea8d84afeb10845048d">More...</a><br /></td></tr>
 <tr class="separator:a9abf75ba33adaea8d84afeb10845048d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4dbe11335ea970b965cb4b6f6cc809d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFileSystem_1_1Directory.html">Directory</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#ac4dbe11335ea970b965cb4b6f6cc809d">read_dir_from_offset</a> (uint32_t offset)</td></tr>
-<tr class="memdesc:ac4dbe11335ea970b965cb4b6f6cc809d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> from <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> offset in curr_dir.  <a href="classFileSystem.html#ac4dbe11335ea970b965cb4b6f6cc809d">More...</a><br /></td></tr>
+<tr class="memitem:ac4dbe11335ea970b965cb4b6f6cc809d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">Directory</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#ac4dbe11335ea970b965cb4b6f6cc809d">read_dir_from_offset</a> (uint32_t offset)</td></tr>
+<tr class="memdesc:ac4dbe11335ea970b965cb4b6f6cc809d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> from <a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> offset in curr_dir.  <a href="classFileSystem.html#ac4dbe11335ea970b965cb4b6f6cc809d">More...</a><br /></td></tr>
 <tr class="separator:ac4dbe11335ea970b965cb4b6f6cc809d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af62ced2f60c6ab9240c36a4fc40ba29a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFileSystem_1_1Directory.html">Directory</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#af62ced2f60c6ab9240c36a4fc40ba29a">rmdir_helper</a> (<a class="el" href="structFileSystem_1_1Directory.html">Directory</a> parent, char name[])</td></tr>
+<tr class="memitem:af62ced2f60c6ab9240c36a4fc40ba29a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">Directory</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#af62ced2f60c6ab9240c36a4fc40ba29a">rmdir_helper</a> (<a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">Directory</a> parent, char name[])</td></tr>
 <tr class="memdesc:af62ced2f60c6ab9240c36a4fc40ba29a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to remove directory from parent directory.  <a href="classFileSystem.html#af62ced2f60c6ab9240c36a4fc40ba29a">More...</a><br /></td></tr>
 <tr class="separator:af62ced2f60c6ab9240c36a4fc40ba29a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4da740d4d909a635d8aed98465d4f1ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFileSystem_1_1Directory.html">Directory</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a4da740d4d909a635d8aed98465d4f1ca">rm_helper</a> (<a class="el" href="structFileSystem_1_1Directory.html">Directory</a> parent, char name[])</td></tr>
+<tr class="memitem:a4da740d4d909a635d8aed98465d4f1ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">Directory</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a4da740d4d909a635d8aed98465d4f1ca">rm_helper</a> (<a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">Directory</a> parent, char name[])</td></tr>
 <tr class="memdesc:a4da740d4d909a635d8aed98465d4f1ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to remove file/directory from parent directory.  <a href="classFileSystem.html#a4da740d4d909a635d8aed98465d4f1ca">More...</a><br /></td></tr>
 <tr class="separator:a4da740d4d909a635d8aed98465d4f1ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a86f6fc4c685cd339c393df1967d335cb"><td class="memItemLeft" align="right" valign="top">vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a86f6fc4c685cd339c393df1967d335cb">free_blocks</a></td></tr>
+<tr class="separator:a86f6fc4c685cd339c393df1967d335cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31f5de452e271321e078d1542b9d0d91"><td class="memItemLeft" align="right" valign="top">vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a31f5de452e271321e078d1542b9d0d91">inode_counter</a></td></tr>
+<tr class="separator:a31f5de452e271321e078d1542b9d0d91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cff93db94e9a810f1b0e398908d3e20"><td class="memItemLeft" align="right" valign="top">vector&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a2cff93db94e9a810f1b0e398908d3e20">dir_counter</a></td></tr>
+<tr class="separator:a2cff93db94e9a810f1b0e398908d3e20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ccf8024813b7424f413a3369f9171c1"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="classFileSystem.html#structFileSystem_1_1SuperBlock">SuperBlock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#a2ccf8024813b7424f413a3369f9171c1">MetaData</a></td></tr>
+<tr class="separator:a2ccf8024813b7424f413a3369f9171c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeac367de16b1a3551f9b2d0c98366694"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">Directory</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFileSystem.html#aeac367de16b1a3551f9b2d0c98366694">curr_dir</a></td></tr>
+<tr class="separator:aeac367de16b1a3551f9b2d0c98366694"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>FileSytem Class. Contains fs layer to access and store disk blocks. Used by sfssh (shell) to provide access to the end-user. </p>
 
 <p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00077">77</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><hr/><h2 class="groupheader">Class Documentation</h2>
+<a name="unionFileSystem_1_1Block" id="unionFileSystem_1_1Block"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#unionFileSystem_1_1Block">&#9670;&nbsp;</a></span>FileSystem::Block</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">union FileSystem::Block</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p><a class="el" href="classFileSystem.html#unionFileSystem_1_1Block" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a SuperBlock,...">Block</a> Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a <a class="el" href="classFileSystem.html#structFileSystem_1_1SuperBlock" title="SuperBlock structure. It is the first block in any disk. It&#39;s main function is to help validating the...">SuperBlock</a>, <a class="el" href="classFileSystem.html#structFileSystem_1_1Inode" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a>, Pointers block, or raw Data block. </p>
+
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00148">148</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+</div><div class="dynheader">
+Collaboration diagram for FileSystem::Block:</div>
+<div class="dyncontent">
+<div class="center"><img src="unionFileSystem_1_1Block__coll__graph.png" border="0" usemap="#FileSystem_1_1Block_coll__map" alt="Collaboration graph"/></div>
+<map name="FileSystem_1_1Block_coll__map" id="FileSystem_1_1Block_coll__map">
+<area shape="rect" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a SuperBlock,..." alt="" coords="217,184,355,211"/>
+<area shape="rect" href="classFileSystem.html#structFileSystem_1_1SuperBlock" title="SuperBlock structure. It is the first block in any disk. It&#39;s main function is to help validating the..." alt="" coords="5,95,180,121"/>
+<area shape="rect" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field..." alt="" coords="205,95,367,121"/>
+<area shape="rect" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object..." alt="" coords="215,5,357,32"/>
+<area shape="rect" href="classFileSystem.html#structFileSystem_1_1Inode" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t..." alt="" coords="391,95,530,121"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<table class="fieldtable">
+<tr><th colspan="3">Class Members</th></tr>
+<tr><td class="fieldtype">
+<a id="ab1e8e0cc9c593e17ab34d25da9ec0f18"></a>char</td>
+<td class="fieldname">
+Data[Disk::BLOCK_SIZE]</td>
+<td class="fielddoc">
+<p>Contains indexes of Direct Blocks. 0 if null.ck </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a5644659690ab0b9e59d69ec87fa083d0"></a>struct <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">Directory</a></td>
+<td class="fieldname">
+Directories[FileSystem::DIR_PER_BLOCK]</td>
+<td class="fielddoc">
+<p>Data block </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="ae1362465ee7c9daaafacaaf624468cc3"></a>struct <a class="el" href="classFileSystem.html#structFileSystem_1_1Inode">Inode</a></td>
+<td class="fieldname">
+Inodes[FileSystem::INODES_PER_BLOCK]</td>
+<td class="fielddoc">
+<p><a class="el" href="classFileSystem.html#structFileSystem_1_1SuperBlock" title="SuperBlock structure. It is the first block in any disk. It&#39;s main function is to help validating the...">SuperBlock</a> </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="aceb2d3440fd334336397a354a36096f6"></a>uint32_t</td>
+<td class="fieldname">
+Pointers[FileSystem::POINTERS_PER_BLOCK]</td>
+<td class="fielddoc">
+<p><a class="el" href="classFileSystem.html#structFileSystem_1_1Inode" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> block </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="ae98193890d150848da0591c8c3a6d3d4"></a>struct <a class="el" href="classFileSystem.html#structFileSystem_1_1SuperBlock">SuperBlock</a></td>
+<td class="fieldname">
+Super</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
+<a name="structFileSystem_1_1Directory" id="structFileSystem_1_1Directory"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structFileSystem_1_1Directory">&#9670;&nbsp;</a></span>FileSystem::Directory</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct FileSystem::Directory</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> Structure. Contains a table of directory entries for storing hierarchy. Also contains fields for Size and Valid bits. Name is matched against the one in <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> entry. Also, it is allocated from end for effectively using disk space. </p>
+
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00123">123</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+</div><div class="dynheader">
+Collaboration diagram for FileSystem::Directory:</div>
+<div class="dyncontent">
+<div class="center"><img src="structFileSystem_1_1Directory__coll__graph.png" border="0" usemap="#FileSystem_1_1Directory_coll__map" alt="Collaboration graph"/></div>
+<map name="FileSystem_1_1Directory_coll__map" id="FileSystem_1_1Directory_coll__map">
+<area shape="rect" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field..." alt="" coords="5,95,168,121"/>
+<area shape="rect" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object..." alt="" coords="15,5,158,32"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<table class="fieldtable">
+<tr><th colspan="3">Class Members</th></tr>
+<tr><td class="fieldtype">
+<a id="a6e4d2ea1c78bc1836f98076844895218"></a>uint32_t</td>
+<td class="fieldname">
+inum</td>
+<td class="fielddoc">
+<p>Valid bit for validation </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a9dbbee28f750128df5eeb52581cbfe29"></a>char</td>
+<td class="fieldname">
+Name[NAMESIZE]</td>
+<td class="fielddoc">
+<p>inum = block_num * DIR_PER_BLOCK + offset </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="afc7a04a53b2fb8420269e5240080a3fe"></a><a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent">Dirent</a></td>
+<td class="fieldname">
+Table[ENTRIES_PER_DIR]</td>
+<td class="fielddoc">
+<p><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> Name </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="ab717bbc4ceb9fd4e53a9cdf25ecc01fc"></a>uint16_t</td>
+<td class="fieldname">
+Valid</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
+<a name="structFileSystem_1_1Dirent" id="structFileSystem_1_1Dirent"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structFileSystem_1_1Dirent">&#9670;&nbsp;</a></span>FileSystem::Dirent</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct FileSystem::Dirent</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object. Used to store information about a directory. </p>
+
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00109">109</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+</div><table class="fieldtable">
+<tr><th colspan="3">Class Members</th></tr>
+<tr><td class="fieldtype">
+<a id="a6b3ffd1d8a7d2f1297cec51a14cbc7b1"></a>uint32_t</td>
+<td class="fieldname">
+inum</td>
+<td class="fielddoc">
+<p>valid bit to check if the entry is valid </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a6325940ab4019a537a4a40e7708c5922"></a>char</td>
+<td class="fieldname">
+Name[NAMESIZE]</td>
+<td class="fielddoc">
+<p>inum for Inodes or offset for dir </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a079ab407067fcb663541802d9edd0330"></a>uint8_t</td>
+<td class="fieldname">
+type</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="ad846df2e01ee3bcb147e1606091750f0"></a>uint8_t</td>
+<td class="fieldname">
+valid</td>
+<td class="fielddoc">
+<p>type = 1 for file, type = 0 for directory </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a name="structFileSystem_1_1Inode" id="structFileSystem_1_1Inode"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structFileSystem_1_1Inode">&#9670;&nbsp;</a></span>FileSystem::Inode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct FileSystem::Inode</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p><a class="el" href="classFileSystem.html#structFileSystem_1_1Inode" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used to store the data. Stores the size of the file. </p>
+
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00136">136</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+</div><table class="fieldtable">
+<tr><th colspan="3">Class Members</th></tr>
+<tr><td class="fieldtype">
+<a id="a85472455dda0444d34a419701517e127"></a>uint32_t</td>
+<td class="fieldname">
+Direct[FileSystem::POINTERS_PER_INODE]</td>
+<td class="fielddoc">
+<p>Size of file </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a0cb81cdd8313db3b50fd5c3052d7cd0c"></a>uint32_t</td>
+<td class="fieldname">
+Indirect</td>
+<td class="fielddoc">
+<p>Direct pointers </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="aa2bc377cb492d6d98e60a89185dab52f"></a>uint32_t</td>
+<td class="fieldname">
+Size</td>
+<td class="fielddoc">
+<p>Whether or not inode is valid </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a1c253cdda86d162b11be512eede2582f"></a>uint32_t</td>
+<td class="fieldname">
+Valid</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
+<a name="structFileSystem_1_1SuperBlock" id="structFileSystem_1_1SuperBlock"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structFileSystem_1_1SuperBlock">&#9670;&nbsp;</a></span>FileSystem::SuperBlock</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct FileSystem::SuperBlock</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p><a class="el" href="classFileSystem.html#structFileSystem_1_1SuperBlock" title="SuperBlock structure. It is the first block in any disk. It&#39;s main function is to help validating the...">SuperBlock</a> structure. It is the first block in any disk. It's main function is to help validating the disk. Contains metadata of the disk. </p>
+
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00094">94</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+</div><table class="fieldtable">
+<tr><th colspan="3">Class Members</th></tr>
+<tr><td class="fieldtype">
+<a id="af047d01641c8949cf7e82a8f19a60fef"></a>uint32_t</td>
+<td class="fieldname">
+Blocks</td>
+<td class="fielddoc">
+<p>File system magic number </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a01b7d2cc935b1f6535b9f5af4228e24b"></a>uint32_t</td>
+<td class="fieldname">
+DirBlocks</td>
+<td class="fielddoc">
+<p>Number of blocks reserved for inodes </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="aaaf1592f838d001f4e149af339d097f3"></a>uint32_t</td>
+<td class="fieldname">
+InodeBlocks</td>
+<td class="fielddoc">
+<p>Number of blocks in file system </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="add4207f0a643f0beb4a3911bb7e33e51"></a>uint32_t</td>
+<td class="fieldname">
+Inodes</td>
+<td class="fielddoc">
+<p>Number of blocks reserved for directories </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a1f4b9924478ddb9ebe568a5c1bd89127"></a>uint32_t</td>
+<td class="fieldname">
+MagicNumber</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a2a44062901ea2ec22ca0c6e36be9822e"></a>char</td>
+<td class="fieldname">
+PasswordHash[257]</td>
+<td class="fielddoc">
+<p>Field to check if the disk is password protected </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a687323a691f5bd2752002fb3c7466994"></a>uint32_t</td>
+<td class="fieldname">
+Protected</td>
+<td class="fielddoc">
+<p>Number of inodes in file system </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="aac893795d0f4d355b028e6f908ab4fd1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aac893795d0f4d355b028e6f908ab4fd1">&#9670;&nbsp;</a></span>add_dir_entry()</h2>
 
@@ -229,9 +536,9 @@ Private Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structFileSystem_1_1Directory.html">FileSystem::Directory</a> FileSystem::add_dir_entry </td>
+          <td class="memname"><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">FileSystem::Directory</a> FileSystem::add_dir_entry </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structFileSystem_1_1Directory.html">Directory</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">Directory</a>&#160;</td>
           <td class="paramname"><em>dir</em>, </td>
         </tr>
         <tr>
@@ -264,29 +571,27 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<ul>
-<li>Adds directory entry to cache curr_dir.</li>
-<li>dir_write_back should be done by the caller. <dl class="params"><dt>Parameters</dt><dd>
+
+<p>Adds directory entry to the cached curr_dir. dir_write_back should be done by the caller. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dir</td><td><a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> in which entry is to be added </td></tr>
+    <tr><td class="paramname">dir</td><td><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> in which entry is to be added </td></tr>
     <tr><td class="paramname">inum</td><td>inum of the File/Directory </td></tr>
-    <tr><td class="paramname">type</td><td>type = 1 for file , type = 0 for <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> </td></tr>
+    <tr><td class="paramname">type</td><td>type = 1 for file , type = 0 for <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> </td></tr>
     <tr><td class="paramname">name</td><td>Name of the file/Directory </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> with added entry or with valid bit set to 0 incase of error </dd></dl>
-</li>
-</ul>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> with added entry or with valid bit set to 0 incase of error </dd></dl>
 <dl class="section implementation">
 <dt>Implementation details  </dt>
 <dd></dd>
 </dl>
 <ul>
-<li>Find a free <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> in the Table to be modified</li>
-<li>If No <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> Found, Error <br  />
+<li>Find a free <a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> in the Table to be modified</li>
+<li>If No <a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> Found, Error <br  />
 </li>
-<li>Free <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> found, add the new one to the table <br  />
+<li>Free <a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> found, add the new one to the table <br  />
 </li>
 </ul>
 
@@ -377,10 +682,10 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Change curr_dir to the given <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> name. </p>
+<p>Change curr_dir to the given <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> name. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">name</td><td><a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> name to be used. </td></tr>
+    <tr><td class="paramname">name</td><td><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> name to be used. </td></tr>
   </table>
   </dd>
 </dl>
@@ -436,6 +741,15 @@ false incase of error </dd></dl>
 </ul>
 
 <p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00325">325</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classFileSystem_adf389211c4a979e091068a7e7e8806fc_cgraph.png" border="0" usemap="#classFileSystem_adf389211c4a979e091068a7e7e8806fc_cgraph" alt=""/></div>
+<map name="classFileSystem_adf389211c4a979e091068a7e7e8806fc_cgraph" id="classFileSystem_adf389211c4a979e091068a7e7e8806fc_cgraph">
+<area shape="rect" title="Changes password in the mounted disk (fs_disk). Checks the current password and gives control to set_..." alt="" coords="5,5,155,47"/>
+<area shape="rect" href="classFileSystem.html#a616c844236d9666441b406da64d940b3" title="Adds password to the mounted disk (fs_disk). Gives the control to change_password if disk is pasword ..." alt="" coords="203,13,393,39"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -451,7 +765,7 @@ false incase of error </dd></dl>
         <tr>
           <td class="memname">bool FileSystem::check_allocation </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structFileSystem_1_1Inode.html">Inode</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="classFileSystem.html#structFileSystem_1_1Inode">Inode</a> *&#160;</td>
           <td class="paramname"><em>node</em>, </td>
         </tr>
         <tr>
@@ -481,7 +795,7 @@ false incase of error </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionFileSystem_1_1Block.html">Block</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classFileSystem.html#unionFileSystem_1_1Block">Block</a>&#160;</td>
           <td class="paramname"><em>indirect</em>&#160;</td>
         </tr>
         <tr>
@@ -725,6 +1039,16 @@ false incase of error. </dd></dl>
 </ul>
 
 <p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00028">28</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classFileSystem_a638a41aa7cfb32a9d29a5c69563349a3_cgraph.png" border="0" usemap="#classFileSystem_a638a41aa7cfb32a9d29a5c69563349a3_cgraph" alt=""/></div>
+<map name="classFileSystem_a638a41aa7cfb32a9d29a5c69563349a3_cgraph" id="classFileSystem_a638a41aa7cfb32a9d29a5c69563349a3_cgraph">
+<area shape="rect" title="prints the basic outline of the disk" alt="" coords="5,5,148,32"/>
+<area shape="rect" href="classDisk.html#a4d5ac631ca95259c2b93e76a725d52a6" title="read from disk" alt="" coords="196,5,284,32"/>
+<area shape="rect" href="classDisk.html#a7265cfa52d55c0326517e4921d091d56" title="check if the block is within valid range" alt="" coords="332,5,476,32"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -740,7 +1064,7 @@ false incase of error. </dd></dl>
         <tr>
           <td class="memname">int FileSystem::dir_lookup </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structFileSystem_1_1Directory.html">Directory</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">Directory</a>&#160;</td>
           <td class="paramname"><em>dir</em>, </td>
         </tr>
         <tr>
@@ -851,13 +1175,25 @@ false incase of error. </dd></dl>
 <li>clear all direct Pointers</li>
 <li>clear indirect Pointer</li>
 <li>Free Data Blocks</li>
-<li>Free <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> Blocks</li>
+<li>Free <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> Blocks</li>
 <li>Create Root directory</li>
 <li>Create table entries for "." and ".."</li>
 <li>Empty the directories</li>
 </ul>
 
 <p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00092">92</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classFileSystem_a7b5b720c0fcda7fab862a62ad24411bb_cgraph.png" border="0" usemap="#classFileSystem_a7b5b720c0fcda7fab862a62ad24411bb_cgraph" alt=""/></div>
+<map name="classFileSystem_a7b5b720c0fcda7fab862a62ad24411bb_cgraph" id="classFileSystem_a7b5b720c0fcda7fab862a62ad24411bb_cgraph">
+<area shape="rect" title="formats the entire disk" alt="" coords="5,56,152,83"/>
+<area shape="rect" href="classDisk.html#a4209dfd7334038364f7decc1e7ea1dc2" title="check if the disk has been mounted" alt="" coords="200,5,317,32"/>
+<area shape="rect" href="classDisk.html#a80095d17d17b215eea51693a93a91017" title="check size of disk" alt="" coords="216,56,301,83"/>
+<area shape="rect" href="classDisk.html#adf545c67aa2e095bfc3308895072ff56" title="write to disk" alt="" coords="213,107,305,133"/>
+<area shape="rect" href="classDisk.html#a7265cfa52d55c0326517e4921d091d56" title="check if the block is within valid range" alt="" coords="365,107,509,133"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -879,7 +1215,7 @@ false incase of error. </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structFileSystem_1_1Inode.html">Inode</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="classFileSystem.html#structFileSystem_1_1Inode">Inode</a> *&#160;</td>
           <td class="paramname"><em>node</em>&#160;</td>
         </tr>
         <tr>
@@ -911,7 +1247,7 @@ false incase of error. </dd></dl>
 <ul>
 <li>sanity check</li>
 <li>find index of inode in the inode table</li>
-<li>load the inode into <a class="el" href="structFileSystem_1_1Inode.html" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> *node</li>
+<li>load the inode into <a class="el" href="classFileSystem.html#structFileSystem_1_1Inode" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> *node</li>
 </ul>
 
 <p class="definition">Definition at line <a class="el" href="fs__layer__1_8cpp_source.html#l00066">66</a> of file <a class="el" href="fs__layer__1_8cpp_source.html">fs_layer_1.cpp</a>.</p>
@@ -933,7 +1269,7 @@ false incase of error. </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>List all the curr_dir <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a>. </p>
+<p>List all the curr_dir <a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a>. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if successful </dd>
 <dd>
 false incase of error </dd></dl>
@@ -958,7 +1294,7 @@ false incase of error </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>List the <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> given by the name. Called by ls to print curr_dir. Prints a table of <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a>. </p>
+<p>List the <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> given by the name. Called by ls to print curr_dir. Prints a table of <a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>Name of the directory to be listed </td></tr>
@@ -979,7 +1315,7 @@ false incase of error. </dd></dl>
 </li>
 <li>Sanity checks <br  />
 </li>
-<li>Print <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> Data <br  />
+<li>Print <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> Data <br  />
 </li>
 </ul>
 
@@ -1003,7 +1339,7 @@ false incase of error. </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Creates an empty directory with the given name Adds 2 <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> , '.' and '..' in it's table. </p>
+<p>Creates an empty directory with the given name Adds 2 <a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> , '.' and '..' in it's table. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>Name of the directory to be added. </td></tr>
@@ -1086,6 +1422,18 @@ false incase of errors </dd></dl>
 </ul>
 
 <p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00183">183</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classFileSystem_acfe7dee73ac508c3996fd63e30fe5af7_cgraph.png" border="0" usemap="#classFileSystem_acfe7dee73ac508c3996fd63e30fe5af7_cgraph" alt=""/></div>
+<map name="classFileSystem_acfe7dee73ac508c3996fd63e30fe5af7_cgraph" id="classFileSystem_acfe7dee73ac508c3996fd63e30fe5af7_cgraph">
+<area shape="rect" title="mounts the file system onto the disk" alt="" coords="5,56,149,83"/>
+<area shape="rect" href="classDisk.html#a123447ae8556e1dbf6f88bddef33408e" title="mount the disk" alt="" coords="205,5,307,32"/>
+<area shape="rect" href="classDisk.html#a4209dfd7334038364f7decc1e7ea1dc2" title="check if the disk has been mounted" alt="" coords="197,56,315,83"/>
+<area shape="rect" href="classDisk.html#a4d5ac631ca95259c2b93e76a725d52a6" title="read from disk" alt="" coords="212,107,300,133"/>
+<area shape="rect" href="classDisk.html#a7265cfa52d55c0326517e4921d091d56" title="check if the block is within valid range" alt="" coords="363,107,507,133"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -1274,7 +1622,7 @@ false incase of errors </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structFileSystem_1_1Directory.html">FileSystem::Directory</a> FileSystem::read_dir_from_offset </td>
+          <td class="memname"><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">FileSystem::Directory</a> FileSystem::read_dir_from_offset </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>offset</em></td><td>)</td>
@@ -1288,14 +1636,14 @@ false incase of errors </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Reads <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> from <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> offset in curr_dir. </p>
+<p>Reads <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> from <a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> offset in curr_dir. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">offset</td><td>offset of curr_dir.Table which needs to be read. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a>. Returns <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> with valid bit=0 incase of error. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a>. Returns <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> with valid bit=0 incase of error. </dd></dl>
 <dl class="section implementation">
 <dt>Implementation details  </dt>
 <dd></dd>
@@ -1305,7 +1653,7 @@ false incase of errors </dd></dl>
 </li>
 <li>Get offsets and indexes <br  />
 </li>
-<li>Read <a class="el" href="unionFileSystem_1_1Block.html" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a Superblock,...">Block</a> <br  />
+<li>Read <a class="el" href="classFileSystem.html#unionFileSystem_1_1Block" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a SuperBlock,...">Block</a> <br  />
 </li>
 </ul>
 
@@ -1518,9 +1866,9 @@ false incase of error </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structFileSystem_1_1Directory.html">FileSystem::Directory</a> FileSystem::rm_helper </td>
+          <td class="memname"><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">FileSystem::Directory</a> FileSystem::rm_helper </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structFileSystem_1_1Directory.html">Directory</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">Directory</a>&#160;</td>
           <td class="paramname"><em>parent</em>, </td>
         </tr>
         <tr>
@@ -1545,12 +1893,12 @@ false incase of error </dd></dl>
 <p>Helper function to remove file/directory from parent directory. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">parent</td><td>Parent <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> which contains name </td></tr>
+    <tr><td class="paramname">parent</td><td>Parent <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> which contains name </td></tr>
     <tr><td class="paramname">name</td><td>File/Directory to be removed </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a>. Returns <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> with valid bit=0 incase of error. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a>. Returns <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> with valid bit=0 incase of error. </dd></dl>
 <dl class="section implementation">
 <dt>Implementation details  </dt>
 <dd></dd>
@@ -1590,10 +1938,10 @@ false incase of error </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Removes the directory with given name. Also removes all the <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> in it's table. </p>
+<p>Removes the directory with given name. Also removes all the <a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> in it's table. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">name</td><td>Name of the <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> to be deleted </td></tr>
+    <tr><td class="paramname">name</td><td>Name of the <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> to be deleted </td></tr>
   </table>
   </dd>
 </dl>
@@ -1619,9 +1967,9 @@ false incase of errors. </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structFileSystem_1_1Directory.html">FileSystem::Directory</a> FileSystem::rmdir_helper </td>
+          <td class="memname"><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">FileSystem::Directory</a> FileSystem::rmdir_helper </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structFileSystem_1_1Directory.html">Directory</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">Directory</a>&#160;</td>
           <td class="paramname"><em>parent</em>, </td>
         </tr>
         <tr>
@@ -1646,12 +1994,12 @@ false incase of errors. </dd></dl>
 <p>Helper function to remove directory from parent directory. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">parent</td><td><a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> from which the other directory is to be removed. </td></tr>
+    <tr><td class="paramname">parent</td><td><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> from which the other directory is to be removed. </td></tr>
     <tr><td class="paramname">name</td><td>Name of the directory to be removed </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a>. Returns <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> with valid bit=0 incase of error. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a>. Returns <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> with valid bit=0 incase of error. </dd></dl>
 <dl class="section implementation">
 <dt>Implementation details  </dt>
 <dd></dd>
@@ -1665,12 +2013,12 @@ false incase of errors. </dd></dl>
 </li>
 <li>Get block <br  />
 </li>
-<li>Check <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> <br  />
+<li>Check <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> <br  />
 </li>
 <li>Check if it is root directory</li>
-<li>Remove all <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> in the directory to be removed <br  />
+<li>Remove all <a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> in the directory to be removed <br  />
 </li>
-<li>Read the block again, because the block may have changed by <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> <br  />
+<li>Read the block again, because the block may have changed by <a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> <br  />
 </li>
 <li>Write it back <br  />
 </li>
@@ -1719,6 +2067,15 @@ false incase of error </dd></dl>
 </ul>
 
 <p class="definition">Definition at line <a class="el" href="fs__layer__2_8cpp_source.html#l00295">295</a> of file <a class="el" href="fs__layer__2_8cpp_source.html">fs_layer_2.cpp</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classFileSystem_a616c844236d9666441b406da64d940b3_icgraph.png" border="0" usemap="#classFileSystem_a616c844236d9666441b406da64d940b3_icgraph" alt=""/></div>
+<map name="classFileSystem_a616c844236d9666441b406da64d940b3_icgraph" id="classFileSystem_a616c844236d9666441b406da64d940b3_icgraph">
+<area shape="rect" title="Adds password to the mounted disk (fs_disk). Gives the control to change_password if disk is pasword ..." alt="" coords="203,13,393,39"/>
+<area shape="rect" href="classFileSystem.html#adf389211c4a979e091068a7e7e8806fc" title="Changes password in the mounted disk (fs_disk). Checks the current password and gives control to set_..." alt="" coords="5,5,155,47"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -1747,7 +2104,7 @@ false incase of error </dd></dl>
 </dl>
 <ul>
 <li>Sanity checks</li>
-<li>Read Super <a class="el" href="unionFileSystem_1_1Block.html" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a Superblock,...">Block</a> and print MetaData</li>
+<li>Read Super <a class="el" href="classFileSystem.html#unionFileSystem_1_1Block" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a SuperBlock,...">Block</a> and print MetaData</li>
 <li>Read directory blocks</li>
 <li>Read Directoreis in each directory block</li>
 <li>Read Table Entries for each directory</li>
@@ -1818,7 +2175,7 @@ false incase of error </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Creates a file with size 0. Main function is to allocate an <a class="el" href="structFileSystem_1_1Inode.html" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> and add <a class="el" href="structFileSystem_1_1Dirent.html" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> to the curr_dir. Error if file already exists. </p>
+<p>Creates a file with size 0. Main function is to allocate an <a class="el" href="classFileSystem.html#structFileSystem_1_1Inode" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> and add <a class="el" href="classFileSystem.html#structFileSystem_1_1Dirent" title="Directory Entry. Contains necessary fields to locate the file and directory Consumes 64 KB per object...">Dirent</a> to the curr_dir. Error if file already exists. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>Name of the file to be added </td></tr>
@@ -1965,7 +2322,7 @@ false incase of error </dd></dl>
         <tr>
           <td class="memname">void FileSystem::write_dir_back </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structFileSystem_1_1Directory.html">Directory</a>&#160;</td>
+          <td class="paramtype">struct <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">Directory</a>&#160;</td>
           <td class="paramname"><em>dir</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1977,10 +2334,10 @@ false incase of error </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Writes the <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> back to the disk. </p>
+<p>Writes the <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> back to the disk. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dir</td><td>Valid <a class="el" href="structFileSystem_1_1Directory.html" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> to be written back </td></tr>
+    <tr><td class="paramname">dir</td><td>Valid <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> to be written back </td></tr>
   </table>
   </dd>
 </dl>
@@ -1991,7 +2348,7 @@ false incase of error </dd></dl>
 <ul>
 <li>Get block offset and index <br  />
 </li>
-<li>Read <a class="el" href="unionFileSystem_1_1Block.html" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a Superblock,...">Block</a> <br  />
+<li>Read <a class="el" href="classFileSystem.html#unionFileSystem_1_1Block" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a SuperBlock,...">Block</a> <br  />
 </li>
 <li>Write the Dirblock <br  />
 </li>
@@ -2019,7 +2376,7 @@ false incase of error </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structFileSystem_1_1Inode.html">Inode</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="classFileSystem.html#structFileSystem_1_1Inode">Inode</a> *&#160;</td>
           <td class="paramname"><em>node</em>, </td>
         </tr>
         <tr>
@@ -2063,6 +2420,132 @@ false incase of error </dd></dl>
 </ul>
 
 <p class="definition">Definition at line <a class="el" href="fs__layer__1_8cpp_source.html#l00320">320</a> of file <a class="el" href="fs__layer__1_8cpp_source.html">fs_layer_1.cpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="aeac367de16b1a3551f9b2d0c98366694"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeac367de16b1a3551f9b2d0c98366694">&#9670;&nbsp;</a></span>curr_dir</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classFileSystem.html#structFileSystem_1_1Directory">Directory</a> FileSystem::curr_dir</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Caches curr dir to save a disk-read </p>
+
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00271">271</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+
+</div>
+</div>
+<a id="a2cff93db94e9a810f1b0e398908d3e20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cff93db94e9a810f1b0e398908d3e20">&#9670;&nbsp;</a></span>dir_counter</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt;uint32_t&gt; FileSystem::dir_counter</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Stores the number of <a class="el" href="classFileSystem.html#structFileSystem_1_1Inode" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> contained in an <a class="el" href="classFileSystem.html#structFileSystem_1_1Inode" title="Inode Structure Corresponds to a file stored on the disk. Contains the list of raw data blocks used t...">Inode</a> <a class="el" href="classFileSystem.html#unionFileSystem_1_1Block" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a SuperBlock,...">Block</a> </p>
+
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00160">160</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+
+</div>
+</div>
+<a id="a86f6fc4c685cd339c393df1967d335cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86f6fc4c685cd339c393df1967d335cb">&#9670;&nbsp;</a></span>free_blocks</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt;bool&gt; FileSystem::free_blocks</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Stores disk pointer after successful mounting </p>
+
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00158">158</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+
+</div>
+</div>
+<a id="a31f5de452e271321e078d1542b9d0d91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31f5de452e271321e078d1542b9d0d91">&#9670;&nbsp;</a></span>inode_counter</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt;int&gt; FileSystem::inode_counter</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Stores whether a block is free or not </p>
+
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00159">159</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
+
+</div>
+</div>
+<a id="a2ccf8024813b7424f413a3369f9171c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ccf8024813b7424f413a3369f9171c1">&#9670;&nbsp;</a></span>MetaData</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="classFileSystem.html#structFileSystem_1_1SuperBlock">SuperBlock</a> FileSystem::MetaData</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Stores the number of <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> contianed in a <a class="el" href="classFileSystem.html#structFileSystem_1_1Directory" title="Directory Structure. Contains a table of directory entries for storing hierarchy. Also contains field...">Directory</a> <a class="el" href="classFileSystem.html#unionFileSystem_1_1Block" title="Block Union Corresponds to one block of disk of size Disk::BLOCKSIZE. Can be used as a SuperBlock,...">Block</a> </p>
+
+<p class="definition">Definition at line <a class="el" href="fs_8h_source.html#l00161">161</a> of file <a class="el" href="fs_8h_source.html">fs.h</a>.</p>
 
 </div>
 </div>

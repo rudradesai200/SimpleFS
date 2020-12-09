@@ -38,7 +38,7 @@
  *  - Commands for password protection include - password change, password set and password remove.
  *-# <b> Added Security layer to encrypt and decrypt the disk.</b>
  *  - We implemented sha256 encryption for storing passwords on the disk.
- *  - The main question we faced was to decide where to store the password. So, we decided to store it in the Superblock. 
+ *  - The main question we faced was to decide where to store the password. So, we decided to store it in the SuperBlock. 
  *  - Only password hash is stored, which can be compared with later to validate the user.
  *  - Functions like debug and mount cannot be used without opening the lock, which inherently restricts other functions to be accessed.
  *
@@ -86,7 +86,7 @@ public:
 
 private:
     /** 
-     * @brief Superblock structure.
+     * @brief SuperBlock structure.
      * It is the first block in any disk.
      * It's main function is to help validating the disk.
      * Contains metadata of the disk.
@@ -134,19 +134,19 @@ private:
      * Stores the size of the file.
     */
     struct Inode {
-    	uint32_t Valid;		                                            /** Whether or not inode is valid */
-    	uint32_t Size;		                                            /** Size of file */
-    	uint32_t Direct[FileSystem::POINTERS_PER_INODE];                /** Direct pointers */
-    	uint32_t Indirect;	                                            /** Indirect pointer */
+    	uint32_t Valid;		                                            /** Whether or not inode is valid @hideinitializer*/
+    	uint32_t Size;		                                            /** Size of file @hideinitializer*/
+    	uint32_t Direct[FileSystem::POINTERS_PER_INODE];                /** Direct pointers @hideinitializer*/
+    	uint32_t Indirect;	                                            /** Indirect pointer @hideinitializer*/
     };
 
     /**
      * @brief Block Union
      * Corresponds to one block of disk of size Disk::BLOCKSIZE.
-     * Can be used as a Superblock, Inode, Pointers block, or raw Data block.
+     * Can be used as a SuperBlock, Inode, Pointers block, or raw Data block.
     */
     union Block {
-    	struct SuperBlock   Super;			                            /**  Superblock @hideinitializer*/
+    	struct SuperBlock   Super;			                            /**  SuperBlock @hideinitializer*/
     	struct Inode	    Inodes[FileSystem::INODES_PER_BLOCK];	    /**  Inode block @hideinitializer*/
     	uint32_t            Pointers[FileSystem::POINTERS_PER_BLOCK];   /**  Contains indexes of Direct Blocks. 0 if null.ck @hideinitializer*/
     	char	            Data[Disk::BLOCK_SIZE];	                    /**  Data block @hideinitializer*/
@@ -154,15 +154,15 @@ private:
     };
 
     // Internal member variables
-    Disk* fs_disk;                      //  Stores disk pointer after successful mounting @hideinitializer
-    vector<bool> free_blocks;           //  Stores whether a block is free or not @hideinitializer
-    vector<int> inode_counter;          //  Stores the number of Inode contained in an Inode Block @hideinitializer 
-    vector<uint32_t> dir_counter;       //  Stores the number of Directory contianed in a Directory Block @hideinitializer
-    struct SuperBlock MetaData;         //  Caches the Superblock to save a disk-read @hideinitializer
+    Disk* fs_disk;                      /**  Stores disk pointer after successful mounting */
+    vector<bool> free_blocks;           /**  Stores whether a block is free or not */
+    vector<int> inode_counter;          /**  Stores the number of Inode contained in an Inode Block */
+    vector<uint32_t> dir_counter;       /**  Stores the number of Directory contianed in a Directory Block */
+    struct SuperBlock MetaData;         //  Caches the SuperBlock to save a disk-read @hideinitializer
     bool mounted;                       //  Boolean to check if the disk is mounted and saved @hideinitializer
 
     // Layer 1 Core Functions
-        /**
+    /**
      * @brief creates a new inode
      * @return the inumber of the newly created inode 
     */
@@ -266,15 +266,12 @@ private:
     */
     uint32_t    allocate_block();
 
-    // Helper functions for Layer 2
     
-    //  Caches curr dir to save a disk-read @hideinitializer
+    /**  Caches curr dir to save a disk-read */
     Directory curr_dir;
     
     /**
-     * @brief 
-     * - Adds directory entry to cache curr_dir.
-     * - dir_write_back should be done by the caller.
+     * @brief Adds directory entry to the cached curr_dir. dir_write_back should be done by the caller.
      * @param dir   Directory in which entry is to be added
      * @param inum  inum of the File/Directory
      * @param type  type = 1 for file , type = 0 for Directory

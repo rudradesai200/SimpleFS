@@ -1,0 +1,4 @@
+<map id="Disk::write" name="Disk::write">
+<area shape="rect" id="node1" title="write to disk" alt="" coords="5,5,97,32"/>
+<area shape="rect" id="node2" href="$classDisk.html#a7265cfa52d55c0326517e4921d091d56" title="check if the block is within valid range" alt="" coords="145,5,289,32"/>
+</map>

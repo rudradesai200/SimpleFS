@@ -1,0 +1,4 @@
+<map id="Disk::read" name="Disk::read">
+<area shape="rect" id="node1" title="read from disk" alt="" coords="5,5,93,32"/>
+<area shape="rect" id="node2" href="$classDisk.html#a7265cfa52d55c0326517e4921d091d56" title="check if the block is within valid range" alt="" coords="141,5,285,32"/>
+</map>
