@@ -74,7 +74,6 @@ void FileSystem::debug(Disk *disk) {
 // Format file system ----------------------------------------------------------
 
 bool FileSystem::format(Disk *disk) {
-
     if(disk->mounted())
         return false;
 
@@ -132,8 +131,6 @@ bool FileSystem::mount(Disk *disk) {
     if(block.Super.InodeBlocks != std::ceil((block.Super.Blocks*1.00)/10)) return false;
     if(block.Super.Inodes != (block.Super.InodeBlocks * INODES_PER_BLOCK)) return false;
 
-    // Set device and mount
-    // Doubt : What is device?
     disk->mount();
     fs_disk = disk;
 
@@ -202,8 +199,8 @@ bool FileSystem::mount(Disk *disk) {
 // Create inode ----------------------------------------------------------------
 
 ssize_t FileSystem::create() {
-    //Sanity Checks
-    if(!mounted){return false;}
+    // sanity check
+    if(!mounted) return false;
 
     Block block;
     fs_disk->read(0, block.Data);
@@ -238,8 +235,8 @@ ssize_t FileSystem::create() {
 // Load inode ------------------------------------------------------------------
 
 bool FileSystem::load_inode(size_t inumber, Inode *node) {
-    //Sanity Checks
-    if(!mounted){return false;}
+    // sanity check
+    if(!mounted) return false;
 
     Block block;
 
@@ -260,8 +257,8 @@ bool FileSystem::load_inode(size_t inumber, Inode *node) {
 // Remove inode ----------------------------------------------------------------
 
 bool FileSystem::remove(size_t inumber) {
-    //Sanity Checks
-    if(!mounted){return false;}
+    // sanity check
+    if(!mounted) return false;
 
     // Load inode information
     Inode node;
@@ -306,8 +303,8 @@ bool FileSystem::remove(size_t inumber) {
 // Inode stat ------------------------------------------------------------------
 
 ssize_t FileSystem::stat(size_t inumber) {
-    //Sanity Checks
-    if(!mounted){return -1;}
+    // sanity check
+    if(!mounted) return -1;
 
     Inode node;
 
@@ -318,21 +315,28 @@ ssize_t FileSystem::stat(size_t inumber) {
     return -1;
 }
 
+// Read helper -----------------------------------------------------------------
+
+void FileSystem::read_helper(uint32_t blocknum, int offset, int *length, char **data, char **ptr) {
+    fs_disk->read(blocknum, *ptr);
+    *data += offset;
+    *ptr += Disk::BLOCK_SIZE;
+    *length -= (Disk::BLOCK_SIZE - offset);
+
+    return;
+}
+
 // Read from inode -------------------------------------------------------------
 
 ssize_t FileSystem::read(size_t inumber, char *data, int length, size_t offset) {
-    //Sanity Checks
-    if(!mounted){return -1;}
+    // sanity check
+    if(!mounted) return -1;
 
     // IMPORTANT: start reading from index = offset
     int size_inode = stat(inumber);
     
-    if((int)offset >= size_inode) {
-        return 0;
-    }
-    else if(length + (int)offset > size_inode) {
-        length = size_inode - offset;
-    }
+    if((int)offset >= size_inode) return 0;
+    else if(length + (int)offset > size_inode) length = size_inode - offset;
 
     Inode node;    
     char *ptr = data;     
@@ -346,16 +350,10 @@ ssize_t FileSystem::read(size_t inumber, char *data, int length, size_t offset) 
 
             // check if the direct node is valid 
             if(node.Direct[direct_node]) {
-                fs_disk->read(node.Direct[direct_node++], ptr);
-                data += offset;
-                ptr += Disk::BLOCK_SIZE;
-                length -= (Disk::BLOCK_SIZE - offset);
-
+                read_helper(node.Direct[direct_node++], offset, &length, &data, &ptr);
                 // read the direct blocks
                 while(length > 0 && direct_node < POINTERS_PER_INODE && node.Direct[direct_node]) {
-                    fs_disk->read(node.Direct[direct_node++], ptr);
-                    ptr += Disk::BLOCK_SIZE;
-                    length -= Disk::BLOCK_SIZE;
+                    read_helper(node.Direct[direct_node++], 0, &length, &data, &ptr);
                 }
 
                 if(length <= 0) {
@@ -372,13 +370,9 @@ ssize_t FileSystem::read(size_t inumber, char *data, int length, size_t offset) 
                         // read the indirect nodes
                         for(uint32_t i = 0; i < POINTERS_PER_BLOCK; i++) {
                             if(indirect.Pointers[i] && length > 0) {
-                                fs_disk->read(indirect.Pointers[i], ptr);
-                                ptr += Disk::BLOCK_SIZE;
-                                length -= Disk::BLOCK_SIZE;
+                                read_helper(indirect.Pointers[i], 0, &length, &data, &ptr);
                             }
-                            else {
-                                break;
-                            }
+                            else break;
                         }
 
                         if(length <= 0) {
@@ -412,21 +406,14 @@ ssize_t FileSystem::read(size_t inumber, char *data, int length, size_t offset) 
                 fs_disk->read(node.Indirect, indirect.Data);
 
                 if(indirect.Pointers[indirect_node] && length > 0) {
-                    fs_disk->read(indirect.Pointers[indirect_node++], ptr);
-                    data += offset;
-                    ptr += Disk::BLOCK_SIZE;
-                    length -= (Disk::BLOCK_SIZE - offset);
+                    read_helper(indirect.Pointers[indirect_node++], offset, &length, &data, &ptr);
                 }
 
                 for(uint32_t i = indirect_node; i < POINTERS_PER_BLOCK; i++) {
                     if(indirect.Pointers[i] && length > 0) {
-                        fs_disk->read(indirect.Pointers[i], ptr);
-                        ptr += Disk::BLOCK_SIZE;
-                        length -= Disk::BLOCK_SIZE;
+                        read_helper(indirect.Pointers[i], 0, &length, &data, &ptr);
                     }
-                    else {
-                        break;
-                    }
+                    else break;
                 }
 
                 if(length <= 0) {
@@ -451,8 +438,8 @@ ssize_t FileSystem::read(size_t inumber, char *data, int length, size_t offset) 
 // Allocates a block in the file system ----------------------------------------
 
 uint32_t FileSystem::allocate_block() {
-    //Sanity Checks
-    if(!mounted){return 0;}
+    // sanity check
+    if(!mounted) return 0;
 
     for(int i = num_inode_blocks + 1; i < num_free_blocks; i++) {
         if(free_blocks[i] == 0) {
@@ -468,8 +455,8 @@ uint32_t FileSystem::allocate_block() {
 // Return helper for write() function ------------------------------------------
 
 ssize_t FileSystem::write_ret(size_t inumber, Inode* node, int ret) {
-    //Sanity Checks
-    if(!mounted){return -1;}
+    // sanity check
+    if(!mounted) return -1;
 
     int i = inumber / INODES_PER_BLOCK;
     int j = inumber % INODES_PER_BLOCK;
@@ -486,6 +473,9 @@ ssize_t FileSystem::write_ret(size_t inumber, Inode* node, int ret) {
 // Read buffer -----------------------------------------------------------------
 
 void FileSystem::read_buffer(int offset, int *read, int length, char *data, uint32_t blocknum) {
+    // sanity check
+    if(!mounted) return;
+    
     char* ptr = (char *)calloc(Disk::BLOCK_SIZE, sizeof(char));
     for(int i = offset; i < (int)Disk::BLOCK_SIZE && *read < length; i++) {
         ptr[i] = data[*read];
@@ -499,6 +489,9 @@ void FileSystem::read_buffer(int offset, int *read, int length, char *data, uint
 // Allocate and check ----------------------------------------------------------
 
 bool FileSystem::check_allocation(Inode* node, int read, int orig_offset, uint32_t &blocknum, bool write_indirect, Block indirect) {
+    // sanity check
+    if(!mounted) return false;
+    
     if(!blocknum) {
         blocknum = allocate_block();
         if(!blocknum) {
@@ -515,8 +508,8 @@ bool FileSystem::check_allocation(Inode* node, int read, int orig_offset, uint32
 
 ssize_t FileSystem::write(size_t inumber, char *data, int length, size_t offset) { 
     // sanity check
-    if(!mounted){return -1;}
-s
+    if(!mounted) return -1;
+    
     Inode node;
     Block indirect;
     int read = 0;
