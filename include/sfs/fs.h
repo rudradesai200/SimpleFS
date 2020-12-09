@@ -1,62 +1,116 @@
+/**
+ * @file fs.h
+ * @author Rudra Desai (rudrad200@gmail.com) & Kairav Shah (shahkairav1702@gmail.com)
+ * @brief Interface for the FileSystem layer
+ * @date 2020-12-09
+ * 
+ */
+
 /*! \mainpage CS3500 Course Project
  * \image html SimpleFS.png
  * 
  * \section Introduction
- * The FileSystem is a layer of abstraction between the Storage Media and the Operating System. Without a FileSystem, the data stored in any storage media will be just a large chunk of bytes.
- * FileSystem provide the interface to access and control the data. They do so by separating the data into pieces and labeling them for better management and operability.
- * There are many different kinds of FileSystem available like Disk-Based, Network-Based, and Virtual based on the types of their usage.
+ * The file system is a layer of abstraction between the storage medium and the operating system.
+ * In the absence of a file system, it is tough to retrieve and manage data stored in the storage media.
+ * File systems provide an interface to access and control the data. 
+ * It is implemented by separating data into chunks of predetermined size and labeling them for better management and operability. 
+ * There are several types of file systems available out there. Some major examples are as follows: Disk-Based, Network-Based, and Virtual based.
  * 
- * Here, we provide a simple implementation of a Disk-Based FileSystem that is persistent across the boot. 
- * The shell to access the FileSystem and the Disk emulator was pre-implemented by the University of Notre Dame. Our task was to build upon that and implement the FileSystem layer and fill the gap between Shell and the Disk emulator.
+ * Here, we provide a simple implementation of a disk-based file system. A custom shell is also provided to access the file system.
+ * The shell (sfs) and the disk emulator were pre-implemented by the University of Notre Dame. Our task was to build upon the given tools and implement the File System layer and, in doing so, bridge the gap between shell and disk emulator.
  * 
  * \section Features
- *-# <b> Access to read/write any number of bytes from the disk.</b>
- *  - Disks can be only read/written in blocks of 4KB.
- *  - FileSystem provided abstraction to the user by handling blocks and allowing them to access/write any bytes of data.
- *  - FileSystem makes the tradeoff between performance and storage for the users.
- *-# <b> Format the disk and initialize a new FileSystem.</b>
- *  - Most of the FileSystem written on the disk contain magic numbers to validate it.
- *  - FileSystem helps the user by accessing the data at a granularity of 4KB blocks and creating a fresh copy of FileSystem on the disk.
- *  - The number of blocks for metadata and storage purposes are dependent on the type of FileSystem used. 
- *  - Our FS uses 1 block for storing MetaData, 10% blocks for storing Inodes, 1% blocks for storing Directories & Tables and the rest of the blocks as DataBlocks which are used for storing raw data.
- *-# <b> Debug the current FileSystem and check validity.  </b>
- *  - FileSystem provides a method to debug the data stored on the disk and read the metadata.
- *  - Validity checks are performed by checking the Magic number and reading the MetaData.
- *-# <b> Mount the Disk and read/write inodes.</b>
- *  - Our FileSystem provides a method to mount the disk and store the metadata in Memory for faster access and caching.
- *  - We provide methods to read/write the data by accessing Inodes directly or by using Directories & Files.
+ *-# <b> Ability to view and modify data stored in the disk.</b>
+ *  - Disks can be accessed only in blocks of size 4KB (can be changed in the disk implementation).
+ *  - A file system is an abstraction layer that allows the user to modify the disk without worrying about the block size.
+ *  - The file system weighs the tradeoff between performance and storage to make the user’s life simpler.
+ *-# <b> Format the disk and mount a new file system.</b>
+ *  - Usually, a signature is used to verify the file system’s integrity every time the disk is mounted. SimpleFS uses one such “Magic Number” to ensure that a compatible file system is being mounted. This magic number is loaded upon formatting the disk. 
+ *  - Our implementation of the format() function hard-resets the disk, i.e., it does not only delete the inodes but sets each byte to zero. 
+ *  - The number of blocks for metadata and storage purposes is dependent on the type and implementation of the file system used. 
+ *  - Our implementation uses one single block named “superblock” to store metadata, 10% blocks to store inodes, 1% blocks to store directories and files. The remaining blocks are used to store raw data.
+ *-# <b> Create, Read and Write inodes.  </b>
+ *  - Inodes are data structures that are used to store files. The data to be stored is saved across an array of direct blocks and indirect blocks. Such distinction is made so that the access time for small files is significantly reduced. 
+ *  - The indirect block is simply an array of pointers to raw data blocks. This implementation has a major pitfall: it limits the maximum size of files. A simple workaround is to make the last pointer of the indirect block point to another indirect block. We have not yet implemented this scheme in order to keep the file system simple.
+ *  - The implementation provides functions to create, read, and write inodes. Support for directly creating files and directories has been added as an extra feature.
+ *  - The inodes store extra data in its member variables to enable features such as permissions. Though we have not implemented this feature, it can be easily achieved. 
  *
  * \section Additional-Features
- *-# <b> Extended inode & block layer to include Directories & Files as well. </b>
- *  - We created structures to store Directories directly into 4KB blocks.
- *  - Each File and Directory are labelled with name and can be accessed from the root directory.
- *  - Each File & Directory are stored as table entries into the parent directory.
- *  - We faced a tradeoff between No. of Directories per Block vs No. of Entries per Directory, and we selected the values as 8 and 7 respectively.
- *-# <b> Implemented several Linux shell commands.</b>
- *  - Linux shell commands for directories includes - ls, cd, mkdir, rmdir, stat
- *  - Linux shell commands for files include - touch, copyin, copyout, rm.
- *  - Commands for password protection include - password change, password set and password remove.
+ *-# <b> Added support for directly creating files and multi-level directories. </b>
+ * - Used additional data structures to maintain directories.
+ * - Files and directories are associated with a name for user’s ease and can be accessed from the root directory.
+ * - Nested files and directories are stored as entries into the parent directory’s table.
+ * - The maximum number of directories per block and entries per directory is an implementation choice. It can be changed by modifying the corresponding value in the code.
+ * 
+ *-# <b> Implemented 10 Linux shell commands.</b>
+ * - ls - list the contents of the directory
+ * - cd - change directory
+ * - mkdir - create a new directory
+ * - rmdir -  remove a directory
+ * - stat - display information of all directories
+ * - touch - create an empty file
+ * - copyin - import a file into the file system
+ * - copyout - export a file from the file system 
+ * - rm - remove a file or directory
+ * - Three password protection commands - change, set, and remove
+ * 
  *-# <b> Added Security layer to encrypt and decrypt the disk.</b>
- *  - We implemented sha256 encryption for storing passwords on the disk.
- *  - The main question we faced was to decide where to store the password. So, we decided to store it in the SuperBlock. 
- *  - Only password hash is stored, which can be compared with later to validate the user.
- *  - Functions like debug and mount cannot be used without opening the lock, which inherently restricts other functions to be accessed.
+ * - Used a library to make use of SHA256 encryption.
+ * - The user password is hashed using this function to prevent password leaks, if any.
+ * - The hashed password is stored right in the superblock as most of the space in this block is left unutilised.
+ * - Upon mounting the disk, the user is prompted to enter the password. Only after logging in can the user access the disk and make use of the user functions.
  *
  * \section Future-Aspects
- *  - Extend support to Devices, Networks and Pipes
- *  - Add Caching and Logging layers to make FileSystem more efficient.
- *  - Add Spin-locks and Mutexes for multiprocessor support.
- *  - Upgrade security to not only encrypt passwords but to also encrypt the data.
- * 
+ *-# <b> Extend support to devices </b>
+ * - A device descriptor is a number used by the operating system to identify the device uniquely. An array of device descriptors is used to support multiple devices.
+ * - Support for devices can be added by mapping these device descriptors to the device drivers.
+ * - The standard read/write functions are overridden by the device driver’s corresponding functions. This ensures a consistent universal interface for  devices as well as files.
+ * - The only difference is an additional field that is needed to store the device descriptor.
+ * - Generally, the file systems are equipped with caching and buffer layers for files. Thus, the universal interface can ensure the same crash recovery for devices too.
+ *
+ *-# <b> Extend support to networks </b>
+ * - Similar to devices, support for networks can be extended by mapping network descriptors to device drivers.
+ * - A significant benefit of handling networks and devices as regular files is that the file system’s implementation remains universal and minimal.
+ * - An end-user need not worry about the devices/networks as a separate entity. The OS and file system provides a consistent interface.  
+ * - NIC - Network Interface Controller - is used to handle networks. The OS interacts with its device driver to transmit information across the network. These device drivers can be used by the file system to support networks.
+ *
+ *-# <b> Add a caching layer for faster access time. </b>
+ * - A caching layer ensures faster access time by making use of “locality of reference.”
+ * - To make use of the cache layer, read/write accesses are redirected to request the caching layer and access the main disk only if the requested data is absent.
+ * - If the requested data is not present in the cache layer (known as “cache miss”), it is retrieved from the disk and stored in the cache for future use. Cache replacement algorithms such as LRU (Least Recently Used) can be used to ensure efficiency. 
+ * - The “writes” to the disk are not immediately serviced - these changes are made in the cache layer and later stored to the disk only when absolutely necessary. This phenomenon is referred to as “cache hit”. 
+ * - This feature can significantly reduce the number of read/write calls to the disk. This has immense ramifications as secondary storage accesses are costly, and any improvement at this level affects the entire pipeline.
+ *
+ *-# <b> Add a logging layer for crash recovery. </b>
+ * - A system crash (or any interrupt for that matter) during a disk operation may leave the disk in an inconsistent state. It is imperative to implement crash recovery algorithms that can restore the disk to its original state.
+ * - To implement this functionality, all system calls that request access to disk are maintained in log files. Once the system call has logged all its requests, a special commit record is maintained in the disk, indicating that the log represents a complete operation.
+ * - The system call is now allowed to perform its disk operations. Only if the disk operations are executed successfully, the log file is deleted. In case of a crash, this log file is used to rollback the changes and restore the disk to a working state.
+ * - This ensures that the operations are either completed in their entirety or no single operation is performed.
+ *
+ *-# <b> Add support for multi-processor computers. </b>
+ * - The current implementation is dependent on several shared variables and objects. This prohibits the computer from making use of its efficient multiprocessing power because of issues such as race conditions.
+ * - This issue can be resolved using tools such as mutexes, semaphores, or spinlocks.
+ * - Spin-locks are an excellent choice when the critical section is small. In contrast, a more extensive critical section may require mutexes.
+ * - Synchronized code ensures the correctness of the code even when executed on a multiprocessor system. 
+ *
+ *-# <b> Encryption of disk. </b> 
+ * - The current password protection implementation is minimal as it does not prevent the adversary from creating their file system to access the data stored on the disk without ever entering the password. 
+ * - Hence, to provide a much more secure system, the entire disk can be encrypted using advanced encryption algorithms.
+ *
  * \section Results
- * - We were able to successfully implement SimpleFS and were able to pass all the required tests.
- * - Along with it, we added a security layer before the disk mount stage for secure access to the disk.
- * - We were also able to add Directories & Files support for better and easier user access.
- * 
+ * - Passed all the tests provided by the University of Notre Dame (run “make test”).
+ * - Added support for password protection.
+ * - Added support for directories and files.
+ * \image html Success.png
  * \section Refrences
- *- https://www3.nd.edu/~pbui/teaching/cse.30341.fa17/project06.html
- *- https://drive.google.com/file/d/1oL5cUGzU7IchOZO_Jx7R9j8HqGxJ-wDX/view
- *- https://en.wikipedia.org/wiki/File_system
+ * - https://www3.nd.edu/~pbui/teaching/cse.30341.fa17/project06.html - Notre Dame University for providing the project and the boilerplate code
+ * - https://drive.google.com/file/d/1oL5cUGzU7IchOZO_Jx7R9j8HqGxJ-wDX/view - File System lecture slides by Dr. Chester Rebeiro
+ * - https://en.wikipedia.org/wiki/File_system - Wikipedia entry for File Systems
+ * 
+ * \section Contributions
+ * - Kairav Shah: implemented the core functions: debug, format, mount, create, remove, write, read.
+ * - Rudra Desai: added extra functionalities to the file system: password protection, several Linux commands, support for directories and files.
+ *
 */
 
 #pragma once
